@@ -6,11 +6,23 @@
       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
 
 
-    <!--<http request-matcher="regex" auto-config="true" use-expressions="true">
-        <!- web-страницы ->
+    <http request-matcher="regex" auto-config="true" use-expressions="true">
+        <!-- web-страницы -->
 
-        <!- Rest-сервис ->
+        <!-- Rest-сервис -->
 
-    </http>-->
+        <form-login authentication-success-handler-ref="authSuccessHandler" />
+    </http>
 
+    <beans:bean id="authSuccessHandler" class="com.company.service.AuthSuccessHandler"/>
+
+    <beans:bean id="accountService" class="com.company.service.AccountService">
+        <beans:property name="accountDAO" ref="accountDAO"/>
+    </beans:bean>
+
+    <authentication-manager alias="authenticationManager">
+        <authentication-provider user-service-ref="accountService">
+            <password-encoder hash="sha"/>
+        </authentication-provider>
+    </authentication-manager>
 </beans:beans>
