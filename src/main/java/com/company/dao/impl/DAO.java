@@ -3,12 +3,11 @@ package com.company.dao.impl;
 import com.company.dao.api.IDAO;
 import com.company.util.GenericReflector;
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
+import org.hibernate.criterion.Restrictions;
 
 import java.io.Serializable;
+import java.lang.InstantiationException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -115,7 +114,7 @@ public class DAO<T> implements IDAO<T> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public void delete(Serializable id)  {
+    public void delete(Serializable id) {
 
         T obj = null;
         try {
@@ -143,6 +142,26 @@ public class DAO<T> implements IDAO<T> {
         } catch (Exception e) {
             if (transaction != null) transaction.rollback();
             LOGGER.error(HIBERNATE_EXC_MSG, e);
+            throw e;
+        } finally {
+            session.close();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    protected T readByField(String field, Object value) {
+        Session session = getSessionFactory().openSession();
+        Transaction transaction = null;
+        try {
+            transaction = session.beginTransaction();
+            Criteria criteria = session.createCriteria(GenericReflector.getClassParameterType(this.getClass()));
+            criteria.add(Restrictions.eq(field, value));
+            T object = (T) criteria.uniqueResult();
+            transaction.commit();
+            return object;
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            LOGGER.error(HIBERNATE_EXC_MSG);
             throw e;
         } finally {
             session.close();

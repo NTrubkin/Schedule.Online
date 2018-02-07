@@ -1,5 +1,6 @@
 package com.company.dao.api;
 
+import com.company.model.Account;
 import org.hibernate.SessionFactory;
 
 import java.io.Serializable;
@@ -50,4 +51,5 @@ public interface IDAO<T> {
      * @return List<T>, если успех
      */
     public List<T> readAll();
+
 }

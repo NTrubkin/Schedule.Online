@@ -16,5 +16,9 @@ public interface AccountDAO extends IDAO<Account> {
      * @param nickname никнейм аккаунта в базе данных
      * @return Account сущность, если успех
      */
-    Account read(String nickname);
+    Account readByName(String nickname);
+
+    Account readByEmail(String email);
+
+    Account readByPhoneNumber(Long phoneNumber);
 }

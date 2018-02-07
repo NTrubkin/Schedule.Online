@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class AccountService implements UserDetailsService {
+public class SimpleAccountService implements UserDetailsService {
 
     private AccountDAO accountDAO;
 
@@ -24,6 +24,7 @@ public class AccountService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String name) {
         return new UserDetails() {
+
             /**
              * Возвращает роли пользователя
              * @return
