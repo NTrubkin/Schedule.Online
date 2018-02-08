@@ -1,6 +1,5 @@
 package com.company.dao.api;
 
-import com.company.model.Account;
 import org.hibernate.SessionFactory;
 
 import java.io.Serializable;

@@ -7,17 +7,22 @@ import javax.persistence.*;
 public class Group {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
+    @ManyToOne(targetEntity = Account.class)
     @JoinColumn(name = "leader_id")
     private Account leader;
 
     public Group() {
+    }
+
+    public Group(String name, Account leader) {
+        this.name = name;
+        this.leader = leader;
     }
 
     public Integer getId() {

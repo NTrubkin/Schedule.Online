@@ -2,6 +2,7 @@ package com.company.service;
 
 import com.company.dao.api.AccountDAO;
 import com.company.model.Account;
+import com.company.service.util.AccountIdentifyConverter;
 import com.company.util.LoginValidator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +16,11 @@ public class MultiloginAccountService implements UserDetailsService {
 
     private boolean isNonLocked = true;
     private AccountDAO accountDAO;
+    private AccountIdentifyConverter accIdConverter;
+
+    public void setAccIdConverter(AccountIdentifyConverter accIdConverter) {
+        this.accIdConverter = accIdConverter;
+    }
 
     public void setAccountDAO(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
@@ -23,6 +29,7 @@ public class MultiloginAccountService implements UserDetailsService {
     /**
      * Данный метод логинит не по username, а по email или номеру телефона
      * Следует найти корректный метод spring security для этой аутентификации
+     *
      * @param login
      * @return
      */
@@ -49,7 +56,7 @@ public class MultiloginAccountService implements UserDetailsService {
 
             @Override
             public String getUsername() {
-                return login;
+                return accIdConverter.IdToName(loadAccount(login).getId());
             }
 
             @Override
@@ -86,7 +93,7 @@ public class MultiloginAccountService implements UserDetailsService {
                     }
 
                     // вторая проверка после попытки поиска
-                    if(account == null) {
+                    if (account == null) {
                         throw new UsernameNotFoundException("There is no account with login '" + login);
                     }
                 }

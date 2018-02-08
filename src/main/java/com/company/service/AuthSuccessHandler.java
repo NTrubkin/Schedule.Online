@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import java.io.IOException;
-
 public class AuthSuccessHandler implements AuthenticationSuccessHandler {
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
@@ -23,7 +21,7 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     private void handle(HttpServletRequest request,
-                          HttpServletResponse response, Authentication authentication)
+                        HttpServletResponse response, Authentication authentication)
             throws IOException {
 
         String targetUrl = determineTargetUrl();
@@ -47,11 +45,11 @@ public class AuthSuccessHandler implements AuthenticationSuccessHandler {
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }
 
-    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
-        this.redirectStrategy = redirectStrategy;
-    }
-
     private RedirectStrategy getRedirectStrategy() {
         return redirectStrategy;
+    }
+
+    public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
+        this.redirectStrategy = redirectStrategy;
     }
 }

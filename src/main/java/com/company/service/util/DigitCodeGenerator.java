@@ -9,9 +9,8 @@ public class DigitCodeGenerator implements VerificationCodeGenerator {
     private static final int MAX_LENGTH = 9;
     // из соображений безопасности
     private static final int MIN_LENGTH = 3;
-    private int length;
-
     private static final Logger LOGGER = Logger.getLogger(DigitCodeGenerator.class);
+    private int length;
 
     @Override
     public int getLength() {
@@ -20,7 +19,7 @@ public class DigitCodeGenerator implements VerificationCodeGenerator {
 
     @Override
     public void setLength(int length) {
-        if(MIN_LENGTH < 0 || length > MAX_LENGTH) {
+        if (MIN_LENGTH < 0 || length > MAX_LENGTH) {
             throw new ArrayIndexOutOfBoundsException();
         }
         this.length = length;
@@ -35,7 +34,7 @@ public class DigitCodeGenerator implements VerificationCodeGenerator {
 
     public int calculateBound() {
         int result = 9;
-        for(int i = 1; i < length; i++) {
+        for (int i = 1; i < length; i++) {
             result = result * 10 + 9;
         }
         return result;

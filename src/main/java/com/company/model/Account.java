@@ -37,6 +37,16 @@ public class Account {
     public Account() {
     }
 
+    public Account(String name, String firstName, String secondName, String email, Long phoneNumber, String passhash, Group group) {
+        this.name = name;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.passhash = passhash;
+        this.group = group;
+    }
+
     public Integer getId() {
         return id;
     }

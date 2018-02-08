@@ -3,10 +3,6 @@ package com.company.dao.impl;
 import com.company.dao.api.AccountDAO;
 import com.company.model.Account;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.Restrictions;
 
 /**
  * DAO, который работает с сущностью Account, реализуя основные методы обработки
