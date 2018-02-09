@@ -7,7 +7,7 @@ import com.company.model.Group;
 public class PrivateAccountConverter extends EntityConverter<Account, PrivateAccountDTO> {
     @Override
     public PrivateAccountDTO convert(Account entity) {
-        return new PrivateAccountDTO(
+        return entity == null ? null : new PrivateAccountDTO(
                 entity.getId(),
                 entity.getFirstName(),
                 entity.getSecondName(),
@@ -19,6 +19,10 @@ public class PrivateAccountConverter extends EntityConverter<Account, PrivateAcc
 
     @Override
     public Account restore(PrivateAccountDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         Group groupStub = new Group();
         groupStub.setId(dto.getGroup_id());
         return new Account(

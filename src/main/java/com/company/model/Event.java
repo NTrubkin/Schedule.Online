@@ -24,6 +24,12 @@ public class Event {
     public Event() {
     }
 
+    public Event(String name, Timestamp datetime, String description) {
+        this.name = name;
+        this.datetime = datetime;
+        this.description = description;
+    }
+
     public Integer getId() {
         return id;
     }

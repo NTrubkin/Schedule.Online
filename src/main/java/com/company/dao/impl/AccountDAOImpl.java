@@ -3,6 +3,7 @@ package com.company.dao.impl;
 import com.company.dao.api.AccountDAO;
 import com.company.model.Account;
 import org.apache.log4j.Logger;
+import org.hibernate.SessionFactory;
 
 /**
  * DAO, который работает с сущностью Account, реализуя основные методы обработки
@@ -10,15 +11,8 @@ import org.apache.log4j.Logger;
 public class AccountDAOImpl extends DAO<Account> implements AccountDAO {
     private static final Logger LOGGER = Logger.getLogger(AccountDAOImpl.class);
 
-
-    /**
-     * Читает объект Account из базы данных с nickname
-     *
-     * @param name никнейм аккаунта в базе данных
-     * @return Account сущность, если успех
-     */
-    public Account readByName(String name) {
-        return readByField("name", name);
+    public AccountDAOImpl(SessionFactory sessionFactory) {
+        super(sessionFactory);
     }
 
     @Override

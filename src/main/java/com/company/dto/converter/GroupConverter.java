@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class GroupConverter extends EntityConverter<Group, GroupDTO> {
     @Override
     public GroupDTO convert(Group entity) {
-        return new GroupDTO(
+        return entity == null ? null : new GroupDTO(
                 entity.getId(),
                 entity.getName(),
                 entity.getLeader().getId()
@@ -18,6 +18,10 @@ public class GroupConverter extends EntityConverter<Group, GroupDTO> {
 
     @Override
     public Group restore(GroupDTO dto) {
+        if (dto == null) {
+            return null;
+        }
+
         Account leader = new Account();
         leader.setId(dto.getLeader_id());
         return new Group(

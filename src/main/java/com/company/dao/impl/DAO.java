@@ -5,6 +5,9 @@ import com.company.util.GenericReflector;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.lang.InstantiationException;
@@ -17,17 +20,17 @@ import java.util.List;
  *
  * @param <T> Hibernate сущность, для которой разработан DAO
  */
-public class DAO<T> implements IDAO<T> {
+public abstract class DAO<T> implements IDAO<T> {
     protected static final String HIBERNATE_EXC_MSG = "Hibernate exception occurred: ";
     private static final Logger LOGGER = Logger.getLogger(DAO.class);
-    private SessionFactory sessionFactory;
+    private final SessionFactory sessionFactory;
+
+    public DAO(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     protected SessionFactory getSessionFactory() {
         return sessionFactory;
-    }
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
     }
 
     /**
@@ -148,6 +151,12 @@ public class DAO<T> implements IDAO<T> {
         }
     }
 
+    /**
+     * Важно, чтобы поле было уникальным
+     * @param field
+     * @param value
+     * @return
+     */
     @SuppressWarnings("unchecked")
     protected T readByField(String field, Object value) {
         Session session = getSessionFactory().openSession();

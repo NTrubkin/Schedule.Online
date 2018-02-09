@@ -27,7 +27,16 @@ public class Lesson {
     @JoinColumn(name = "group_id")
     private Group group;
 
+
     public Lesson() {
+    }
+
+    public Lesson(String name, Integer room, Timestamp datetime, String teacher, Group group) {
+        this.name = name;
+        this.room = room;
+        this.datetime = datetime;
+        this.teacher = teacher;
+        this.group = group;
     }
 
     public Integer getId() {

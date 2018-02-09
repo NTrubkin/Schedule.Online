@@ -45,10 +45,14 @@
 
     <!-- DAOs -->
     <bean id="accountDAO" class="com.company.dao.impl.AccountDAOImpl">
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+        <constructor-arg name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
 
     <bean id="groupDAO" class="com.company.dao.impl.GroupDAOImpl">
-        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+        <constructor-arg name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
+
+    <bean id="lessonDAO" class="com.company.dao.impl.LessonDAOImpl">
+        <constructor-arg name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
 </beans>

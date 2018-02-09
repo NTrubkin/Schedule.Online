@@ -12,7 +12,7 @@ public class AccountConverter extends EntityConverter<Account, AccountDTO> {
 
     @Override
     public AccountDTO convert(Account entity) {
-        return new AccountDTO(
+        return entity == null ? null : new AccountDTO(
                 entity.getId(),
                 entity.getFirstName(),
                 entity.getSecondName()
@@ -21,7 +21,7 @@ public class AccountConverter extends EntityConverter<Account, AccountDTO> {
 
     @Override
     public Account restore(AccountDTO dto) {
-        return new Account(
+        return dto == null ? null : new Account(
                 STRING_STUB,
                 dto.getFirstName(),
                 dto.getSecondName(),

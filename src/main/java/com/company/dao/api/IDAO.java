@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface IDAO<T> {
-    public void setSessionFactory(SessionFactory sessionFactory);
-
     /**
      * Создает объект в базе данных, используя Hibernate метод session.save(t);
      *

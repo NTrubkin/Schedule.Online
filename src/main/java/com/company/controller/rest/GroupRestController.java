@@ -29,7 +29,7 @@ public class GroupRestController {
     // todo сделать запрос для начальной страницы
 
     @RequestMapping(value = "/{groupId}", method = RequestMethod.GET)
-    public ResponseEntity<GroupDTO> readGroup(Authentication auth, @PathVariable(name = "groupId") int groupId) {
+    public ResponseEntity<GroupDTO> readGroup(Authentication auth, @PathVariable int groupId) {
         Group group = groupDAO.read(groupId);
         return new ResponseEntity<>(groupConverter.convert(group), HttpStatus.OK);
     }
@@ -48,7 +48,7 @@ public class GroupRestController {
     }*/
 
     @RequestMapping(value = "/{groupId}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteGroup(@PathVariable(name = "groupId") int groupId) {
+    public ResponseEntity deleteGroup(@PathVariable int groupId) {
         groupDAO.delete(groupId);
         return new ResponseEntity(HttpStatus.OK);
     }
