@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {
     @Override
     public LessonDTO convert(Lesson entity) {
-        return entity == null ? null : new LessonDTO(
+        if (entity == null) {
+            return null;
+        }
+        else return new LessonDTO(
                 entity.getId(),
                 entity.getName(),
                 entity.getRoom(),
@@ -25,16 +28,17 @@ public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {
         if (dto == null) {
             return null;
         }
-
-        Group group = new Group();
-        group.setId(dto.getGroupId());
-        return new Lesson(
-                dto.getName(),
-                dto.getRoom(),
-                dto.getStartDatetime(),
-                dto.getEndDatetime(),
-                dto.getTeacher(),
-                group
-        );
+        else {
+            Group group = new Group();
+            group.setId(dto.getGroupId());
+            return new Lesson(
+                    dto.getName(),
+                    dto.getRoom(),
+                    dto.getStartDatetime(),
+                    dto.getEndDatetime(),
+                    dto.getTeacher(),
+                    group
+            );
+        }
     }
 }

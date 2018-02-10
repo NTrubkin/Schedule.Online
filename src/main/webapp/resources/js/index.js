@@ -1,12 +1,10 @@
 function initIndexPage() {
-    console.log('init');
     $.ajax({
         type: 'GET',
         url: urlPrefix + '/api/comb/mainpage',
         dataType: 'json',
         async: true,
         success: function (result) {
-            console.log('analizing result: ' + result);
             if (result['user'] === null) {
                 alert('unauthorized user');
                 return;
@@ -14,15 +12,12 @@ function initIndexPage() {
 
             showUser(result.user);
             showGroup(result.group);
-            showLessons(result.lessons);
-            console.log('done');
+            showRecords(result.lessons, result.events);
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            console.log('fail');
             alert(jqXHR.responseText);
         }
     });
-    console.log('init done');
 }
 
 function showUser(user) {
@@ -35,20 +30,34 @@ function showGroup(group) {
     $('#groupBlock').css('visibility', 'visible');
 }
 
-function showLessons(lessons) {
+function showRecordBlock(record) {
+    if(isLesson(record)) {
+        showLessonBlock(record)
+    }
+    else {
+        showEventBlock(record);
+    }
+}
+
+function isLesson(record) {
+    return record.endDatetime != null;
+}
+
+function showRecords(lessons, events) {
     $('#recordsWithDividers').empty();
-    lessons.sort(function (a, b) {
+    var records = lessons.concat(events);
+    records.sort(function (a, b) {
         return a.startDatetime - b.startDatetime
     });
     var currentDay = null;
-    for (var i = 0; i < lessons.length; i++) {
-        var date = new Date(lessons[i].startDatetime);
+    for (var i = 0; i < records.length; i++) {
+        var date = new Date(records[i].startDatetime);
         if (!date.isSameDateAs(currentDay)) {
             showDayBlock(date);
             currentDay = date;
         }
 
-        showLessonBlock(lessons[i]);
+        showRecordBlock(records[i]);
     }
 }
 
@@ -108,5 +117,38 @@ function showLessonBlock(lesson) {
         formatTime(end.getMinutes()),
         lesson.name,
         lesson.room,
+        urlPrefix));
+}
+
+var eventBlock =
+    '       <div class="contentBlock recordBlock">\n' +
+    '            <div class="recordSubblock editLessonSubblock">\n' +
+    '                <a class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
+    '            </div>\n' +
+    '            <div class="recordSubblock bodyRecordSubblock">\n' +
+    '                <div class="recordHeader">\n' +
+    '                    <p class="headerItem recordDetails">{1}:{2}</p>\n' +
+    '                    <div class="headerItem">\n' +
+    '                        <p class="recordName eventName">\n' +
+    '                            {3}\n' +
+    '                        </p>\n' +
+    '                        <p class="recordDetails placeDetails">\n' +
+    '                            {4}\n' +
+    '                        </p>\n' +
+    '                    </div>\n' +
+    '                </div>\n' +
+    '                <hr class="recordHr">\n' +
+    '            </div>\n' +
+    '            <div class="recordSubblock deleteLessonSubblock">\n' +
+    '                <a class="deleteBtn"><img src="{5}/resources/icon/deleteBtn24.png"/></a>\n' +
+    '            </div>';
+function showEventBlock(event) {
+    var start = new Date(event.startDatetime);
+    $('#recordsWithDividers').append(eventBlock.f(
+        urlPrefix,
+        formatTime(start.getHours()),
+        formatTime(start.getMinutes()),
+        event.name,
+        event.place,
         urlPrefix));
 }

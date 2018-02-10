@@ -3,6 +3,7 @@ package com.company.controller.rest;
 import com.company.dao.api.AccountDAO;
 import com.company.dto.PrivateAccountDTO;
 import com.company.dto.converter.AccountConverter;
+import com.company.dto.converter.IEntityConverter;
 import com.company.dto.converter.PrivateAccountConverter;
 import com.company.model.Account;
 import com.company.service.util.AccountIdentifyConverter;
@@ -20,10 +21,10 @@ public class AccountRestController {
 
     private final AccountDAO accountDAO;
     private final AccountIdentifyConverter idConverter;
-    private final PrivateAccountConverter accConverter;
+    private final IEntityConverter<Account, PrivateAccountDTO> accConverter;
 
     @Autowired
-    public AccountRestController(AccountDAO accountDAO, AccountIdentifyConverter idConverter, PrivateAccountConverter accConverter) {
+    public AccountRestController(AccountDAO accountDAO, AccountIdentifyConverter idConverter, IEntityConverter<Account, PrivateAccountDTO> accConverter) {
         this.accountDAO = accountDAO;
         this.idConverter = idConverter;
         this.accConverter = accConverter;

@@ -9,17 +9,17 @@ CREATE TABLE groups
 
 CREATE TABLE accounts
 (
-  id       SERIAL      NOT NULL
+  id           SERIAL      NOT NULL
     CONSTRAINT accounts_pkey
     PRIMARY KEY,
-  first_name     VARCHAR(40) NOT NULL,
-  second_name     VARCHAR(40) NOT NULL,
-  email VARCHAR(240),
+  first_name   VARCHAR(40) NOT NULL,
+  second_name  VARCHAR(40) NOT NULL,
+  email        VARCHAR(240),
   -- todo подумать о способе хранения номера телефона
   phone_number BIGINT,
-  name     VARCHAR(40) NOT NULL,
-  passhash VARCHAR(40) NOT NULL,
-  group_id INTEGER
+  name         VARCHAR(40) NOT NULL,
+  passhash     VARCHAR(40) NOT NULL,
+  group_id     INTEGER
     CONSTRAINT accounts_groups_id_fk
     REFERENCES groups
     ON UPDATE CASCADE ON DELETE SET NULL
@@ -27,16 +27,16 @@ CREATE TABLE accounts
 
 CREATE TABLE unverified_accounts
 (
-  id       SERIAL      NOT NULL
+  id                SERIAL      NOT NULL
     CONSTRAINT unverified_accounts_pkey
     PRIMARY KEY,
-  first_name     VARCHAR(40) NOT NULL,
-  second_name     VARCHAR(40) NOT NULL,
-  email VARCHAR(240),
-  phone_number BIGINT,
-  name     VARCHAR(40) NOT NULL,
-  passhash VARCHAR(40) NOT NULL,
-  verification_code INT NOT NULL
+  first_name        VARCHAR(40) NOT NULL,
+  second_name       VARCHAR(40) NOT NULL,
+  email             VARCHAR(240),
+  phone_number      BIGINT,
+  name              VARCHAR(40) NOT NULL,
+  passhash          VARCHAR(40) NOT NULL,
+  verification_code INT         NOT NULL
 );
 
 ALTER TABLE public.groups
@@ -45,13 +45,13 @@ FOREIGN KEY (leader_id) REFERENCES accounts (id) ON UPDATE CASCADE;
 
 CREATE TABLE public.lessons
 (
-  id       SERIAL PRIMARY KEY NOT NULL,
-  name     VARCHAR(40)        NOT NULL,
-  room     INT,
+  id             SERIAL PRIMARY KEY NOT NULL,
+  name           VARCHAR(40)        NOT NULL,
+  room           INT,
   start_datetime TIMESTAMP          NOT NULL,
-  end_datetime TIMESTAMP          NOT NULL,
-  teacher  VARCHAR(40),
-  group_id INT                NOT NULL,
+  end_datetime   TIMESTAMP          NOT NULL,
+  teacher        VARCHAR(40),
+  group_id       INT                NOT NULL,
   CONSTRAINT lessons_groups_id_fk FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
@@ -63,8 +63,10 @@ CREATE TABLE public.semester_starts
 
 CREATE TABLE public.events
 (
-  id          SERIAL PRIMARY KEY NOT NULL,
-  name        VARCHAR(40)        NOT NULL,
-  start_datetime    TIMESTAMP          NOT NULL,
-  description VARCHAR(1000)      NOT NULL
+  id             SERIAL PRIMARY KEY NOT NULL,
+  name           VARCHAR(40)        NOT NULL,
+  start_datetime TIMESTAMP          NOT NULL,
+  place          VARCHAR(40)        NOT NULL,
+  group_id       INT                NOT NULL,
+  description    VARCHAR(1000)      NOT NULL
 );

@@ -3,6 +3,7 @@ package com.company.controller.rest;
 import com.company.dao.api.LessonDAO;
 import com.company.dao.impl.DAO;
 import com.company.dto.LessonDTO;
+import com.company.dto.converter.IEntityConverter;
 import com.company.dto.converter.LessonConverter;
 import com.company.model.Account;
 import com.company.model.Lesson;
@@ -20,10 +21,10 @@ import java.util.List;
 public class LessonRestController {
 
     private final LessonDAO lessonDAO;
-    private final LessonConverter converter;
+    private final IEntityConverter<Lesson, LessonDTO> converter;
 
     @Autowired
-    public LessonRestController(LessonDAO lessonDAO, LessonConverter converter) {
+    public LessonRestController(LessonDAO lessonDAO, IEntityConverter<Lesson, LessonDTO> converter) {
         this.lessonDAO = lessonDAO;
         this.converter = converter;
     }

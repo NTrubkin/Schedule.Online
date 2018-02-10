@@ -9,11 +9,6 @@ INSERT INTO groups(name, leader_id) VALUES
   ('Первая группа', 2),
   ('Вторая группа', 1);
 
-INSERT INTO lessons(name, room, start_datetime, end_datetime, teacher, group_id) VALUES
-  ('Java', 1234, TIMESTAMP '2018-02-10 10:30:00', TIMESTAMP '2018-02-10 12:00:00', 'teacher A', 1),
-  ('Матпрограммирование', 2345, TIMESTAMP '2018-02-9 10:30:00', TIMESTAMP '2018-02-9 12:00:00', 'teacher B', 1),
-  ('Скриптовые языки программирования', 3456, TIMESTAMP '2018-02-9 12:30:00', TIMESTAMP '2018-02-9 15:00:00', 'teacher C', 1);
-
 UPDATE accounts
 SET group_id = 2
 WHERE id = 1;
@@ -25,3 +20,13 @@ WHERE id = 2;
 UPDATE accounts
 SET group_id = 1
 WHERE id = 3;
+
+INSERT INTO lessons(name, room, start_datetime, end_datetime, teacher, group_id) VALUES
+  ('Java', 1234, TIMESTAMP '2018-02-10 10:30:00', TIMESTAMP '2018-02-10 12:00:00', 'teacher A', 1),
+  ('Матпрограммирование', 2345, TIMESTAMP '2018-02-9 10:30:00', TIMESTAMP '2018-02-9 12:00:00', 'teacher B', 1),
+  ('Скриптовые языки программирования', 3456, TIMESTAMP '2018-02-9 12:30:00', TIMESTAMP '2018-02-9 15:00:00', 'teacher C', 1);
+
+INSERT INTO events(name, start_datetime, place, group_id, description) VALUES
+  ('Событие 1', TIMESTAMP '2018-02-10 18:00:00', 'пл. Минина и Пожарского', 1, 'описание события 1'),
+  ('Событие 2', TIMESTAMP '2018-02-11 18:00:00', 'НГТУ', 1, 'описание события 1');
+

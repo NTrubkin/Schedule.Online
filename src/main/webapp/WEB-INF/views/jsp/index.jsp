@@ -21,7 +21,7 @@
             <p>Schedule<br><span style="color: rgb(82, 94, 116); font-size: 64; line-height: 0;">.</span>Online</p>
         </div>
         <div id="accountBlock" class="menuBlock">
-            <a id="accountLogout"><img src="${urlPrefix}/resources/icon/logout32-4.png"></a>
+            <a id="accountLogout" href="${urlPrefix}/login?logout"><img src="${urlPrefix}/resources/icon/logout32-4.png"></a>
             <a id="accountName">FIRSTNAME<br>SECONDNAME</a>
         </div>
         <div id="groupBlock" class="menuBlock">

@@ -191,3 +191,7 @@ body {
     visibility: hidden;
     background-color: black;
 }
+
+.placeDetails {
+    text-align: right;
+}

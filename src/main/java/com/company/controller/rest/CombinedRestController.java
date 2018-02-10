@@ -1,9 +1,6 @@
 package com.company.controller.rest;
 
-import com.company.dto.GroupDTO;
-import com.company.dto.LessonDTO;
-import com.company.dto.MainPageDTO;
-import com.company.dto.PrivateAccountDTO;
+import com.company.dto.*;
 import com.company.model.Account;
 import com.company.model.Lesson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,17 +16,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/comb/")
-public class CombineRestController {
+public class CombinedRestController {
 
     private final AccountRestController accountController;
     private final GroupRestController groupController;
     private final LessonRestController lessonController;
+    private final EventRestController eventController;
 
     @Autowired
-    public CombineRestController(AccountRestController accountController, GroupRestController groupController, LessonRestController lessonController) {
+    public CombinedRestController(AccountRestController accountController, GroupRestController groupController, LessonRestController lessonController, EventRestController eventController) {
         this.accountController = accountController;
         this.groupController = groupController;
         this.lessonController = lessonController;
+        this.eventController = eventController;
     }
 
     /**
@@ -47,13 +46,15 @@ public class CombineRestController {
         PrivateAccountDTO accountDTO = accountController.readAccount(auth).getBody();
         GroupDTO groupDTO = null;
         List<LessonDTO> lessons = null;
+        List<EventDTO> events = null;
 
         if(accountDTO.getGroupId() != null) {
             groupDTO = groupController.readGroup(auth, accountDTO.getGroupId()).getBody();
             lessons = lessonController.readLessonsByGroup(groupDTO.getId()).getBody();
+            events = eventController.readEventsByGroup(groupDTO.getId()).getBody();
         }
 
-        MainPageDTO result = new MainPageDTO(accountDTO, groupDTO, lessons, null);
+        MainPageDTO result = new MainPageDTO(accountDTO, groupDTO, lessons, events);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

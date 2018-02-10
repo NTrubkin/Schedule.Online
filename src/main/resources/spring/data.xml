@@ -55,4 +55,8 @@
     <bean id="lessonDAO" class="com.company.dao.impl.LessonDAOImpl">
         <constructor-arg name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
+
+    <bean id="eventDAO" class="com.company.dao.impl.EventDAOImpl">
+        <constructor-arg name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
 </beans>
