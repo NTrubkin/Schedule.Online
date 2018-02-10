@@ -30,20 +30,20 @@
         <div class="menuBlock menuRegularBlock">
             <form>
                 <p class="menuHeader">Фильтры</p>
-                <label>Занятия</label>
-                <input type="checkbox">
+                <label for="lessonFilter">Занятия</label>
+                <input id="lessonFilter" type="checkbox" onchange="saveFilter()" checked>
                 <br>
-                <label>События</label>
-                <input type="checkbox">
+                <label for="eventFilter">События</label>
+                <input id="eventFilter" type="checkbox" onchange="saveFilter()" checked>
                 <br>
-                <label>Поиск</label>
-                <input type="text">
+                <label for="searchFilter">Поиск</label>
+                <input id="searchFilter" type="text" onchange="saveFilter()">
                 <br>
-                <label>Теги</label>
-                <input type="text">
+                <label for="tagsFilter">Теги</label>
+                <input id="tagsFilter" type="text" onchange="saveFilter()">
                 <br>
-                <label>Скрыть прошедшее</label>
-                <input type="checkbox">
+                <label for="hideLastFilter">Скрыть прошедшее</label>
+                <input id="hideLastFilter" type="checkbox" onchange="saveFilter()">
                 <br>
             </form>
         </div>

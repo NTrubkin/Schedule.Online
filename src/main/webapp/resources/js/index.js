@@ -1,23 +1,36 @@
+var data;
+const FILTERS_KEY = 'filters';
+
 function initIndexPage() {
+    loadData();
+    loadFilter();
+    showData();
+}
+
+function loadData() {
     $.ajax({
         type: 'GET',
         url: urlPrefix + '/api/comb/mainpage',
         dataType: 'json',
-        async: true,
+        async: false,
         success: function (result) {
-            if (result['user'] === null) {
+            if (result.user === null) {
                 alert('unauthorized user');
                 return;
             }
 
-            showUser(result.user);
-            showGroup(result.group);
-            showRecords(result.lessons, result.events);
+            data = result;
         },
         error: function (jqXHR, textStatus, errorThrown) {
             alert(jqXHR.responseText);
         }
     });
+}
+
+function showData() {
+    showUser(data.user);
+    showGroup(data.group);
+    showRecords(data.lessons, data.events);
 }
 
 function showUser(user) {
@@ -31,7 +44,7 @@ function showGroup(group) {
 }
 
 function showRecordBlock(record) {
-    if(isLesson(record)) {
+    if (isLesson(record)) {
         showLessonBlock(record)
     }
     else {
@@ -142,6 +155,7 @@ var eventBlock =
     '            <div class="recordSubblock deleteLessonSubblock">\n' +
     '                <a class="deleteBtn"><img src="{5}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>';
+
 function showEventBlock(event) {
     var start = new Date(event.startDatetime);
     $('#recordsWithDividers').append(eventBlock.f(
@@ -151,4 +165,50 @@ function showEventBlock(event) {
         event.name,
         event.place,
         urlPrefix));
+}
+
+function saveFilter() {
+    var filters = Cookies.get(FILTERS_KEY);
+    if(filters == null) {
+        filters = {};
+    }
+    else {
+        filters = JSON.parse(filters);
+    }
+
+    var filter = {
+        lessons : $('#lessonFilter').prop('checked'),
+        events : $('#eventFilter').prop('checked'),
+        search : $('#searchFilter').val(),
+        tags : $('#tagsFilter').val(),
+        hideLast : $('#hideLastFilter').prop('checked')};
+
+    filters[data.user.id] = filter;
+    Cookies.set(FILTERS_KEY, filters);
+}
+
+
+// todo подумать о проблеме безопасности cookie
+// хранить поле поиска и тегов нежелательно
+// Варианты: шифровать, хранить в бд, отказаться от этих полей
+function loadFilter() {
+    var filters = Cookies.get(FILTERS_KEY);
+    if(filters == null) {
+        return;
+    }
+
+    var filter = JSON.parse(filters)[data.user.id];
+    if(filter == null) {
+        return;
+    }
+
+    if(filter.lessons == null || filter.events == null || filter.search == null ||filter.tags == null ||filter.hideLast == null) {
+        return;
+    }
+
+    $('#lessonFilter').prop('checked', filter.lessons);
+    $('#eventFilter').prop('checked', filter.events);
+    $('#searchFilter').val(filter.search);
+    $('#tagsFilter').val(filter.tags);
+    $('#hideLastFilter').prop('checked', filter.hideLast);
 }

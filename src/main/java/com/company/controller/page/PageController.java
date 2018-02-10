@@ -22,4 +22,9 @@ public class PageController {
         }
         return "login";
     }
+
+    @RequestMapping(value = "/cookie", method = RequestMethod.GET)
+    private String getCookiePage() {
+        return "cookie";
+    }
 }
