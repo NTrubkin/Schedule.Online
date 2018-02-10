@@ -3,7 +3,9 @@ package com.company.dto.converter;
 import com.company.dto.PrivateAccountDTO;
 import com.company.model.Account;
 import com.company.model.Group;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PrivateAccountConverter extends EntityConverter<Account, PrivateAccountDTO> {
     @Override
     public PrivateAccountDTO convert(Account entity) {

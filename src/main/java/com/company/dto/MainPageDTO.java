@@ -11,14 +11,14 @@ import java.util.List;
  */
 public class MainPageDTO {
     private PrivateAccountDTO user;
-    private Group group;
-    private List<Lesson> lessons;
-    private List<Event> events;
+    private GroupDTO group;
+    private List<LessonDTO> lessons;
+    private List<EventDTO> events;
 
     public MainPageDTO() {
     }
 
-    public MainPageDTO(PrivateAccountDTO user, Group group, List<Lesson> lessons, List<Event> events) {
+    public MainPageDTO(PrivateAccountDTO user, GroupDTO group, List<LessonDTO> lessons, List<EventDTO> events) {
         this.user = user;
         this.group = group;
         this.lessons = lessons;
@@ -33,27 +33,27 @@ public class MainPageDTO {
         this.user = user;
     }
 
-    public Group getGroup() {
+    public GroupDTO getGroup() {
         return group;
     }
 
-    public void setGroup(Group group) {
+    public void setGroup(GroupDTO group) {
         this.group = group;
     }
 
-    public List<Lesson> getLessons() {
+    public List<LessonDTO> getLessons() {
         return lessons;
     }
 
-    public void setLessons(List<Lesson> lessons) {
+    public void setLessons(List<LessonDTO> lessons) {
         this.lessons = lessons;
     }
 
-    public List<Event> getEvents() {
+    public List<EventDTO> getEvents() {
         return events;
     }
 
-    public void setEvents(List<Event> events) {
+    public void setEvents(List<EventDTO> events) {
         this.events = events;
     }
 }
