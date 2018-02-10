@@ -15,16 +15,16 @@ public class Account {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "secondName")
+    @Column(name = "second_name")
     private String secondName;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private Long phoneNumber;
 
     @Column(name = "passhash")

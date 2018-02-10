@@ -14,7 +14,7 @@ public class Event {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "datetime")
+    @Column(name = "end_datetime")
     private Timestamp datetime;
 
     // todo экранирование инжекции (не только в description)

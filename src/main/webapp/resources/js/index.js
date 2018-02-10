@@ -38,11 +38,11 @@ function showGroup(group) {
 function showLessons(lessons) {
     $('#recordsWithDividers').empty();
     lessons.sort(function (a, b) {
-        return a.datetime - b.datetime
+        return a.startDatetime - b.startDatetime
     });
     var currentDay = null;
     for (var i = 0; i < lessons.length; i++) {
-        var date = new Date(lessons[i].datetime);
+        var date = new Date(lessons[i].startDatetime);
         if (!date.isSameDateAs(currentDay)) {
             showDayBlock(date);
             currentDay = date;
@@ -80,7 +80,7 @@ function showDayBlock(date) {
 var lessonBlock =
     '        <div class="contentBlock recordBlock">\n' +
     '            <div class="recordSubblock editLessonSubblock">\n' +
-    '                <a class="editBtn"><img src="{0}resources/icon/editBtn24.png"></a>\n' +
+    '                <a class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
     '            <div class="recordSubblock bodyRecordSubblock">\n' +
     '                <div class="recordHeader">\n' +
@@ -93,18 +93,19 @@ var lessonBlock =
     '                <hr class="recordHr">\n' +
     '            </div>\n' +
     '            <div class="recordSubblock deleteLessonSubblock">\n' +
-    '                <a class="deleteBtn"><img src="{7}resources/icon/deleteBtn24.png"/></a>\n' +
+    '                <a class="deleteBtn"><img src="{7}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>\n' +
     '        </div>';
 
 function showLessonBlock(lesson) {
-    var date = new Date(lesson.datetime);
+    var start = new Date(lesson.startDatetime);
+    var end = new Date(lesson.endDatetime);
     $('#recordsWithDividers').append(lessonBlock.f(
         urlPrefix,
-        date.getHours(),
-        date.getMinutes(),
-        date.getHours(),
-        date.getMinutes(),
+        formatTime(start.getHours()),
+        formatTime(start.getMinutes()),
+        formatTime(end.getHours()),
+        formatTime(end.getMinutes()),
         lesson.name,
         lesson.room,
         urlPrefix));

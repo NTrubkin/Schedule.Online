@@ -17,8 +17,11 @@ public class Lesson {
     @Column(name = "room")
     private Integer room;
 
-    @Column(name = "datetime")
-    private Timestamp datetime;
+    @Column(name = "start_datetime")
+    private Timestamp startDatetime;
+
+    @Column(name = "end_datetime")
+    private Timestamp endDatetime;
 
     @Column(name = "teacher")
     private String teacher;
@@ -31,10 +34,11 @@ public class Lesson {
     public Lesson() {
     }
 
-    public Lesson(String name, Integer room, Timestamp datetime, String teacher, Group group) {
+    public Lesson(String name, Integer room, Timestamp startDatetime, Timestamp endDatetime, String teacher, Group group) {
         this.name = name;
         this.room = room;
-        this.datetime = datetime;
+        this.startDatetime = startDatetime;
+        this.endDatetime = endDatetime;
         this.teacher = teacher;
         this.group = group;
     }
@@ -63,12 +67,20 @@ public class Lesson {
         this.room = room;
     }
 
-    public Timestamp getDatetime() {
-        return datetime;
+    public Timestamp getStartDatetime() {
+        return startDatetime;
     }
 
-    public void setDatetime(Timestamp datetime) {
-        this.datetime = datetime;
+    public void setStartDatetime(Timestamp startDatetime) {
+        this.startDatetime = startDatetime;
+    }
+
+    public Timestamp getEndDatetime() {
+        return endDatetime;
+    }
+
+    public void setEndDatetime(Timestamp endDatetime) {
+        this.endDatetime = endDatetime;
     }
 
     public String getTeacher() {

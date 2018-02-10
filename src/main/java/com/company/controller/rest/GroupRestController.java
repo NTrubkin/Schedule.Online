@@ -37,7 +37,7 @@ public class GroupRestController {
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity createGroup(@RequestBody GroupDTO groupDTO, Authentication auth) {
         int id = accIdConverter.NameToId(auth.getName());
-        groupDTO.setLeader_id(id);
+        groupDTO.setLeaderId(id);
         groupDAO.create(groupConverter.restore(groupDTO));
         return new ResponseEntity(HttpStatus.OK);
     }

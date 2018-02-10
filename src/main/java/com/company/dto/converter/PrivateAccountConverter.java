@@ -9,13 +9,14 @@ import org.springframework.stereotype.Service;
 public class PrivateAccountConverter extends EntityConverter<Account, PrivateAccountDTO> {
     @Override
     public PrivateAccountDTO convert(Account entity) {
-        return entity == null ? null : new PrivateAccountDTO(
+        if (entity == null) return null;
+        else return new PrivateAccountDTO(
                 entity.getId(),
                 entity.getFirstName(),
                 entity.getSecondName(),
                 entity.getEmail(),
                 entity.getPhoneNumber(),
-                entity.getGroup().getId()
+                entity.getGroup() == null ? null : entity.getGroup().getId()
         );
     }
 
@@ -24,17 +25,18 @@ public class PrivateAccountConverter extends EntityConverter<Account, PrivateAcc
         if (dto == null) {
             return null;
         }
-
-        Group groupStub = new Group();
-        groupStub.setId(dto.getGroup_id());
-        return new Account(
-                STRING_STUB,
-                dto.getFirstName(),
-                dto.getSecondName(),
-                dto.getEmail(),
-                dto.getPhoneNumber(),
-                STRING_STUB,
-                groupStub
-        );
+        else {
+            Group groupStub = new Group();
+            groupStub.setId(dto.getGroupId());
+            return new Account(
+                    STRING_STUB,
+                    dto.getFirstName(),
+                    dto.getSecondName(),
+                    dto.getEmail(),
+                    dto.getPhoneNumber(),
+                    STRING_STUB,
+                    groupStub
+            );
+        }
     }
 }

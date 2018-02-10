@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 public class GroupConverter extends EntityConverter<Group, GroupDTO> {
     @Override
     public GroupDTO convert(Group entity) {
-        return entity == null ? null : new GroupDTO(
+        if (entity == null) return null;
+        else return new GroupDTO(
                 entity.getId(),
                 entity.getName(),
-                entity.getLeader().getId()
+                entity.getLeader() == null ? null : entity.getLeader().getId()
         );
     }
 
@@ -21,12 +22,13 @@ public class GroupConverter extends EntityConverter<Group, GroupDTO> {
         if (dto == null) {
             return null;
         }
-
-        Account leader = new Account();
-        leader.setId(dto.getLeader_id());
-        return new Group(
-                dto.getName(),
-                leader
-        );
+        else {
+            Account leader = new Account();
+            leader.setId(dto.getLeaderId());
+            return new Group(
+                    dto.getName(),
+                    leader
+            );
+        }
     }
 }

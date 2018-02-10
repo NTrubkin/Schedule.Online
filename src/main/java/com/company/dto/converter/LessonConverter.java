@@ -13,9 +13,10 @@ public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {
                 entity.getId(),
                 entity.getName(),
                 entity.getRoom(),
-                entity.getDatetime(),
+                entity.getStartDatetime(),
+                entity.getEndDatetime(),
                 entity.getTeacher(),
-                entity.getGroup().getId()
+                entity.getGroup() == null ? null : entity.getGroup().getId()
         );
     }
 
@@ -30,7 +31,8 @@ public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {
         return new Lesson(
                 dto.getName(),
                 dto.getRoom(),
-                dto.getDatetime(),
+                dto.getStartDatetime(),
+                dto.getEndDatetime(),
                 dto.getTeacher(),
                 group
         );

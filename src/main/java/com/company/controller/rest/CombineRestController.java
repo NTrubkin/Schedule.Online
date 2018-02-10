@@ -45,8 +45,14 @@ public class CombineRestController {
     @RequestMapping(value = "/mainpage", method = RequestMethod.GET)
     private ResponseEntity<MainPageDTO> getMainPageData(Authentication auth) {
         PrivateAccountDTO accountDTO = accountController.readAccount(auth).getBody();
-        GroupDTO groupDTO = groupController.readGroup(auth, accountDTO.getGroup_id()).getBody();
-        List<LessonDTO> lessons = lessonController.readLessonsByGroup(groupDTO.getId()).getBody();
+        GroupDTO groupDTO = null;
+        List<LessonDTO> lessons = null;
+
+        if(accountDTO.getGroupId() != null) {
+            groupDTO = groupController.readGroup(auth, accountDTO.getGroupId()).getBody();
+            lessons = lessonController.readLessonsByGroup(groupDTO.getId()).getBody();
+        }
+
         MainPageDTO result = new MainPageDTO(accountDTO, groupDTO, lessons, null);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
