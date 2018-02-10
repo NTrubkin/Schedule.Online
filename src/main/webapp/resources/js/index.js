@@ -47,7 +47,7 @@ function showRecordBlock(record) {
     if (isLesson(record)) {
         showLessonBlock(record)
     }
-    else {
+    else if (isEvent(record)) {
         showEventBlock(record);
     }
 }
@@ -56,13 +56,20 @@ function isLesson(record) {
     return record.endDatetime != null;
 }
 
+function isEvent(record) {
+    return record.endDatetime == null;
+}
+
+var firstDayBlock;
 function showRecords(lessons, events) {
     $('#recordsWithDividers').empty();
     var records = lessons.concat(events);
+    records = filterRecords(records);
     records.sort(function (a, b) {
         return a.startDatetime - b.startDatetime
     });
     var currentDay = null;
+    firstDayBlock = true;
     for (var i = 0; i < records.length; i++) {
         var date = new Date(records[i].startDatetime);
         if (!date.isSameDateAs(currentDay)) {
@@ -73,8 +80,6 @@ function showRecords(lessons, events) {
         showRecordBlock(records[i]);
     }
 }
-
-var firstDayBlock = true;
 var emptyBlock =
     '        <div class="contentBlock emptyBlock">\n' +
     '            <p>STUB TEXT IN STUB BLOCK. SHOULD BE INVISIBLE</p>\n' +
@@ -211,4 +216,47 @@ function loadFilter() {
     $('#searchFilter').val(filter.search);
     $('#tagsFilter').val(filter.tags);
     $('#hideLastFilter').prop('checked', filter.hideLast);
+}
+
+function filterRecords(records) {
+    var currentDatetime = new Date().getTime();
+    var filtered = [];
+    for(var i = 0; i < records.length; i++) {
+        console.log();
+        if (isLesson(records[i]) && !$('#lessonFilter').prop('checked')) {
+            continue;
+        }
+
+        if (isEvent(records[i]) && !$('#eventFilter').prop('checked')) {
+            continue;
+        }
+
+        if($('#hideLastFilter').prop('checked') && records[i].startDatetime < currentDatetime) {
+            continue;
+        }
+
+        if($('#searchFilter').val() != '' && !fitBySearchFilter(records[i], $('#searchFilter').val())) {
+            continue;
+        }
+
+        filtered.push(records[i]);
+    }
+    return filtered;
+}
+
+function fitBySearchFilter(record, filter) {
+    var regex = (new RegExp(filter, "i"));
+    if (isLesson(record)) {
+        return record.name.toString().search(regex) !== -1 ||
+            record.room.toString().search(regex) !== -1 ||
+            record.teacher.toString().search(regex) !== -1;
+    }
+
+    if(isEvent(record)) {
+        return record.name.toString().search(regex) !== -1 ||
+            record.place.toString().search(regex) !== -1 ||
+            record.description.toString().search(regex) !== -1;
+    }
+
+    return false;
 }

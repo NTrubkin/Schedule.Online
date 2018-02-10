@@ -31,19 +31,19 @@
             <form>
                 <p class="menuHeader">Фильтры</p>
                 <label for="lessonFilter">Занятия</label>
-                <input id="lessonFilter" type="checkbox" onchange="saveFilter()" checked>
+                <input id="lessonFilter" type="checkbox" onchange="saveFilter(); loadData(); showData();" checked>
                 <br>
                 <label for="eventFilter">События</label>
-                <input id="eventFilter" type="checkbox" onchange="saveFilter()" checked>
+                <input id="eventFilter" type="checkbox" onchange="saveFilter(); loadData(); showData();" checked>
                 <br>
                 <label for="searchFilter">Поиск</label>
-                <input id="searchFilter" type="text" onchange="saveFilter()">
+                <input id="searchFilter" type="text" onchange="saveFilter(); loadData(); showData();">
                 <br>
                 <label for="tagsFilter">Теги</label>
-                <input id="tagsFilter" type="text" onchange="saveFilter()">
+                <input id="tagsFilter" type="text" onchange="saveFilter(); loadData(); showData();">
                 <br>
                 <label for="hideLastFilter">Скрыть прошедшее</label>
-                <input id="hideLastFilter" type="checkbox" onchange="saveFilter()">
+                <input id="hideLastFilter" type="checkbox" onchange="saveFilter(); loadData(); showData();">
                 <br>
             </form>
         </div>
