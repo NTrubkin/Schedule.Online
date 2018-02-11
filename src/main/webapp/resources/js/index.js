@@ -1,6 +1,8 @@
 var data;
 const FILTERS_KEY = 'filters';
 const TAGS_STUB = 'нч, лекция, зачет';
+const TODAY_DAY_BLOCK_ID = "today-day-block";
+const TODAY_BG_COLOR = '#EF5350';
 
 function initIndexPage() {
     loadData();
@@ -80,13 +82,22 @@ function showRecords() {
 
         showRecordBlock(records[i]);
     }
+
+    var todayBlock = $('#' + TODAY_DAY_BLOCK_ID);
+    var todayBtn = $('#curDayBtn');
+    if(todayBlock != null && todayBlock.offset() != null) {
+        todayBtn.css('display', 'block');
+    }
+    else {
+        todayBtn.css('display', 'none');
+    }
 }
 const emptyBlock =
     '        <div class="contentBlock emptyBlock">\n' +
     '            <p>STUB TEXT IN STUB BLOCK. SHOULD BE INVISIBLE</p>\n' +
     '        </div>';
 const dayBlock =
-    '        <div class="contentBlock dayBlock">\n' +
+    '        <div {3} class="contentBlock dayBlock">\n' +
     '            <div class="daySubblock">\n' +
     '                <p>{0}</p>\n' +
     '            </div>\n' +
@@ -102,15 +113,22 @@ function showDayBlock(date) {
     else {
         $('#recordsWithDividers').append(emptyBlock);
     }
-    $('#recordsWithDividers').append(dayBlock.f(days[date.getDay()], date.getDate(), monthArr[date.getMonth()]));
+
+    var id = '';
+    if(date.isSameDateAs(new Date())) {
+        id = 'id="{0}"'.f(TODAY_DAY_BLOCK_ID);
+    }
+
+    $('#recordsWithDividers').append(dayBlock.f(days[date.getDay()], date.getDate(), monthArr[date.getMonth()], id));
+    $('#' + TODAY_DAY_BLOCK_ID).css('background-color', TODAY_BG_COLOR);
 }
 
 const lessonBlock =
     '        <div class="contentBlock recordBlock">\n' +
-    '            <div class="recordSubblock editLessonSubblock">\n' +
-    '                <a class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
+    '            <div class="recordSubblock">\n' +
+    '                <a id="{10}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
-    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchDetailsBlock(\'{5}\')">\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{5}\'); switchBlockVisibility(\'{10}\'); switchBlockVisibility(\'{11}\');">\n' +
     '                <div class="recordHeader">\n' +
     '                    <p class="headerItem recordDetails">\n' +
     '                        {1}:{2}<br>{3}:{4}\n' +
@@ -128,8 +146,8 @@ const lessonBlock =
 
     '                <hr class="recordHr">\n' +
     '            </div>\n' +
-    '            <div class="recordSubblock deleteLessonSubblock">\n' +
-    '                <a class="deleteBtn"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
+    '            <div class="recordSubblock">\n' +
+    '                <a id="{11}" class="deleteBtn"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>\n' +
     '        </div>';
 
@@ -142,44 +160,27 @@ function showLessonBlock(lesson) {
         formatTime(start.getMinutes()),
         formatTime(end.getHours()),
         formatTime(end.getMinutes()),
-        generateCSSId(lesson),
+        generateCSSId(LESSON_PREFIX, lesson.id, DET_BLOCK_POSTFIX),
         lesson.name,
         lesson.room,
         lesson.teacher,
-        TAGS_STUB));
+        TAGS_STUB,
+        generateCSSId(LESSON_PREFIX, lesson.id, EDIT_POSTFIX),
+        generateCSSId(LESSON_PREFIX, lesson.id, DEL_POSTFIX)));
 }
 
-function switchDetailsBlock(blockId) {
-    var block = $('#' + blockId);
-    if(block.css("display") === 'block') {
-        block.css("display", 'none');
-    }
-    else {
-        block.css("display", 'block');
-    }
-}
-
-const LESSON_DET_BLOCK_PREFIX = 'lesson-';
-const EVENT_DET_BLOCK_PREFIX = 'event-';
+const LESSON_PREFIX = 'lesson-';
+const EVENT_PREFIX = 'event-';
 const DET_BLOCK_POSTFIX = '-detailsBlock';
-
-function generateCSSId(record) {
-    var id;
-    if (isLesson(record)) {
-        id = LESSON_DET_BLOCK_PREFIX;
-    }
-    if (isEvent(record)) {
-        id = EVENT_DET_BLOCK_PREFIX;
-    }
-    return id + record.id + DET_BLOCK_POSTFIX;
-}
+const EDIT_POSTFIX = '-edit';
+const DEL_POSTFIX = '-delete';
 
 const eventBlock =
     '       <div class="contentBlock recordBlock">\n' +
     '            <div class="recordSubblock editLessonSubblock">\n' +
-    '                <a class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
+    '                <a id="{8}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
-    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchDetailsBlock(\'{3}\')" >\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{3}\'); switchBlockVisibility(\'{8}\'); switchBlockVisibility(\'{9}\');" >\n' +
     '                <div class="recordHeader">\n' +
     '                    <p class="headerItem recordDetails">{1}:{2}</p>\n' +
     '                    <div class="headerItem">\n' +
@@ -201,7 +202,7 @@ const eventBlock =
     '                <hr class="recordHr">\n' +
     '            </div>\n' +
     '            <div class="recordSubblock deleteLessonSubblock">\n' +
-    '                <a class="deleteBtn"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
+    '                <a id="{9}" class="deleteBtn"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>';
 
 function showEventBlock(event) {
@@ -210,11 +211,13 @@ function showEventBlock(event) {
         urlPrefix,
         formatTime(start.getHours()),
         formatTime(start.getMinutes()),
-        generateCSSId(event),
+        generateCSSId(EVENT_PREFIX, event.id, DET_BLOCK_POSTFIX),
         event.name,
         event.place,
         event.description,
-        TAGS_STUB));
+        TAGS_STUB,
+        generateCSSId(EVENT_PREFIX, event.id, EDIT_POSTFIX),
+        generateCSSId(EVENT_PREFIX, event.id, DEL_POSTFIX)));
 }
 
 function saveFilter() {
@@ -304,4 +307,13 @@ function fitBySearchFilter(record, filter) {
     }
 
     return false;
+}
+
+function scrollToToday() {
+    var elem = $('#' + TODAY_DAY_BLOCK_ID);
+    if(elem != null && elem.offset() != null) {
+        $('html, body').animate({
+            scrollTop: elem.offset().top
+        }, 1000);
+    }
 }

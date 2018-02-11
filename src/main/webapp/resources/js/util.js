@@ -43,3 +43,27 @@ var days = ['Воскресенье', 'Понедельник', 'Вторник'
 function formatTime(n) {
     return n > 9 ? "" + n: "0" + n;
 }
+
+function switchBlockDisplaying(blockId) {
+    var block = $('#' + blockId);
+    if(block.css("display") === 'block') {
+        block.css("display", 'none');
+    }
+    else {
+        block.css("display", 'block');
+    }
+}
+
+function switchBlockVisibility(blockId) {
+    var block = $('#' + blockId);
+    if(block.css("visibility") === 'visible') {
+        block.css("visibility", 'hidden');
+    }
+    else {
+        block.css("visibility", 'visible');
+    }
+}
+
+function generateCSSId(prefix, id ,postfix) {
+    return prefix + id + postfix;
+}

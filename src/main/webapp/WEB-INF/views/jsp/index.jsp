@@ -54,8 +54,10 @@
             <br>
             <a>Добавить событие</a>
             <br>
-            <a>Перейти к текущему</a>
-            <br>
+            <div id="curDayBtn">
+                <a onclick="scrollToToday()">Перейти к текущему дню</a>
+                <br>
+            </div>
         </div>
     </div>
 </div>
