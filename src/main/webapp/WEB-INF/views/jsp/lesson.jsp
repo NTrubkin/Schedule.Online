@@ -12,5 +12,6 @@
 </head>
 <body>
 <h1>Lesson page</h1>
+<h2>${id}</h2>
 </body>
 </html>

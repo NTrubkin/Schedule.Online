@@ -2,6 +2,8 @@ var data;
 const FILTERS_KEY = 'filters';
 const TODAY_DAY_BLOCK_ID = "today-day-block";
 const TODAY_BG_COLOR = '#EF5350';
+const DEL_LESSON_CONF = 'Удалить занятие?';
+const DEL_EVENT_CONF = 'Удалить событие?';
 
 function initIndexPage() {
     loadData();
@@ -125,7 +127,7 @@ function showDayBlock(date) {
 const lessonBlock =
     '        <div class="contentBlock recordBlock">\n' +
     '            <div class="recordSubblock">\n' +
-    '                <a id="{10}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
+    '                <a href="{0}/lesson?id={12}" id="{10}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
     '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{5}\'); switchBlockVisibility(\'{10}\'); switchBlockVisibility(\'{11}\');">\n' +
     '                <div class="recordHeader">\n' +
@@ -146,7 +148,7 @@ const lessonBlock =
     '                <hr class="recordHr">\n' +
     '            </div>\n' +
     '            <div class="recordSubblock">\n' +
-    '                <a id="{11}" class="deleteBtn"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
+    '                <a id="{11}" class="deleteBtn" onclick="deleteLesson(\'{12}\')"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>\n' +
     '        </div>';
 
@@ -165,7 +167,8 @@ function showLessonBlock(lesson) {
         lesson.teacher,
         showTags(lesson),
         generateCSSId(LESSON_PREFIX, lesson.id, EDIT_POSTFIX),
-        generateCSSId(LESSON_PREFIX, lesson.id, DEL_POSTFIX)));
+        generateCSSId(LESSON_PREFIX, lesson.id, DEL_POSTFIX),
+        lesson.id));
 }
 
 const LESSON_PREFIX = 'lesson-';
@@ -177,7 +180,7 @@ const DEL_POSTFIX = '-delete';
 const eventBlock =
     '       <div class="contentBlock recordBlock">\n' +
     '            <div class="recordSubblock editLessonSubblock">\n' +
-    '                <a id="{8}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
+    '                <a href="{0}/event?id={10}" id="{8}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
     '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{3}\'); switchBlockVisibility(\'{8}\'); switchBlockVisibility(\'{9}\');" >\n' +
     '                <div class="recordHeader">\n' +
@@ -201,7 +204,7 @@ const eventBlock =
     '                <hr class="recordHr">\n' +
     '            </div>\n' +
     '            <div class="recordSubblock deleteLessonSubblock">\n' +
-    '                <a id="{9}" class="deleteBtn"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
+    '                <a id="{9}" class="deleteBtn" onclick="deleteEvent(\'{10}\')"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>';
 
 function showEventBlock(event) {
@@ -216,7 +219,8 @@ function showEventBlock(event) {
         event.description,
         showTags(event),
         generateCSSId(EVENT_PREFIX, event.id, EDIT_POSTFIX),
-        generateCSSId(EVENT_PREFIX, event.id, DEL_POSTFIX)));
+        generateCSSId(EVENT_PREFIX, event.id, DEL_POSTFIX),
+        event.id));
 }
 
 function saveFilter() {
@@ -341,4 +345,36 @@ function fitByTagsFilter(record, filter) {
     return tags.some(function (v) {
         return filterArr.indexOf(v) >= 0;
     });
+}
+
+function deleteLesson(lessonId) {
+    if(confirm(DEL_LESSON_CONF)) {
+        $.ajax({
+            type: 'DELETE',
+            url: urlPrefix + '/api/lesson/' + lessonId,
+            success: function () {
+                loadData();
+                showData();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.responseText);
+            }
+        });
+    }
+}
+
+function deleteEvent(eventId) {
+    if(confirm(DEL_EVENT_CONF)) {
+        $.ajax({
+            type: 'DELETE',
+            url: urlPrefix + '/api/event/' + eventId,
+            success: function () {
+                loadData();
+                showData();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.responseText);
+            }
+        });
+    }
 }

@@ -24,12 +24,15 @@ public class PageController {
     }
 
     @RequestMapping(value = "/lesson")
-    public String getLessonPage(@RequestParam(name = "id", defaultValue = "0") int lessonId) {
+    public String getLessonPage(@RequestParam(name = "id", defaultValue = "0") int lessonId, Model model) {
+        model.addAttribute("id", lessonId);
         return "lesson";
     }
 
     @RequestMapping(value = "/event")
-    public String getEventPage(@RequestParam(name = "id", defaultValue = "0") int eventId) {
+    public String getEventPage(@RequestParam(name = "id", defaultValue = "0") int eventId, Model model) {
+
+        model.addAttribute("id", eventId);
         return "event";
     }
 }

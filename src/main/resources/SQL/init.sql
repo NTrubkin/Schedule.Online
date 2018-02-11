@@ -48,3 +48,9 @@ INSERT INTO lesson_tags (lesson_id, tag_id) VALUES
   (1, 1),
   (1, 8),
   (2, 4);
+
+INSERT INTO event_tags (event_id, tag_id) VALUES
+  (1, 4),
+  (1, 10),
+  (2, 4),
+  (2, 9);
