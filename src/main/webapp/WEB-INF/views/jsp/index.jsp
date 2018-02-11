@@ -50,12 +50,12 @@
 
         <div class="menuBlock menuRegularBlock">
             <p class="menuHeader">Действия</p>
-            <a>Добавить занятие</a>
+            <a href="${urlPrefix}/lesson">Добавить занятие</a>
             <br>
-            <a>Добавить событие</a>
+            <a href="${urlPrefix}/event">Добавить событие</a>
             <br>
             <div id="curDayBtn">
-                <a onclick="scrollToToday()">Перейти к текущему дню</a>
+                <a href="#" onclick="scrollToToday()">Перейти к текущему дню</a>
                 <br>
             </div>
         </div>

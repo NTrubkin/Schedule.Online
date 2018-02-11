@@ -1,6 +1,5 @@
 var data;
 const FILTERS_KEY = 'filters';
-const TAGS_STUB = 'нч, лекция, зачет';
 const TODAY_DAY_BLOCK_ID = "today-day-block";
 const TODAY_BG_COLOR = '#EF5350';
 
@@ -164,7 +163,7 @@ function showLessonBlock(lesson) {
         lesson.name,
         lesson.room,
         lesson.teacher,
-        TAGS_STUB,
+        showTags(lesson),
         generateCSSId(LESSON_PREFIX, lesson.id, EDIT_POSTFIX),
         generateCSSId(LESSON_PREFIX, lesson.id, DEL_POSTFIX)));
 }
@@ -215,7 +214,7 @@ function showEventBlock(event) {
         event.name,
         event.place,
         event.description,
-        TAGS_STUB,
+        showTags(event),
         generateCSSId(EVENT_PREFIX, event.id, EDIT_POSTFIX),
         generateCSSId(EVENT_PREFIX, event.id, DEL_POSTFIX)));
 }
@@ -315,5 +314,17 @@ function scrollToToday() {
         $('html, body').animate({
             scrollTop: elem.offset().top
         }, 1000);
+    }
+}
+
+function showTags(record) {
+    if(record.tags.length === 0) {
+        return ' ';
+    }
+    else {
+        var tags = $.map(record.tags, function (tag) {
+            return tag.name;
+        });
+        return tags.join(", ");
     }
 }

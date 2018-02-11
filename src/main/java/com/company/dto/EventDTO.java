@@ -1,7 +1,10 @@
 package com.company.dto;
 
 
+import com.company.model.Tag;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 public class EventDTO {
 
@@ -11,17 +14,19 @@ public class EventDTO {
     private String place;
     private Integer groupId;
     private String description;
+    private List<Tag> tags;
 
     public EventDTO() {
     }
 
-    public EventDTO(Integer id, String name, Timestamp startDatetime, String place, Integer groupId, String description) {
+    public EventDTO(Integer id, String name, Timestamp startDatetime, String place, Integer groupId, String description, List<Tag> tags) {
         this.id = id;
         this.name = name;
         this.startDatetime = startDatetime;
         this.place = place;
         this.groupId = groupId;
         this.description = description;
+        this.tags = tags;
     }
 
     public Integer getId() {
@@ -70,5 +75,13 @@ public class EventDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

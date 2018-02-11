@@ -3,7 +3,10 @@ package com.company.dto.converter;
 import com.company.dto.EventDTO;
 import com.company.model.Event;
 import com.company.model.Group;
+import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class EventConverter extends EntityConverter<Event, EventDTO> {
@@ -19,7 +22,8 @@ public class EventConverter extends EntityConverter<Event, EventDTO> {
                 entity.getStartDatetime(),
                 entity.getPlace(),
                 entity.getGroup() == null ? null : entity.getGroup().getId(),
-                entity.getDescription()
+                entity.getDescription(),
+                entity.getTags()
         );
     }
 
@@ -36,7 +40,8 @@ public class EventConverter extends EntityConverter<Event, EventDTO> {
                     dto.getStartDatetime(),
                     dto.getPlace(),
                     group,
-                    dto.getDescription()
+                    dto.getDescription(),
+                    dto.getTags()
             );
         }
     }

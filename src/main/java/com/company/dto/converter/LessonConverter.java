@@ -3,7 +3,10 @@ package com.company.dto.converter;
 import com.company.dto.LessonDTO;
 import com.company.model.Group;
 import com.company.model.Lesson;
+import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {
@@ -19,7 +22,8 @@ public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {
                 entity.getStartDatetime(),
                 entity.getEndDatetime(),
                 entity.getTeacher(),
-                entity.getGroup() == null ? null : entity.getGroup().getId()
+                entity.getGroup() == null ? null : entity.getGroup().getId(),
+                entity.getTags()
         );
     }
 
@@ -37,7 +41,8 @@ public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {
                     dto.getStartDatetime(),
                     dto.getEndDatetime(),
                     dto.getTeacher(),
-                    group
+                    group,
+                    dto.getTags()
             );
         }
     }

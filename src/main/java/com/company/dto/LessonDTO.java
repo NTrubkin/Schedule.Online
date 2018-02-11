@@ -1,6 +1,9 @@
 package com.company.dto;
 
+import com.company.model.Tag;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 public class LessonDTO {
     private Integer id;
@@ -10,11 +13,12 @@ public class LessonDTO {
     private Timestamp endDatetime;
     private String teacher;
     private Integer groupId;
+    private List<Tag> tags;
 
     public LessonDTO() {
     }
 
-    public LessonDTO(Integer id, String name, Integer room, Timestamp startDatetime, Timestamp endDatetime, String teacher, Integer groupId) {
+    public LessonDTO(Integer id, String name, Integer room, Timestamp startDatetime, Timestamp endDatetime, String teacher, Integer groupId, List<Tag> tags) {
         this.id = id;
         this.name = name;
         this.room = room;
@@ -22,6 +26,7 @@ public class LessonDTO {
         this.endDatetime = endDatetime;
         this.teacher = teacher;
         this.groupId = groupId;
+        this.tags = tags;
     }
 
     public Integer getId() {
@@ -78,5 +83,13 @@ public class LessonDTO {
 
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

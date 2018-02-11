@@ -5,6 +5,7 @@ import com.company.model.Event;
 import com.company.model.Lesson;
 import com.company.util.GenericReflector;
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -30,6 +31,7 @@ public class EventDAOImpl extends DAO<Event> implements EventDAO {
             transaction = session.beginTransaction();
             List<Event> lessons = session.createCriteria(GenericReflector.getClassParameterType(this.getClass()))
                     .add(Restrictions.eq("group.id", groupId))
+                    .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
                     .list();
             transaction.commit();
             return lessons;

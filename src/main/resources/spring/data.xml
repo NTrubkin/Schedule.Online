@@ -24,6 +24,7 @@
                 <value>com.company.model.Event</value>
                 <value>com.company.model.Group</value>
                 <value>com.company.model.Lesson</value>
+                <value>com.company.model.Tag</value>
             </list>
         </property>
         <property name="hibernateProperties">

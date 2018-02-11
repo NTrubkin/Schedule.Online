@@ -2,6 +2,7 @@ package com.company.model;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name = "events", schema = "public")
@@ -28,15 +29,20 @@ public class Event {
     @Column(name = "description")
     private String description;
 
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "event_tags", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private List<Tag> tags;
+
     public Event() {
     }
 
-    public Event(String name, Timestamp startDatetime, String place, Group group, String description) {
+    public Event(String name, Timestamp startDatetime, String place, Group group, String description, List<Tag> tags) {
         this.name = name;
         this.startDatetime = startDatetime;
         this.place = place;
         this.group = group;
         this.description = description;
+        this.tags = tags;
     }
 
     public Integer getId() {
@@ -87,4 +93,11 @@ public class Event {
         this.description = description;
     }
 
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
 }

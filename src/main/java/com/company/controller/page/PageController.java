@@ -11,20 +11,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping(value = "/")
 public class PageController {
     @RequestMapping(value = "", method = RequestMethod.GET)
-    private String getIndexPage(Authentication auth) {
+    public String getIndexPage(Authentication auth) {
         return "index";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    private String getLoginPage(@RequestParam(name = "login_error", required = false, defaultValue = "0") int loginError, Model model) {
+    public String getLoginPage(@RequestParam(name = "login_error", required = false, defaultValue = "0") int loginError, Model model) {
         if (loginError != 0) {
             model.addAttribute("message", "Login error");
         }
         return "login";
     }
 
-    @RequestMapping(value = "/cookie", method = RequestMethod.GET)
-    private String getCookiePage() {
-        return "cookie";
+    @RequestMapping(value = "/lesson")
+    public String getLessonPage(@RequestParam(name = "id", defaultValue = "0") int lessonId) {
+        return "lesson";
+    }
+
+    @RequestMapping(value = "/event")
+    public String getEventPage(@RequestParam(name = "id", defaultValue = "0") int eventId) {
+        return "event";
     }
 }

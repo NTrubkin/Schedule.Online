@@ -26,7 +26,8 @@ public class EventRestController {
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.GET)
     public ResponseEntity<EventDTO> readEvent(@PathVariable int eventId) {
-        return new ResponseEntity<>(converter.convert(eventDAO.read(eventId)), HttpStatus.OK);
+        EventDTO result = converter.convert(eventDAO.read(eventId));
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.POST)
