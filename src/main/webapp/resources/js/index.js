@@ -286,6 +286,10 @@ function filterRecords(records) {
             continue;
         }
 
+        if($('#tagsFilter').val() != '' && !fitByTagsFilter(records[i], $('#tagsFilter').val())) {
+            continue;
+        }
+        
         filtered.push(records[i]);
     }
     return filtered;
@@ -327,4 +331,14 @@ function showTags(record) {
         });
         return tags.join(", ");
     }
+}
+
+function fitByTagsFilter(record, filter) {
+    var filterArr = filter.split(' ');
+    var tags = $.map(record.tags, function (tag) {
+        return tag.name;
+    });
+    return tags.some(function (v) {
+        return filterArr.indexOf(v) >= 0;
+    });
 }
