@@ -151,7 +151,7 @@ body {
     color: #63b175;
     font-weight: 600;
     font-size: 20;
-    margin: 12px 0;
+    margin: 16px 0;
 }
 
 .recordDetails {
@@ -195,3 +195,14 @@ body {
 .placeDetails {
     text-align: right;
 }
+
+.detailsBlock {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.detailHeader {
+    color: #63b175;
+    font-weight: 600;
+}
+

@@ -31,19 +31,19 @@
             <form>
                 <p class="menuHeader">Фильтры</p>
                 <label for="lessonFilter">Занятия</label>
-                <input id="lessonFilter" type="checkbox" onchange="saveFilter(); loadData(); showData();" checked>
+                <input id="lessonFilter" type="checkbox" onchange="saveFilter(); loadData(); showRecords();" checked>
                 <br>
                 <label for="eventFilter">События</label>
-                <input id="eventFilter" type="checkbox" onchange="saveFilter(); loadData(); showData();" checked>
+                <input id="eventFilter" type="checkbox" onchange="saveFilter(); loadData(); showRecords();" checked>
                 <br>
                 <label for="searchFilter">Поиск</label>
-                <input id="searchFilter" type="text" onchange="saveFilter(); loadData(); showData();">
+                <input id="searchFilter" type="text" onchange="saveFilter(); loadData(); showRecords();">
                 <br>
                 <label for="tagsFilter">Теги</label>
-                <input id="tagsFilter" type="text" onchange="saveFilter(); loadData(); showData();">
+                <input id="tagsFilter" type="text" onchange="saveFilter(); loadData(); showRecords();">
                 <br>
                 <label for="hideLastFilter">Скрыть прошедшее</label>
-                <input id="hideLastFilter" type="checkbox" onchange="saveFilter(); loadData(); showData();">
+                <input id="hideLastFilter" type="checkbox" onchange="saveFilter(); loadData(); showRecords();">
                 <br>
             </form>
         </div>
@@ -62,30 +62,6 @@
 
 <div id="mainPanel">
     <div id="recordsWithDividers">
-        <!--
-        <div class="contentBlock recordBlock">
-            <div class="recordSubblock editLessonSubblock">
-                <a class="editBtn"><img src="editBtn24.png"></a>
-            </div>
-            <div class="recordSubblock bodyRecordSubblock">
-                <div class="recordHeader">
-                    <p class="headerItem recordDetails">18:30</p>
-                    <div class="headerItem">
-                        <p class="recordName eventName">
-                            Событие 1
-                        </p>
-                        <p class="recordDetails">
-                            пл. Минина и Пожарского
-                        </p>
-                    </div>
-                </div>
-                <hr class="recordHr">
-            </div>
-            <div class="recordSubblock deleteLessonSubblock">
-                <a class="deleteBtn"><img src="deleteBtn24.png"/></a>
-            </div>
-        </div>
--->
 
     </div>
 </div>

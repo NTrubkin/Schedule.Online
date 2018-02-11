@@ -1,5 +1,6 @@
 var data;
 const FILTERS_KEY = 'filters';
+const TAGS_STUB = 'нч, лекция, зачет';
 
 function initIndexPage() {
     loadData();
@@ -28,18 +29,18 @@ function loadData() {
 }
 
 function showData() {
-    showUser(data.user);
-    showGroup(data.group);
-    showRecords(data.lessons, data.events);
+    showUser();
+    showGroup();
+    showRecords();
 }
 
-function showUser(user) {
-    $('#accountName').html(user.firstName + '<br>' + user.secondName);
+function showUser() {
+    $('#accountName').html(data.user.firstName + '<br>' + data.user.secondName);
     $('#accountBlock').css('visibility', 'visible');
 }
 
-function showGroup(group) {
-    $('#groupName').text(group.name);
+function showGroup() {
+    $('#groupName').text(data.group.name);
     $('#groupBlock').css('visibility', 'visible');
 }
 
@@ -61,9 +62,9 @@ function isEvent(record) {
 }
 
 var firstDayBlock;
-function showRecords(lessons, events) {
+function showRecords() {
     $('#recordsWithDividers').empty();
-    var records = lessons.concat(events);
+    var records = data.lessons.concat(data.events);
     records = filterRecords(records);
     records.sort(function (a, b) {
         return a.startDatetime - b.startDatetime
@@ -80,11 +81,11 @@ function showRecords(lessons, events) {
         showRecordBlock(records[i]);
     }
 }
-var emptyBlock =
+const emptyBlock =
     '        <div class="contentBlock emptyBlock">\n' +
     '            <p>STUB TEXT IN STUB BLOCK. SHOULD BE INVISIBLE</p>\n' +
     '        </div>';
-var dayBlock =
+const dayBlock =
     '        <div class="contentBlock dayBlock">\n' +
     '            <div class="daySubblock">\n' +
     '                <p>{0}</p>\n' +
@@ -104,23 +105,31 @@ function showDayBlock(date) {
     $('#recordsWithDividers').append(dayBlock.f(days[date.getDay()], date.getDate(), monthArr[date.getMonth()]));
 }
 
-var lessonBlock =
+const lessonBlock =
     '        <div class="contentBlock recordBlock">\n' +
     '            <div class="recordSubblock editLessonSubblock">\n' +
     '                <a class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
-    '            <div class="recordSubblock bodyRecordSubblock">\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchDetailsBlock(\'{5}\')">\n' +
     '                <div class="recordHeader">\n' +
     '                    <p class="headerItem recordDetails">\n' +
     '                        {1}:{2}<br>{3}:{4}\n' +
     '                    </p>\n' +
-    '                    <p class="headerItem recordName lessonName">{5}</p>\n' +
-    '                    <p class="headerItem recordDetails">{6}</p>\n' +
+    '                    <p class="headerItem recordName lessonName">{6}</p>\n' +
+    '                    <p class="headerItem recordDetails">{7}</p>\n' +
     '                </div>\n' +
+
+
+    '                    <div id="{5}" class="detailsBlock" style="display: none">\n' +
+    '                        <p class="detailText"><span class="detailHeader">Преподаватель: </span>{8}</p>\n' +
+    '                        <p class="detailText"><span class="detailHeader">Теги: </span>{9}</p>\n' +
+    '                    </div>' +
+
+
     '                <hr class="recordHr">\n' +
     '            </div>\n' +
     '            <div class="recordSubblock deleteLessonSubblock">\n' +
-    '                <a class="deleteBtn"><img src="{7}/resources/icon/deleteBtn24.png"/></a>\n' +
+    '                <a class="deleteBtn"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>\n' +
     '        </div>';
 
@@ -133,32 +142,66 @@ function showLessonBlock(lesson) {
         formatTime(start.getMinutes()),
         formatTime(end.getHours()),
         formatTime(end.getMinutes()),
+        generateCSSId(lesson),
         lesson.name,
         lesson.room,
-        urlPrefix));
+        lesson.teacher,
+        TAGS_STUB));
 }
 
-var eventBlock =
+function switchDetailsBlock(blockId) {
+    var block = $('#' + blockId);
+    if(block.css("display") === 'block') {
+        block.css("display", 'none');
+    }
+    else {
+        block.css("display", 'block');
+    }
+}
+
+const LESSON_DET_BLOCK_PREFIX = 'lesson-';
+const EVENT_DET_BLOCK_PREFIX = 'event-';
+const DET_BLOCK_POSTFIX = '-detailsBlock';
+
+function generateCSSId(record) {
+    var id;
+    if (isLesson(record)) {
+        id = LESSON_DET_BLOCK_PREFIX;
+    }
+    if (isEvent(record)) {
+        id = EVENT_DET_BLOCK_PREFIX;
+    }
+    return id + record.id + DET_BLOCK_POSTFIX;
+}
+
+const eventBlock =
     '       <div class="contentBlock recordBlock">\n' +
     '            <div class="recordSubblock editLessonSubblock">\n' +
     '                <a class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
-    '            <div class="recordSubblock bodyRecordSubblock">\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchDetailsBlock(\'{3}\')" >\n' +
     '                <div class="recordHeader">\n' +
     '                    <p class="headerItem recordDetails">{1}:{2}</p>\n' +
     '                    <div class="headerItem">\n' +
     '                        <p class="recordName eventName">\n' +
-    '                            {3}\n' +
+    '                            {4}\n' +
     '                        </p>\n' +
     '                        <p class="recordDetails placeDetails">\n' +
-    '                            {4}\n' +
+    '                            {5}\n' +
     '                        </p>\n' +
     '                    </div>\n' +
     '                </div>\n' +
+
+
+    '                    <div id="{3}" class="detailsBlock" style="display: none">\n' +
+    '                        <p class="detailText"><span class="detailHeader">Описание: </span>{6}</p>\n' +
+    '                        <p class="detailText"><span class="detailHeader">Теги: </span>{7}</p>\n' +
+    '                    </div>' +
+
     '                <hr class="recordHr">\n' +
     '            </div>\n' +
     '            <div class="recordSubblock deleteLessonSubblock">\n' +
-    '                <a class="deleteBtn"><img src="{5}/resources/icon/deleteBtn24.png"/></a>\n' +
+    '                <a class="deleteBtn"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>';
 
 function showEventBlock(event) {
@@ -167,9 +210,11 @@ function showEventBlock(event) {
         urlPrefix,
         formatTime(start.getHours()),
         formatTime(start.getMinutes()),
+        generateCSSId(event),
         event.name,
         event.place,
-        urlPrefix));
+        event.description,
+        TAGS_STUB));
 }
 
 function saveFilter() {
