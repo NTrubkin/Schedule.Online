@@ -55,12 +55,6 @@ CREATE TABLE public.lessons
   CONSTRAINT lessons_groups_id_fk FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
-CREATE TABLE public.semester_starts
-(
-  group_id INT       NOT NULL,
-  date     TIMESTAMP NOT NULL
-);
-
 CREATE TABLE public.events
 (
   id             SERIAL PRIMARY KEY NOT NULL,
@@ -73,7 +67,7 @@ CREATE TABLE public.events
 
 CREATE TABLE public.tags
 (
-  id  SERIAL PRIMARY KEY NOT NULL,
+  id   SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(40)        NOT NULL
 );
 
@@ -89,9 +83,20 @@ CREATE TABLE public.lesson_tags
 CREATE TABLE public.event_tags
 (
   event_id INT NOT NULL,
-  tag_id    INT NOT NULL,
+  tag_id   INT NOT NULL,
   PRIMARY KEY (event_id, tag_id),
   CONSTRAINT event_tags_event_id_fk FOREIGN KEY (event_id) REFERENCES events (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT event_tags_tags_id_fk FOREIGN KEY (tag_id) REFERENCES tags (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+CREATE TABLE public.permissions
+(
+  account_id   INT     NOT NULL,
+  group_id     INT     NOT NULL,
+  admin        BOOLEAN NOT NULL,
+  lessons_edit BOOLEAN NOT NULL,
+  events_edit  BOOLEAN NOT NULL,
+  CONSTRAINT permissions_account_id_fk FOREIGN KEY (account_id) REFERENCES accounts (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT permissions_group_id_fk FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

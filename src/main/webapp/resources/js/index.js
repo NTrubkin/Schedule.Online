@@ -26,7 +26,7 @@ function loadData() {
             data = result;
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.responseText);
+            alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }
@@ -357,7 +357,7 @@ function deleteLesson(lessonId) {
                 showData();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.responseText);
+                alert(jqXHR.status + ' ' + errorThrown);
             }
         });
     }
@@ -373,7 +373,7 @@ function deleteEvent(eventId) {
                 showData();
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.responseText);
+                alert(jqXHR.status + ' ' + errorThrown);
             }
         });
     }

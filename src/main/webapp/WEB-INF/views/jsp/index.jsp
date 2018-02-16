@@ -22,10 +22,10 @@
         </div>
         <div id="accountBlock" class="menuBlock">
             <a id="accountLogout" href="${urlPrefix}/login?logout"><img src="${urlPrefix}/resources/icon/logout32-4.png"></a>
-            <a id="accountName">FIRSTNAME<br>SECONDNAME</a>
+            <a href="${urlPrefix}/account" id="accountName">FIRSTNAME<br>SECONDNAME</a>
         </div>
         <div id="groupBlock" class="menuBlock">
-            <a id="groupName">GROUP</a>
+            <a id="groupName" href="${urlPrefix}/group" id="groupName">GROUP</a>
         </div>
         <div class="menuBlock menuRegularBlock">
             <form>
@@ -50,12 +50,12 @@
 
         <div class="menuBlock menuRegularBlock">
             <p class="menuHeader">Действия</p>
-            <a href="${urlPrefix}/lesson">Добавить занятие</a>
+            <a href="${urlPrefix}/new-lesson" class="menuLink">Добавить занятие</a>
             <br>
-            <a href="${urlPrefix}/event">Добавить событие</a>
+            <a href="${urlPrefix}/new-event" class="menuLink">Добавить событие</a>
             <br>
             <div id="curDayBtn">
-                <a href="#" onclick="scrollToToday()">Перейти к текущему дню</a>
+                <a href="#" onclick="scrollToToday()" class="menuLink">Перейти к текущему дню</a>
                 <br>
             </div>
         </div>

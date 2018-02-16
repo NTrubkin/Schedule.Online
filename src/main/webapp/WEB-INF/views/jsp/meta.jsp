@@ -12,3 +12,4 @@
 <script src="${urlPrefix}/resources/js/jquery-3.3.1.min.js"></script>
 <script src="${urlPrefix}/resources/js/util.js"></script>
 <script src="${urlPrefix}/resources/js/js.cookie.js"></script>
+<script src="${urlPrefix}/resources/js/date.format.js"></script>

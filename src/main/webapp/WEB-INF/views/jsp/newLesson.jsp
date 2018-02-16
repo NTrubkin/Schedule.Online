@@ -8,23 +8,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Schedule.Online - Занятие</title>
+    <title>Schedule.Online - Новое занятие</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/lesson.js"></script>
 </head>
-<body onload="initLessonPage(${id})">
+<body onload="initNewLessonPage('${initData}')">
 <%@include file="header.jsp"%>
 
 <div id="mainPanel">
     <div id="recordsWithDividers">
-        <p class="recordName">Занятие</p>
+        <p class="recordName">Новое занятие</p>
         <table class="settingsTable recordDetails">
             <tr class="settingsRow">
                 <td class="settingsCell">
                     <p>Название</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="nameFld" class="textbox textboxOnWhite settingsInput" type="text" value="Матпрограммирование">
+                    <input id="nameFld" class="textbox textboxOnWhite settingsInput" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -32,7 +32,7 @@
                     <p>Аудитория</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="roomFld" class="textbox textboxOnWhite" type="text" value="1234">
+                    <input id="roomFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -40,7 +40,7 @@
                     <p>Преподаватель</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="teacherFld" class="textbox textboxOnWhite" type="text" value="Ляхманов">
+                    <input id="teacherFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -64,12 +64,11 @@
                     <p>Теги</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="tagsFld" class="textbox textboxOnWhite" type="text" value="нч лабораторная зачет">
+                    <input id="tagsFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
         </table>
-        <button onclick="updateLesson()">Сохранить</button>
-        <button onclick="deleteLesson()">Удалить</button>
+        <button onclick="createLesson()">Создать</button>
     </div>
 </div>
 

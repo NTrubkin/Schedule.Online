@@ -13,7 +13,7 @@ body {
     background: #63b175;
     color: white;
     font-weight: 600;
-    font-size: 20;
+    font-size: 20px;
     text-align: right;
     overflow-y: auto;
 }
@@ -54,7 +54,7 @@ body {
 
 #logoBlock {
     font-weight: 700;
-    font-size: 34;
+    font-size: 34px;
 }
 
 #accountBlock {
@@ -65,25 +65,40 @@ body {
 }
 
 #accountLogout {
-    padding: 0 12;
+    padding: 0 12px;
 }
 
 #accountName {
     line-height: 1.5;
     font-weight: 600;
-    font-size: 22;
+    font-size: 22px;
+    color: white;
+    text-decoration:none;
+}
+
+#accountName:hover {
+    text-decoration: underline;
 }
 
 #groupBlock {
-    font-weight: 400;
-    font-size: 22;
     visibility: hidden;
+}
+
+#groupName {
+    font-weight: 400;
+    font-size: 22px;
+    color: white;
+    text-decoration:none;
+}
+
+#groupName:hover {
+    text-decoration: underline;
 }
 
 .menuRegularBlock {
     line-height: 1.5;
     font-weight: 400;
-    font-size: 16;
+    font-size: 16px;
     margin: 50px 0 0 0;
 }
 
@@ -92,21 +107,29 @@ body {
     margin-bottom: 10px;
 }
 
+.menuLink {
+    text-decoration: none;
+    color: white;
+}
+
+.menuLink :hover {
+    text-decoration: underline;
+}
 
 #mainPanel {
-    margin: 0px 0px 0px 300px;
-    padding: 40px 0px;
+    margin: 0 0 0 300px;
+    padding: 40px 0;
     /* костыль. при padding 0 появляется пустое пространство*/
     color: #525e74;
 }
 
 #recordsWithDividers {
     width: 600px;
-    margin: 0px auto 0px auto;
+    margin: 0 auto 0 auto;
 }
 
 .contentBlock {
-    margin: 0px 0px 8px 0px;
+    margin: 0 0 8px 0;
     width: 600px;
 }
 
@@ -118,9 +141,9 @@ body {
 }
 
 .daySubblock {
-    padding: 0 24;
+    padding: 0 24px;
     font-weight: 600;
-    font-size: 20;
+    font-size: 20px;
 
 }
 
@@ -150,13 +173,13 @@ body {
 .recordName {
     color: #63b175;
     font-weight: 600;
-    font-size: 20;
+    font-size: 20px;
     margin: 16px 0;
 }
 
 .recordDetails {
     font-weight: 400;
-    font-size: 15;
+    font-size: 15px;
     margin: 12px 0;
 }
 
@@ -171,7 +194,7 @@ body {
 }
 
 .headerItem {
-    padding: 0 10;
+    padding: 0 10px;
 }
 
 .eventName {
@@ -206,3 +229,39 @@ body {
     font-weight: 600;
 }
 
+.settingsTable {
+    width: 100%;
+    color: #525e74;
+}
+
+.settingsCell {
+    text-align: left;
+    padding: 12px 4px;
+    width: 50%;
+}
+
+.settingsCell input[type=text] {
+    width: 100%;
+
+}
+
+.textbox {
+    font-family: 'Raleway', sans-serif;
+    border: none;
+    border-bottom: solid;
+    border-bottom-width: 2px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.textboxOnWhite {
+    color: #525e74;
+    border-bottom-color: #63b175;
+}
+
+.textboxOnGreen {}
+
+.bigTableCell {
+    text-align: center;
+    padding: 12px 4px;
+}

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+// todo упразднить инициализирующие комбинированные rest-запросы, вынести в jsp
 @RestController
 @RequestMapping(value = "/api/comb/")
 public class CombinedRestController {

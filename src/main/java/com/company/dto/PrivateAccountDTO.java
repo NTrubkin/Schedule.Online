@@ -1,5 +1,9 @@
 package com.company.dto;
 
+/**
+ * DTO контейнер для аккаунта пользователя
+ * Нужен чтобы исключить из сущности Account пароль (пассхэш)
+ */
 public class PrivateAccountDTO {
     private Integer id;
     private String firstName;
