@@ -4,7 +4,7 @@ import com.company.dao.api.GroupDAO;
 import com.company.dto.GroupDTO;
 import com.company.dto.converter.IEntityConverter;
 import com.company.model.Group;
-import com.company.service.util.AccountIdentifyConverter;
+import com.company.service.auth.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +17,11 @@ public class GroupRestController {
 
     private GroupDAO groupDAO;
     private IEntityConverter<Group, GroupDTO> groupConverter;
-    private AccountIdentifyConverter accIdConverter;
 
     @Autowired
-    public GroupRestController(GroupDAO groupDAO, IEntityConverter<Group, GroupDTO> groupConverter, AccountIdentifyConverter accIdConverter) {
+    public GroupRestController(GroupDAO groupDAO, IEntityConverter<Group, GroupDTO> groupConverter) {
         this.groupDAO = groupDAO;
         this.groupConverter = groupConverter;
-        this.accIdConverter = accIdConverter;
     }
 
     // todo сделать запрос для начальной страницы
@@ -36,16 +34,20 @@ public class GroupRestController {
 
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity createGroup(@RequestBody GroupDTO groupDTO, Authentication auth) {
-        int id = accIdConverter.NameToId(auth.getName());
-        groupDTO.setLeader_id(id);
+        if (!(auth.getPrincipal() instanceof CustomUserDetails)) {
+            throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
+        }
+
+        int accountId = ((CustomUserDetails)auth.getPrincipal()).getUserId();
+        groupDTO.setLeaderId(accountId);
         groupDAO.create(groupConverter.restore(groupDTO));
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    /*@RequestMapping(value = "/", method = RequestMethod.PUT)
+    @RequestMapping(value = "/", method = RequestMethod.PUT)
     public ResponseEntity updateGroup() {
         throw new UnsupportedOperationException("not implemented yet");
-    }*/
+    }
 
     @RequestMapping(value = "/{groupId}", method = RequestMethod.DELETE)
     public ResponseEntity deleteGroup(@PathVariable int groupId) {

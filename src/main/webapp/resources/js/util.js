@@ -35,3 +35,35 @@ const monthArr=[
 ];
 
 var days = ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'];
+
+/**
+ * Форматирует число, соответствующее часу, минуте, секунде, в строчку из 2х цифр
+ * Например 1 (час) в 01
+ */
+function formatTime(n) {
+    return n > 9 ? "" + n: "0" + n;
+}
+
+function switchBlockDisplaying(blockId) {
+    var block = $('#' + blockId);
+    if(block.css("display") === 'block') {
+        block.css("display", 'none');
+    }
+    else {
+        block.css("display", 'block');
+    }
+}
+
+function switchBlockVisibility(blockId) {
+    var block = $('#' + blockId);
+    if(block.css("visibility") === 'visible') {
+        block.css("visibility", 'hidden');
+    }
+    else {
+        block.css("visibility", 'visible');
+    }
+}
+
+function generateCSSId(prefix, id ,postfix) {
+    return prefix + id + postfix;
+}

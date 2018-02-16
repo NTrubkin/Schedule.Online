@@ -24,6 +24,8 @@
                 <value>com.company.model.Event</value>
                 <value>com.company.model.Group</value>
                 <value>com.company.model.Lesson</value>
+                <value>com.company.model.Tag</value>
+                <value>com.company.model.Permission</value>
             </list>
         </property>
         <property name="hibernateProperties">
@@ -53,6 +55,10 @@
     </bean>
 
     <bean id="lessonDAO" class="com.company.dao.impl.LessonDAOImpl">
+        <constructor-arg name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
+
+    <bean id="eventDAO" class="com.company.dao.impl.EventDAOImpl">
         <constructor-arg name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
 </beans>

@@ -22,13 +22,13 @@ public class AccountConverter extends EntityConverter<Account, AccountDTO> {
     @Override
     public Account restore(AccountDTO dto) {
         return dto == null ? null : new Account(
-                STRING_STUB,
                 dto.getFirstName(),
                 dto.getSecondName(),
                 STRING_STUB,
                 LONG_STUB,
                 STRING_STUB,
-                GROUP_STUB
-        );
+                GROUP_STUB,
+                null,
+                null);
     }
 }

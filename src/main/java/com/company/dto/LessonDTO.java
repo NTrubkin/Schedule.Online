@@ -1,32 +1,39 @@
 package com.company.dto;
 
+import com.company.model.Tag;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 public class LessonDTO {
-    private int id;
+    private Integer id;
     private String name;
-    private int room;
-    private Timestamp datetime;
+    private Integer room;
+    private Timestamp startDatetime;
+    private Timestamp endDatetime;
     private String teacher;
-    private int groupId;
+    private Integer groupId;
+    private List<Tag> tags;
 
     public LessonDTO() {
     }
 
-    public LessonDTO(int id, String name, int room, Timestamp datetime, String teacher, int groupId) {
+    public LessonDTO(Integer id, String name, Integer room, Timestamp startDatetime, Timestamp endDatetime, String teacher, Integer groupId, List<Tag> tags) {
         this.id = id;
         this.name = name;
         this.room = room;
-        this.datetime = datetime;
+        this.startDatetime = startDatetime;
+        this.endDatetime = endDatetime;
         this.teacher = teacher;
         this.groupId = groupId;
+        this.tags = tags;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -38,20 +45,28 @@ public class LessonDTO {
         this.name = name;
     }
 
-    public int getRoom() {
+    public Integer getRoom() {
         return room;
     }
 
-    public void setRoom(int room) {
+    public void setRoom(Integer room) {
         this.room = room;
     }
 
-    public Timestamp getDatetime() {
-        return datetime;
+    public Timestamp getStartDatetime() {
+        return startDatetime;
     }
 
-    public void setDatetime(Timestamp datetime) {
-        this.datetime = datetime;
+    public void setStartDatetime(Timestamp startDatetime) {
+        this.startDatetime = startDatetime;
+    }
+
+    public Timestamp getEndDatetime() {
+        return endDatetime;
+    }
+
+    public void setEndDatetime(Timestamp endDatetime) {
+        this.endDatetime = endDatetime;
     }
 
     public String getTeacher() {
@@ -62,11 +77,19 @@ public class LessonDTO {
         this.teacher = teacher;
     }
 
-    public int getGroupId() {
+    public Integer getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(int groupId) {
+    public void setGroupId(Integer groupId) {
         this.groupId = groupId;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 }

@@ -1,48 +1,47 @@
 package com.company.dto.converter;
 
-import com.company.dto.LessonDTO;
+import com.company.dto.EventDTO;
+import com.company.model.Event;
 import com.company.model.Group;
-import com.company.model.Lesson;
 import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
 @Service
-public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {
+public class EventConverter extends EntityConverter<Event, EventDTO> {
+
     @Override
-    public LessonDTO convert(Lesson entity) {
+    public EventDTO convert(Event entity) {
         if (entity == null) {
             return null;
         }
-        else return new LessonDTO(
+        else return new EventDTO(
                 entity.getId(),
                 entity.getName(),
-                entity.getRoom(),
                 entity.getStartDatetime(),
-                entity.getEndDatetime(),
-                entity.getTeacher(),
+                entity.getPlace(),
                 entity.getGroup() == null ? null : entity.getGroup().getId(),
+                entity.getDescription(),
                 entity.getTags()
         );
     }
 
     @Override
-    public Lesson restore(LessonDTO dto) {
+    public Event restore(EventDTO dto) {
         if (dto == null) {
             return null;
         }
         else {
             Group group = new Group();
             group.setId(dto.getGroupId());
-            return new Lesson(
+            return new Event(
                     dto.getId(),
                     dto.getName(),
-                    dto.getRoom(),
                     dto.getStartDatetime(),
-                    dto.getEndDatetime(),
-                    dto.getTeacher(),
+                    dto.getPlace(),
                     group,
+                    dto.getDescription(),
                     dto.getTags()
             );
         }

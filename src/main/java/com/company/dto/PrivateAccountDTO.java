@@ -1,30 +1,40 @@
 package com.company.dto;
 
+/**
+ * DTO контейнер для аккаунта пользователя
+ * Нужен чтобы исключить из сущности Account пароль (пассхэш)
+ */
 public class PrivateAccountDTO {
-    private int id;
+    private Integer id;
     private String firstName;
     private String secondName;
     private String email;
-    private long phoneNumber;
-    private int group_id;
+    private Long phoneNumber;
+    private Integer groupId;
+    private Boolean settingsNotification;
+    private Boolean scheduleNotification;
+
+
 
     public PrivateAccountDTO() {
     }
 
-    public PrivateAccountDTO(int id, String firstName, String secondName, String email, long phoneNumber, int group_id) {
+    public PrivateAccountDTO(Integer id, String firstName, String secondName, String email, Long phoneNumber, Integer groupId, Boolean settingsNotification, Boolean scheduleNotification) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.group_id = group_id;
+        this.groupId = groupId;
+        this.settingsNotification = settingsNotification;
+        this.scheduleNotification = scheduleNotification;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -52,19 +62,35 @@ public class PrivateAccountDTO {
         this.email = email;
     }
 
-    public long getPhoneNumber() {
+    public Long getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(long phoneNumber) {
+    public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public int getGroup_id() {
-        return group_id;
+    public Integer getGroupId() {
+        return groupId;
     }
 
-    public void setGroup_id(int group_id) {
-        this.group_id = group_id;
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    public Boolean getSettingsNotification() {
+        return settingsNotification;
+    }
+
+    public void setSettingsNotification(Boolean settingsNotification) {
+        this.settingsNotification = settingsNotification;
+    }
+
+    public Boolean getScheduleNotification() {
+        return scheduleNotification;
+    }
+
+    public void setScheduleNotification(Boolean scheduleNotification) {
+        this.scheduleNotification = scheduleNotification;
     }
 }

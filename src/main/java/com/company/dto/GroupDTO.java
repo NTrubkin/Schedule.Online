@@ -1,24 +1,24 @@
 package com.company.dto;
 
 public class GroupDTO {
-    private int id;
+    private Integer id;
     private String name;
-    private int leader_id;
+    private Integer leaderId;
 
     public GroupDTO() {
     }
 
-    public GroupDTO(int id, String name, int leader_id) {
+    public GroupDTO(Integer id, String name, Integer leaderId) {
         this.id = id;
         this.name = name;
-        this.leader_id = leader_id;
+        this.leaderId = leaderId;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -30,11 +30,11 @@ public class GroupDTO {
         this.name = name;
     }
 
-    public int getLeader_id() {
-        return leader_id;
+    public int getLeaderId() {
+        return leaderId;
     }
 
-    public void setLeader_id(int leader_id) {
-        this.leader_id = leader_id;
+    public void setLeaderId(Integer leaderId) {
+        this.leaderId = leaderId;
     }
 }

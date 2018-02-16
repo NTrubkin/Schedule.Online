@@ -1,82 +1,77 @@
 <%--
   Created by IntelliJ IDEA.
   User: TrubkinN
-  Date: 30.01.2018
-  Time: 17:16
+  Date: 11.02.2018
+  Time: 4:45
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Schedule.Online - Аккаунт</title>
+    <title>Schedule.Online - Новое занятие</title>
     <%@include file="meta.jsp" %>
-    <script src="${urlPrefix}/resources/js/account.js"></script>
+    <script src="${urlPrefix}/resources/js/lesson.js"></script>
 </head>
 <body>
 <%@include file="header.jsp"%>
 
 <div id="mainPanel">
     <div id="recordsWithDividers">
-        <p class="recordName">Настройки аккаунта</p>
+        <p class="recordName">Новое занятие</p>
         <table class="settingsTable recordDetails">
             <tr class="settingsRow">
                 <td class="settingsCell">
-                    <p>Имя</p>
+                    <p>Название</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="firstNameFld" class="textbox textboxOnWhite settingsInput" type="text">
-                </td>
-            </tr>
-            <tr class="settingsRow">
-                <td class="settingsCell">
-                    <p>Фамилия</p>
-                </td>
-                <td class="settingsCell">
-                    <input id="secondNameFld" class="textbox textboxOnWhite" type="text">
+                    <input id="nameFld" class="textbox textboxOnWhite settingsInput" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
                 <td class="settingsCell">
-                    <p>Email</p>
+                    <p>Аудитория</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="emailFld" class="textbox textboxOnWhite" type="text">
+                    <input id="roomFld" class="textbox textboxOnWhite" type="text">
+                </td>
+            </tr>
+            <tr class="settingsRow">
+                <td class="settingsCell">
+                    <p>Преподаватель</p>
+                </td>
+                <td class="settingsCell">
+                    <input id="teacherFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
                 <td class="settingsCell ">
-                    <p>Телефон</p>
+                    <p>Начало</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="phoneNumberFld" class="textbox textboxOnWhite" type="text">
+                    <input id="startDTPiker" type="datetime-local">
                 </td>
             </tr>
-        </table>
-        <br>
-        <p class="recordName">Настройки оповещений</p>
-        <table class="settingsTable recordDetails">
             <tr class="settingsRow">
-                <td class="settingsCell">
-                    <p>Изменение настроек группы</p>
+                <td class="settingsCell ">
+                    <p>Конец</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="settingsNotificationCheckbox" type="checkbox">
+                    <input id="endDTPiker" type="datetime-local">
                 </td>
             </tr>
             <tr class="settingsRow">
                 <td class="settingsCell">
-                    <p>Изменение расписания</p>
+                    <p>Теги</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="scheduleNotificationCheckbox" type="checkbox">
+                    <input id="tagsFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
         </table>
-
-        <button onclick="saveAccount()">Сохранить</button>
-
+        <button onclick="createLesson()">Создать</button>
     </div>
 </div>
-<script>initAccountPage()</script>
+<script>initNewLessonPage()</script>
 </body>
+
 </html>

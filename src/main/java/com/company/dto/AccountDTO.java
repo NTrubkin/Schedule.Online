@@ -1,28 +1,30 @@
 package com.company.dto;
 
+// todo обосновать наличие каждого DTO или удалить
+
 /**
  * DTO контейнер для аккаунтов других пользователей
- * Исключена вся приватная информация об аккаунте
+ * Нужен чтобы исключить из сущности Account всю приватную информацию об аккаунте (почта, телефон, пассхэш)
  */
 public class AccountDTO {
-    private int id;
+    private Integer id;
     private String firstName;
     private String secondName;
 
     public AccountDTO() {
     }
 
-    public AccountDTO(int id, String firstName, String secondName) {
+    public AccountDTO(Integer id, String firstName, String secondName) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

@@ -11,20 +11,16 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    // todo переименовать name в login
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "firstName")
+    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "secondName")
+    @Column(name = "second_name")
     private String secondName;
 
     @Column(name = "email")
     private String email;
 
-    @Column(name = "phoneNumber")
+    @Column(name = "phone_number")
     private Long phoneNumber;
 
     @Column(name = "passhash")
@@ -34,17 +30,29 @@ public class Account {
     @JoinColumn(name = "group_id")
     private Group group;
 
+    @Column(name = "settings_notification")
+    private Boolean settingsNotification;
+
+    @Column(name = "schedule_notidication")
+    private Boolean scheduleNotidication;
+
     public Account() {
     }
 
-    public Account(String name, String firstName, String secondName, String email, Long phoneNumber, String passhash, Group group) {
-        this.name = name;
+    public Account(String firstName, String secondName, String email, Long phoneNumber, String passhash, Group group, Boolean settingsNotification, Boolean scheduleNotidication) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.passhash = passhash;
         this.group = group;
+        this.settingsNotification = settingsNotification;
+        this.scheduleNotidication = scheduleNotidication;
+    }
+
+    public Account(Integer id, String firstName, String secondName, String email, Long phoneNumber, String passhash, Group group, Boolean settingsNotification, Boolean scheduleNotidication) {
+        this(firstName, secondName, email, phoneNumber, passhash, group, settingsNotification, scheduleNotidication);
+        this.id = id;
     }
 
     public Integer getId() {
@@ -53,14 +61,6 @@ public class Account {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String nickname) {
-        this.name = nickname;
     }
 
     public String getPasshash() {
@@ -109,5 +109,21 @@ public class Account {
 
     public void setPhoneNumber(Long phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Boolean getSettingsNotification() {
+        return settingsNotification;
+    }
+
+    public void setSettingsNotification(Boolean settingsNotification) {
+        this.settingsNotification = settingsNotification;
+    }
+
+    public Boolean getScheduleNotidication() {
+        return scheduleNotidication;
+    }
+
+    public void setScheduleNotidication(Boolean scheduleNotidication) {
+        this.scheduleNotidication = scheduleNotidication;
     }
 }

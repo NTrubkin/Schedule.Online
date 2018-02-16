@@ -18,74 +18,52 @@
 <div id="menuPanel">
     <div id="menuContentPanel">
         <div id="logoBlock" class="menuBlock">
-            <p>Schedule<br><span style="color: rgb(82, 94, 116); font-size: 64; line-height: 0;">.</span>Online</p>
+            <a href="${urlPrefix}" id="logo">Schedule<br><span id="logoDot">.</span>Online</a>
         </div>
         <div id="accountBlock" class="menuBlock">
-            <a id="accountLogout"><img src="${urlPrefix}/resources/icon/logout32-4.png"></a>
-            <a id="accountName">FIRSTNAME<br>SECONDNAME</a>
+            <a id="accountLogout" href="${urlPrefix}/login?logout"><img src="${urlPrefix}/resources/icon/logout32-4.png"></a>
+            <a href="${urlPrefix}/account" id="accountName">FIRSTNAME<br>SECONDNAME</a>
         </div>
         <div id="groupBlock" class="menuBlock">
-            <a id="groupName">GROUP</a>
+            <a id="groupName" href="${urlPrefix}/group" id="groupName">GROUP</a>
         </div>
         <div class="menuBlock menuRegularBlock">
             <form>
                 <p class="menuHeader">Фильтры</p>
-                <label>Занятия</label>
-                <input type="checkbox">
+                <label for="lessonFilter">Занятия</label>
+                <input id="lessonFilter" type="checkbox" onchange="saveFilter(); loadData(); showRecords();" checked>
                 <br>
-                <label>События</label>
-                <input type="checkbox">
+                <label for="eventFilter">События</label>
+                <input id="eventFilter" type="checkbox" onchange="saveFilter(); loadData(); showRecords();" checked>
                 <br>
-                <label>Поиск</label>
-                <input type="text">
+                <label for="searchFilter">Поиск</label>
+                <input id="searchFilter" type="text" onchange="saveFilter(); loadData(); showRecords();">
                 <br>
-                <label>Теги</label>
-                <input type="text">
+                <label for="tagsFilter">Теги</label>
+                <input id="tagsFilter" type="text" onchange="saveFilter(); loadData(); showRecords();">
                 <br>
-                <label>Скрыть прошедшее</label>
-                <input type="checkbox">
+                <label for="hideLastFilter">Скрыть прошедшее</label>
+                <input id="hideLastFilter" type="checkbox" onchange="saveFilter(); loadData(); showRecords();">
                 <br>
             </form>
         </div>
 
         <div class="menuBlock menuRegularBlock">
             <p class="menuHeader">Действия</p>
-            <a>Добавить занятие</a>
+            <a href="${urlPrefix}/new-lesson" class="menuLink">Добавить занятие</a>
             <br>
-            <a>Добавить событие</a>
+            <a href="${urlPrefix}/new-event" class="menuLink">Добавить событие</a>
             <br>
-            <a>Перейти к текущему</a>
-            <br>
+            <div id="curDayBtn">
+                <a href="#" onclick="scrollToToday()" class="menuLink">Перейти к текущему дню</a>
+                <br>
+            </div>
         </div>
     </div>
 </div>
 
 <div id="mainPanel">
     <div id="recordsWithDividers">
-        <!--
-        <div class="contentBlock recordBlock">
-            <div class="recordSubblock editLessonSubblock">
-                <a class="editBtn"><img src="editBtn24.png"></a>
-            </div>
-            <div class="recordSubblock bodyRecordSubblock">
-                <div class="recordHeader">
-                    <p class="headerItem recordDetails">18:30</p>
-                    <div class="headerItem">
-                        <p class="recordName eventName">
-                            Событие 1
-                        </p>
-                        <p class="recordDetails">
-                            пл. Минина и Пожарского
-                        </p>
-                    </div>
-                </div>
-                <hr class="recordHr">
-            </div>
-            <div class="recordSubblock deleteLessonSubblock">
-                <a class="deleteBtn"><img src="deleteBtn24.png"/></a>
-            </div>
-        </div>
--->
 
     </div>
 </div>

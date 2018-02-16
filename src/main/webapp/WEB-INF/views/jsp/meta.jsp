@@ -5,8 +5,11 @@
 <c:set var="url">${req.requestURL}</c:set>
 <c:set var="uri" value="${req.requestURI}"/>
 <c:set var="urlPrefix" value="${fn:substring(url, 0, fn:length(url) - fn:length(uri))}${req.contextPath}"/>
+<!-- todo добавить протокол к urlPrefix. Отсутствие протокола приводит к ошибке при обращении через https heroku -->
 
 <link href="${urlPrefix}/resources/css/style.css" rel="stylesheet" type="text/css">
 <script>const urlPrefix = "${urlPrefix}";</script>
 <script src="${urlPrefix}/resources/js/jquery-3.3.1.min.js"></script>
 <script src="${urlPrefix}/resources/js/util.js"></script>
+<script src="${urlPrefix}/resources/js/js.cookie.js"></script>
+<script src="${urlPrefix}/resources/js/date.format.js"></script>
