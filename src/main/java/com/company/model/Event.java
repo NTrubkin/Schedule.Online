@@ -45,6 +45,11 @@ public class Event {
         this.tags = tags;
     }
 
+    public Event(Integer id, String name, Timestamp startDatetime, String place, Group group, String description, List<Tag> tags) {
+        this(name, startDatetime, place, group, description, tags);
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -49,6 +49,11 @@ public class Lesson {
         this.tags = tags;
     }
 
+    public Lesson(Integer id, String name, Integer room, Timestamp startDatetime, Timestamp endDatetime, String teacher, Group group, List<Tag> tags) {
+        this(name, room, startDatetime, endDatetime, teacher, group, tags);
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

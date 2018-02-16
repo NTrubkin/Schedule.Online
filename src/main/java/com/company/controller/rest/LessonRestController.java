@@ -55,4 +55,11 @@ public class LessonRestController {
         List<Lesson> lessons = lessonDAO.readAllByGroup(groupId);
         return new ResponseEntity<>(converter.convert(lessons), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public ResponseEntity updateLesson(@RequestBody LessonDTO lessonDTO) {
+        Lesson lesson = converter.restore(lessonDTO);
+        lessonDAO.update(lesson);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

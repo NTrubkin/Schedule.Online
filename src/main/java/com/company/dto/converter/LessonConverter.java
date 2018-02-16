@@ -36,6 +36,7 @@ public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {
             Group group = new Group();
             group.setId(dto.getGroupId());
             return new Lesson(
+                    dto.getId(),
                     dto.getName(),
                     dto.getRoom(),
                     dto.getStartDatetime(),

@@ -36,6 +36,7 @@ public class EventConverter extends EntityConverter<Event, EventDTO> {
             Group group = new Group();
             group.setId(dto.getGroupId());
             return new Event(
+                    dto.getId(),
                     dto.getName(),
                     dto.getStartDatetime(),
                     dto.getPlace(),

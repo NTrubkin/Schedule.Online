@@ -12,7 +12,7 @@
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/lesson.js"></script>
 </head>
-<body onload="initLessonPage(${id})">
+<body>
 <%@include file="header.jsp"%>
 
 <div id="mainPanel">
@@ -24,7 +24,7 @@
                     <p>Название</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="nameFld" class="textbox textboxOnWhite settingsInput" type="text" value="Матпрограммирование">
+                    <input id="nameFld" class="textbox textboxOnWhite settingsInput" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -32,7 +32,7 @@
                     <p>Аудитория</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="roomFld" class="textbox textboxOnWhite" type="text" value="1234">
+                    <input id="roomFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -40,7 +40,7 @@
                     <p>Преподаватель</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="teacherFld" class="textbox textboxOnWhite" type="text" value="Ляхманов">
+                    <input id="teacherFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -64,7 +64,7 @@
                     <p>Теги</p>
                 </td>
                 <td class="settingsCell">
-                    <input id="tagsFld" class="textbox textboxOnWhite" type="text" value="нч лабораторная зачет">
+                    <input id="tagsFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
         </table>
@@ -72,7 +72,7 @@
         <button onclick="deleteLesson()">Удалить</button>
     </div>
 </div>
-
+<script>initLessonPage('${lessonDTO}')</script>
 </body>
 
 </html>

@@ -1,89 +1,51 @@
-const DEFAULT_LESSON_VALUES = {
+var currentLesson = {
     name : 'Новое занятие',
     room : 0,
     teacher : 'Преподаватель',
     tags : [],
     startDatetime: Date.now(),
-    endDatetime: Date.now()
+    endDatetime: Date.now(),
+    groupId : 0
 };
-const CURRENT_LESSON_ID = 0;
+const DEL_LESSON_CONF = 'Удалить занятие?';
 
 function initNewLessonPage() {
-    putLessonToFields(DEFAULT_LESSON_VALUES);
+    currentLesson.groupId = group.id;
+    putCurrentLessonToFields();
 }
 
-function initLessonPage(id) {
-    $.ajax({
-        type: 'GET',
-        url: urlPrefix + '/api/lesson/' + id,
-        success: function (result) {
-            putLessonToFields(result);
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
-        }
-    });
+function initLessonPage(lesson) {
+    currentLesson = JSON.parse(lesson);
+    putCurrentLessonToFields();
 }
 
-function readLessonFromFields() {
-    var lesson = {};
-    lesson.name = $('#nameFld').val();
-    lesson.room = $('#roomFld').val();
-    lesson.teacher = $('#teacherFld').val();
-    lesson.tags = $('#tagsFld').val().split(' ');
-    lesson.startDatetime = new Date($('#startDTPiker').val());
-    lesson.endDatetime = new Date($('#endDTPiker').val());
-    return lesson;
+function readCurrentLessonFromFields() {
+    currentLesson.name = $('#nameFld').val();
+    currentLesson.room = $('#roomFld').val();
+    currentLesson.teacher = $('#teacherFld').val();
+    currentLesson.tags = $('#tagsFld').val().split(' ');
+    currentLesson.startDatetime = new Date($('#startDTPiker').val());
+    currentLesson.endDatetime = new Date($('#endDTPiker').val());
 }
 
-function putLessonToFields(lesson) {
-    $('#nameFld').val(lesson.name);
-    $('#roomFld').val(lesson.room);
-    $('#teacherFld').val(lesson.teacher);
-    $('#tagsFld').val(showTags(lesson.tags));
-    $('#startDTPiker').val(new Date(lesson.startDatetime).format(dateFormat.masks.isoDateTime, false));
-    $('#endDTPiker').val(new Date(lesson.endDatetime).format(dateFormat.masks.isoDateTime, false));
+function putCurrentLessonToFields() {
+    $('#nameFld').val(currentLesson.name);
+    $('#roomFld').val(currentLesson.room);
+    $('#teacherFld').val(currentLesson.teacher);
+    $('#tagsFld').val(showTags(currentLesson.tags));
+    $('#startDTPiker').val(new Date(currentLesson.startDatetime).format(dateFormat.masks.isoDateTime, false));
+    $('#endDTPiker').val(new Date(currentLesson.endDatetime).format(dateFormat.masks.isoDateTime, false));
 }
 
 function createLesson() {
+    readCurrentLessonFromFields();
     $.ajax({
         type: 'POST',
         contentType: 'application/json; charset=utf-8',
         url: urlPrefix + '/api/lesson',
-        data: JSON.stringify(readLessonFromFields()),
+        data: JSON.stringify(currentLesson),
         success: function (result) {
             alert('Занятие успешно создано');
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
-        }
-    });
-}
-
-function updateLesson() {
-    var lesson = getLessonFromFields();
-    lesson.id = CURRENT_LESSON_ID;
-    $.ajax({
-        type: 'PUT',
-        url: urlPrefix + '/api/lesson',
-        contentType: 'application/json; charset=utf-8',
-        data: JSON.stringify(lesson),
-        success: function (result) {
-            alert('Занятие успешно обновлено');
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
-        }
-    });
-}
-
-function deleteLesson() {
-    $.ajax({
-        type: 'DELETE',
-        url: urlPrefix + '/api/lesson/' + CURRENT_LESSON_ID,
-        data: readLessonFromFields(),
-        success: function (result) {
-            alert('Занятие успешно удалено');
             window.location.href = urlPrefix + "/";
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -92,11 +54,47 @@ function deleteLesson() {
     });
 }
 
+function updateLesson() {
+    readCurrentLessonFromFields();
+    $.ajax({
+        type: 'PUT',
+        url: urlPrefix + '/api/lesson',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(currentLesson),
+        success: function (result) {
+            alert('Занятие успешно обновлено');
+            window.location.href = urlPrefix + "/";
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(jqXHR.status + ' ' + errorThrown);
+        }
+    });
+}
+
+function deleteLesson() {
+    if(confirm(DEL_LESSON_CONF)) {
+        $.ajax({
+            type: 'DELETE',
+            url: urlPrefix + '/api/lesson/' + currentLesson.id,
+            success: function (result) {
+                alert('Занятие успешно удалено');
+                window.location.href = urlPrefix + "/";
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alert(jqXHR.status + ' ' + errorThrown);
+            }
+        });
+    }
+}
+
 function showTags(tags) {
     if(tags.length === 0) {
         return '';
     }
     else {
+        tags = $.map(tags, function (tag) {
+            return tag.name;
+        });
         return tags.join(" ");
     }
 }

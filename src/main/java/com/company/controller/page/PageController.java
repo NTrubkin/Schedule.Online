@@ -3,11 +3,15 @@ package com.company.controller.page;
 import com.company.dao.api.AccountDAO;
 import com.company.dao.api.EventDAO;
 import com.company.dao.api.LessonDAO;
+import com.company.dto.EventDTO;
 import com.company.dto.GroupDTO;
+import com.company.dto.LessonDTO;
 import com.company.dto.PrivateAccountDTO;
 import com.company.dto.converter.EntityConverter;
 import com.company.model.Account;
+import com.company.model.Event;
 import com.company.model.Group;
+import com.company.model.Lesson;
 import com.company.service.auth.CustomUserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,16 +33,20 @@ public class PageController {
     private final EventDAO eventDAO;
     private final EntityConverter<Account, PrivateAccountDTO> accConverter;
     private final EntityConverter<Group, GroupDTO> groupConverter;
+    private final EntityConverter<Lesson, LessonDTO> lessonConverter;
+    private final EntityConverter<Event, EventDTO> eventConverter;
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Autowired
-    public PageController(AccountDAO accountDAO, LessonDAO lessonDAO, EventDAO eventDAO, EntityConverter<Account, PrivateAccountDTO> accConverter, EntityConverter<Group, GroupDTO> groupConverter) {
+    public PageController(AccountDAO accountDAO, LessonDAO lessonDAO, EventDAO eventDAO, EntityConverter<Account, PrivateAccountDTO> accConverter, EntityConverter<Group, GroupDTO> groupConverter, EntityConverter<Lesson, LessonDTO> lessonConverter, EntityConverter<Event, EventDTO> eventConverter) {
         this.accountDAO = accountDAO;
         this.lessonDAO = lessonDAO;
         this.eventDAO = eventDAO;
         this.accConverter = accConverter;
         this.groupConverter = groupConverter;
+        this.lessonConverter = lessonConverter;
+        this.eventConverter = eventConverter;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -64,14 +72,18 @@ public class PageController {
     @RequestMapping(value = "/lesson")
     public String getLessonPage(@RequestParam(name = "id", defaultValue = "0") int lessonId, Authentication auth, Model model) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        model.addAttribute("id", lessonId);
+        Lesson lesson = lessonDAO.read(lessonId);
+        LessonDTO lessonDTO = lessonConverter.convert(lesson);
+        model.addAttribute("lessonDTO", MAPPER.writeValueAsString(lessonDTO));
         return "lesson";
     }
 
     @RequestMapping(value = "/event")
     public String getEventPage(@RequestParam(name = "id", defaultValue = "0") int eventId, Authentication auth, Model model) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        model.addAttribute("id", eventId);
+        Event event = eventDAO.read(eventId);
+        EventDTO eventDTO = eventConverter.convert(event);
+        model.addAttribute("eventDTO", MAPPER.writeValueAsString(eventDTO));
         return "event";
     }
 

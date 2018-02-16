@@ -2,6 +2,8 @@ package com.company.model;
 
 import javax.persistence.*;
 
+// todo исправить ошибку с созданием, удалением тегов
+
 @Entity
 @Table(name = "tags", schema = "public")
 public class Tag {

@@ -12,7 +12,7 @@
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/lesson.js"></script>
 </head>
-<body onload="initNewLessonPage('${initData}')">
+<body>
 <%@include file="header.jsp"%>
 
 <div id="mainPanel">
@@ -71,7 +71,7 @@
         <button onclick="createLesson()">Создать</button>
     </div>
 </div>
-
+<script>initNewLessonPage()</script>
 </body>
 
 </html>

@@ -51,4 +51,11 @@ public class EventRestController {
         List<Event> events = eventDAO.readAllByGroup(groupId);
         return new ResponseEntity<>(converter.convert(events), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "", method = RequestMethod.PUT)
+    public ResponseEntity updateEvent(@RequestBody EventDTO eventDTO) {
+        Event event = converter.restore(eventDTO);
+        eventDAO.update(event);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

@@ -23,7 +23,7 @@
                     <p>Название</p>
                 </td>
                 <td class="settingsCell">
-                    <input class="textbox textboxOnWhite settingsInput" type="text" value="Событие 1">
+                    <input id="nameFld" class="textbox textboxOnWhite settingsInput" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -31,7 +31,7 @@
                     <p>Место</p>
                 </td>
                 <td class="settingsCell">
-                    <input class="textbox textboxOnWhite" type="text" value="пл Минина">
+                    <input id="placeFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -39,7 +39,7 @@
                     <p>Начало</p>
                 </td>
                 <td class="settingsCell">
-                    <input type="datetime-local">
+                    <input id="startDTPiker" type="datetime-local">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -47,7 +47,7 @@
                     <p>Описание</p>
                 </td>
                 <td class="settingsCell">
-                    <input class="textbox textboxOnWhite" type="text" value="Описание события 1">
+                    <input id="descriptionFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -55,15 +55,15 @@
                     <p>Теги</p>
                 </td>
                 <td class="settingsCell">
-                    <input class="textbox textboxOnWhite" type="text" value="нч лабораторная зачет">
+                    <input id="tagsFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
         </table>
-        <button>Сохранить</button>
-        <button>Удалить</button>
+        <button onclick="updateEvent()">Сохранить</button>
+        <button onclick="deleteEvent()">Удалить</button>
     </div>
 </div>
-
+<script>initEventPage('${eventDTO}')</script>
 </body>
 
 </html>
