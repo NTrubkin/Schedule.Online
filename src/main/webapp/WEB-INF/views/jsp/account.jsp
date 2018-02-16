@@ -10,6 +10,7 @@
 <head>
     <title>Schedule.Online - Аккаунт</title>
     <%@include file="meta.jsp" %>
+    <script src="${urlPrefix}/resources/js/account.js"></script>
 </head>
 <body>
 <%@include file="header.jsp"%>
@@ -23,7 +24,7 @@
                     <p>Имя</p>
                 </td>
                 <td class="settingsCell">
-                    <input class="textbox textboxOnWhite settingsInput" type="text" value="Никита">
+                    <input id="firstNameFld" class="textbox textboxOnWhite settingsInput" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -31,7 +32,7 @@
                     <p>Фамилия</p>
                 </td>
                 <td class="settingsCell">
-                    <input class="textbox textboxOnWhite" type="text" value="Трубкин">
+                    <input id="secondNameFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -39,7 +40,7 @@
                     <p>Email</p>
                 </td>
                 <td class="settingsCell">
-                    <input class="textbox textboxOnWhite" type="text" value="trubkin.nikita@yandex.ru">
+                    <input id="emailFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -47,7 +48,7 @@
                     <p>Телефон</p>
                 </td>
                 <td class="settingsCell">
-                    <input class="textbox textboxOnWhite" type="text" value="+7 930 70 90 399">
+                    <input id="phoneNumberFld" class="textbox textboxOnWhite" type="text">
                 </td>
             </tr>
         </table>
@@ -59,7 +60,7 @@
                     <p>Изменение настроек группы</p>
                 </td>
                 <td class="settingsCell">
-                    <input type="checkbox">
+                    <input id="settingsNotificationCheckbox" type="checkbox">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -67,13 +68,15 @@
                     <p>Изменение расписания</p>
                 </td>
                 <td class="settingsCell">
-                    <input type="checkbox">
+                    <input id="scheduleNotificationCheckbox" type="checkbox">
                 </td>
             </tr>
         </table>
 
+        <button onclick="saveAccount()">Сохранить</button>
+
     </div>
 </div>
-
+<script>initAccountPage()</script>
 </body>
 </html>

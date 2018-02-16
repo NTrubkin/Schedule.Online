@@ -16,8 +16,9 @@ public class PrivateAccountConverter extends EntityConverter<Account, PrivateAcc
                 entity.getSecondName(),
                 entity.getEmail(),
                 entity.getPhoneNumber(),
-                entity.getGroup() == null ? null : entity.getGroup().getId()
-        );
+                entity.getGroup() == null ? null : entity.getGroup().getId(),
+                entity.getSettingsNotification(),
+                entity.getScheduleNotidication());
     }
 
     @Override
@@ -29,14 +30,15 @@ public class PrivateAccountConverter extends EntityConverter<Account, PrivateAcc
             Group groupStub = new Group();
             groupStub.setId(dto.getGroupId());
             return new Account(
-                    STRING_STUB,
+                    dto.getId(),
                     dto.getFirstName(),
                     dto.getSecondName(),
                     dto.getEmail(),
                     dto.getPhoneNumber(),
                     STRING_STUB,
-                    groupStub
-            );
+                    groupStub,
+                    dto.getSettingsNotification(),
+                    dto.getScheduleNotification());
         }
     }
 }

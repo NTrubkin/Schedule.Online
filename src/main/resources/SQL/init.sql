@@ -1,9 +1,9 @@
 -- Стартовые пользователи
 -- 356a192b7913b04c54574d18c28d46e6395428ab - sha1 хэш пароля "1"
-INSERT INTO accounts (name, first_name, second_name, email, phone_number, passhash) VALUES
-  ('Alex', 'Alex', 'Smith', 'a@a.aa', NULL, '356a192b7913b04c54574d18c28d46e6395428ab'),
-  ('Ben', 'Benjamin', 'Rogers', NULL, 9307090399, '356a192b7913b04c54574d18c28d46e6395428ab'),
-  ('Charlie', 'Charles', 'Clarkson', 'b@b.bb', NULL, '356a192b7913b04c54574d18c28d46e6395428ab');
+INSERT INTO accounts (first_name, second_name, email, phone_number, passhash, settings_notification, schedule_notidication) VALUES
+  ('Alex', 'Smith', 'a@a.aa', NULL, '356a192b7913b04c54574d18c28d46e6395428ab', TRUE, TRUE ),
+  ('Benjamin', 'Rogers', NULL, 9307090399, '356a192b7913b04c54574d18c28d46e6395428ab', TRUE, TRUE ),
+  ('Charles', 'Clarkson', 'b@b.bb', NULL, '356a192b7913b04c54574d18c28d46e6395428ab', TRUE, TRUE );
 
 INSERT INTO groups (name, leader_id) VALUES
   ('Первая группа', 2),

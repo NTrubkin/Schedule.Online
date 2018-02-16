@@ -11,17 +11,23 @@ public class PrivateAccountDTO {
     private String email;
     private Long phoneNumber;
     private Integer groupId;
+    private Boolean settingsNotification;
+    private Boolean scheduleNotification;
+
+
 
     public PrivateAccountDTO() {
     }
 
-    public PrivateAccountDTO(Integer id, String firstName, String secondName, String email, Long phoneNumber, Integer groupId) {
+    public PrivateAccountDTO(Integer id, String firstName, String secondName, String email, Long phoneNumber, Integer groupId, Boolean settingsNotification, Boolean scheduleNotification) {
         this.id = id;
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.groupId = groupId;
+        this.settingsNotification = settingsNotification;
+        this.scheduleNotification = scheduleNotification;
     }
 
     public Integer getId() {
@@ -70,5 +76,21 @@ public class PrivateAccountDTO {
 
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
+    }
+
+    public Boolean getSettingsNotification() {
+        return settingsNotification;
+    }
+
+    public void setSettingsNotification(Boolean settingsNotification) {
+        this.settingsNotification = settingsNotification;
+    }
+
+    public Boolean getScheduleNotification() {
+        return scheduleNotification;
+    }
+
+    public void setScheduleNotification(Boolean scheduleNotification) {
+        this.scheduleNotification = scheduleNotification;
     }
 }
