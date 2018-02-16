@@ -18,7 +18,7 @@
 <div id="menuPanel">
     <div id="menuContentPanel">
         <div id="logoBlock" class="menuBlock">
-            <p>Schedule<br><span style="color: rgb(82, 94, 116); font-size: 64; line-height: 0;">.</span>Online</p>
+            <a href="${urlPrefix}" id="logo">Schedule<br><span id="logoDot">.</span>Online</a>
         </div>
         <div id="accountBlock" class="menuBlock">
             <a id="accountLogout" href="${urlPrefix}/login?logout"><img src="${urlPrefix}/resources/icon/logout32-4.png"></a>

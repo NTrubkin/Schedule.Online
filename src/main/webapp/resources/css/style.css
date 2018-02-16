@@ -6,6 +6,21 @@ body {
     white;
 }
 
+#logoBlock {
+    padding: 24px 0;
+}
+
+#logo {
+    color: white;
+    text-decoration: none;
+}
+
+#logoDot {
+    color: rgb(82, 94, 116);
+    font-size: 64px;
+    line-height: 0;
+}
+
 #menuPanel {
     position: fixed;
     width: 300px;
