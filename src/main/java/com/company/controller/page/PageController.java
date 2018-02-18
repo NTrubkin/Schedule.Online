@@ -3,10 +3,8 @@ package com.company.controller.page;
 import com.company.dao.api.AccountDAO;
 import com.company.dao.api.EventDAO;
 import com.company.dao.api.LessonDAO;
-import com.company.dto.EventDTO;
-import com.company.dto.GroupDTO;
-import com.company.dto.LessonDTO;
-import com.company.dto.PrivateAccountDTO;
+import com.company.dao.api.PermissionDAO;
+import com.company.dto.*;
 import com.company.dto.converter.EntityConverter;
 import com.company.model.Account;
 import com.company.model.Event;
@@ -24,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/")
 public class PageController {
@@ -31,7 +31,9 @@ public class PageController {
     private final AccountDAO accountDAO;
     private final LessonDAO lessonDAO;
     private final EventDAO eventDAO;
-    private final EntityConverter<Account, PrivateAccountDTO> accConverter;
+    private final PermissionDAO permissionDAO;
+    private final EntityConverter<Account, PrivateAccountDTO> privateAccConverter;
+    private final EntityConverter<Account, AccountDTO> accConverter;
     private final EntityConverter<Group, GroupDTO> groupConverter;
     private final EntityConverter<Lesson, LessonDTO> lessonConverter;
     private final EntityConverter<Event, EventDTO> eventConverter;
@@ -39,10 +41,12 @@ public class PageController {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Autowired
-    public PageController(AccountDAO accountDAO, LessonDAO lessonDAO, EventDAO eventDAO, EntityConverter<Account, PrivateAccountDTO> accConverter, EntityConverter<Group, GroupDTO> groupConverter, EntityConverter<Lesson, LessonDTO> lessonConverter, EntityConverter<Event, EventDTO> eventConverter) {
+    public PageController(AccountDAO accountDAO, LessonDAO lessonDAO, EventDAO eventDAO, PermissionDAO permissionDAO, EntityConverter<Account, PrivateAccountDTO> privateAccConverter, EntityConverter<Account, AccountDTO> accConverter, EntityConverter<Group, GroupDTO> groupConverter, EntityConverter<Lesson, LessonDTO> lessonConverter, EntityConverter<Event, EventDTO> eventConverter) {
         this.accountDAO = accountDAO;
         this.lessonDAO = lessonDAO;
         this.eventDAO = eventDAO;
+        this.permissionDAO = permissionDAO;
+        this.privateAccConverter = privateAccConverter;
         this.accConverter = accConverter;
         this.groupConverter = groupConverter;
         this.lessonConverter = lessonConverter;
@@ -102,20 +106,28 @@ public class PageController {
 
     @RequestMapping(value = "/group")
     public String getGroupPage(Authentication auth, Model model) throws JsonProcessingException {
-        readAndInjectHeaderAttributes(auth, model);
+        Account account = readAndInjectHeaderAttributes(auth, model);
+        int groupId = account.getGroup().getId();
+
+        List<AccountDTO> membersDTO = accConverter.convert(accountDAO.readByGroup(groupId));
+
+        model.addAttribute("membersDTO", MAPPER.writeValueAsString(membersDTO));
+        model.addAttribute("permissionsDTO", MAPPER.writeValueAsString(permissionDAO.readByGroup(groupId)));
         return "group";
     }
 
-    private void readAndInjectHeaderAttributes(Authentication auth, Model model) throws JsonProcessingException {
+    private Account readAndInjectHeaderAttributes(Authentication auth, Model model) throws JsonProcessingException {
         if (!(auth.getPrincipal() instanceof CustomUserDetails)) {
             throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class.getName());
         }
 
         int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Account account = accountDAO.read(accountId);
-        PrivateAccountDTO accountDTO = accConverter.convert(account);
+        PrivateAccountDTO accountDTO = privateAccConverter.convert(account);
         GroupDTO groupDTO = groupConverter.convert(account.getGroup());
         model.addAttribute("accountDTO", MAPPER.writeValueAsString(accountDTO));
         model.addAttribute("groupDTO", MAPPER.writeValueAsString(groupDTO));
+
+        return account;
     }
 }

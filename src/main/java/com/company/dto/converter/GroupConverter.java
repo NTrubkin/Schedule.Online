@@ -26,6 +26,7 @@ public class GroupConverter extends EntityConverter<Group, GroupDTO> {
             Account leader = new Account();
             leader.setId(dto.getLeaderId());
             return new Group(
+                    dto.getId(),
                     dto.getName(),
                     leader
             );

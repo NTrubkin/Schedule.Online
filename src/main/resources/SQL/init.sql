@@ -54,3 +54,8 @@ INSERT INTO event_tags (event_id, tag_id) VALUES
   (1, 10),
   (2, 4),
   (2, 9);
+
+INSERT INTO permissions (account_id, group_id, admin, lessons_edit, events_edit) VALUES
+  (1, 2, TRUE , TRUE , TRUE ),
+  (2, 1, TRUE , TRUE , TRUE ),
+  (3, 1, FALSE , FALSE , TRUE );

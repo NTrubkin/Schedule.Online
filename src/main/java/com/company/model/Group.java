@@ -1,6 +1,9 @@
 package com.company.model;
 
+import org.springframework.security.access.method.P;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "groups", schema = "public")
@@ -23,6 +26,11 @@ public class Group {
     public Group(String name, Account leader) {
         this.name = name;
         this.leader = leader;
+    }
+
+    public Group(Integer id, String name, Account leader) {
+        this(name, leader);
+        this.id = id;
     }
 
     public Integer getId() {

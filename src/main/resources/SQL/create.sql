@@ -92,6 +92,7 @@ CREATE TABLE public.event_tags
 
 CREATE TABLE public.permissions
 (
+  id   SERIAL PRIMARY KEY NOT NULL,
   account_id   INT     NOT NULL,
   group_id     INT     NOT NULL,
   admin        BOOLEAN NOT NULL,

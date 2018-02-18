@@ -41,7 +41,6 @@ public class AccountRestController {
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public ResponseEntity updateAccount(@RequestBody PrivateAccountDTO accountDTO) {
-
         Account account = accConverter.restore(accountDTO);
         account.setPasshash(accountDAO.read(account.getId()).getPasshash());     // passhash необходимо восстанавливать вручную
         accountDAO.update(account);

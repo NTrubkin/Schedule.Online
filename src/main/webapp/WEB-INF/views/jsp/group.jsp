@@ -10,6 +10,7 @@
 <head>
     <title>Schedule.Online - Группа</title>
     <%@include file="meta.jsp" %>
+    <script src="${urlPrefix}/resources/js/group.js"></script>
 </head>
 <body>
 <%@include file="header.jsp" %>
@@ -20,10 +21,10 @@
         <table class="settingsTable recordDetails">
             <tr class="settingsRow">
                 <td class="settingsCell">
-                    <p>Имя</p>
+                    <p>Название</p>
                 </td>
                 <td class="settingsCell">
-                    <input class="textbox textboxOnWhite settingsInput" type="text" value="15-AC">
+                    <input id="nameFld" class="textbox textboxOnWhite settingsInput" type="text">
                 </td>
             </tr>
             <tr class="settingsRow">
@@ -31,59 +32,25 @@
                     <p>Лидер</p>
                 </td>
                 <td class="settingsCell">
-                    <p>Никита Трубкин</p>
+                    <p id="leaderFld"></p>
                 </td>
             </tr>
         </table>
         <br>
-        <input class="textbox textboxOnWhite" type="text" placeholder="Email или Телефон">
-        <button>Пригласить</button>
-        <table class="settingsTable recordDetails ">
-            <tr>
-                <th class="settingsCell">
-                    <p>Имя</p>
-                </th>
-                <th class="bigTableCell">
-                    <p>Админ.</p>
-                </th>
-                <th class="bigTableCell">
-                    <p>Ред. занятий</p>
-                </th>
-                <th class="bigTableCell">
-                    <p>Ред. событий</p>
-                </th>
-                <th class="bigTableCell">
-                    <p>Удалить</p>
-                </th>
-                <th class="bigTableCell">
-                    <p>Назначить главным</p>
-                </th>
-            </tr>
-            <tr class="settingsRow">
-                <td class="settingsCell">
-                    <p>Никита Трубкин</p>
-                </td>
-                <td class="bigTableCell">
-                    <input type="checkbox">
-                </td>
-                <td class="bigTableCell">
-                    <input type="checkbox">
-                </td>
-                <td class="bigTableCell">
-                    <input type="checkbox">
-                </td>
-                <td class="bigTableCell">
-                    <a><img src="${urlPrefix}/resources/icon/deleteBtn24.png"/></a>
-                </td>
-                <td class="bigTableCell">
-                    <a><img src="${urlPrefix}/resources/icon/leader32.png"/></a>
-                </td>
-            </tr>
+        <p class="recordName">Участники</p>
+        <table id="membersTable" class="settingsTable recordDetails ">
+
         </table>
 
+        <button onclick="saveGroup()">Сохранить</button>
+        <br>
+        <br>
+        <br>
+        <input id="inviteFld" class="textbox textboxOnWhite" type="text" placeholder="Email или Телефон">
+        <button onclick="invite()">Пригласить</button>
     </div>
 </div>
 
-
+<script>initGroupPage('${membersDTO}', '${permissionsDTO}')</script>
 </body>
 </html>
