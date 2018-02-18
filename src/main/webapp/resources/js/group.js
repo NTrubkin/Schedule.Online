@@ -128,7 +128,7 @@ function saveGroup() {
 function savePermisstions() {
     $.ajax({
         type: 'PUT',
-        url: urlPrefix + '/api/group/permission',
+        url: urlPrefix + '/api/group/permission?notify=false',
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(mapMembersToPermissions(currentMembers_)),
         success: function (result) {
@@ -144,7 +144,7 @@ function deleteMembers() {
     if(mapMembersToDeletedAccountIds(currentMembers_).length > 0) {
         $.ajax({
             type: 'DELETE',
-            url: urlPrefix + '/api/group/member',
+            url: urlPrefix + '/api/group/member?notify=false',
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(mapMembersToDeletedAccountIds(currentMembers_)),
             success: function (result) {

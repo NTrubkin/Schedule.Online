@@ -17,6 +17,7 @@ public class Account {
     @Column(name = "second_name")
     private String secondName;
 
+    // todo определить правило наличия/отсутствия email
     @Column(name = "email")
     private String email;
 

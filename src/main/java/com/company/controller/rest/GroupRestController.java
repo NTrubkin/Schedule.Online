@@ -9,6 +9,7 @@ import com.company.model.Account;
 import com.company.model.Group;
 import com.company.model.Permission;
 import com.company.service.auth.CustomUserDetails;
+import com.company.service.sender.NotificationService;
 import com.company.util.LoginValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,13 +27,15 @@ public class GroupRestController {
     private final GroupDAO groupDAO;
     private final PermissionDAO permissionDAO;
     private final IEntityConverter<Group, GroupDTO> groupConverter;
+    private final NotificationService notificationService;
 
     @Autowired
-    public GroupRestController(AccountDAO accountDAO, GroupDAO groupDAO, PermissionDAO permissionDAO, IEntityConverter<Group, GroupDTO> groupConverter) {
+    public GroupRestController(AccountDAO accountDAO, GroupDAO groupDAO, PermissionDAO permissionDAO, IEntityConverter<Group, GroupDTO> groupConverter, NotificationService notificationService) {
         this.accountDAO = accountDAO;
         this.groupDAO = groupDAO;
         this.permissionDAO = permissionDAO;
         this.groupConverter = groupConverter;
+        this.notificationService = notificationService;
     }
 
     @RequestMapping(value = "/{groupId}", method = RequestMethod.GET)
@@ -55,26 +58,36 @@ public class GroupRestController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
-    public ResponseEntity updateGroup(@RequestBody GroupDTO groupDTO) {
+    public ResponseEntity updateGroup(@RequestBody GroupDTO groupDTO, @RequestParam(name = "notify", defaultValue = "true") boolean notify) {
         Group group = groupConverter.restore(groupDTO);
         groupDAO.update(group);
+        if (notify) {
+            notificationService.sendSettingsNotifications(group.getId());
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{groupId}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteGroup(@PathVariable int groupId) {
+    public ResponseEntity deleteGroup(@PathVariable int groupId, @RequestParam(name = "notify", defaultValue = "true") boolean notify) {
+        // уведомление должно быть раньше удаления (иначе некого уведомлять)
+        if (notify) {
+            notificationService.sendSettingsNotifications(groupId);
+        }
         groupDAO.delete(groupId);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/permission", method = RequestMethod.PUT)
-    public ResponseEntity updatePermissions(@RequestBody List<Permission> permissions) {
+    public ResponseEntity updatePermissions(@RequestBody List<Permission> permissions, @RequestParam(name = "notify", defaultValue = "true") boolean notify) {
         permissionDAO.update(permissions);
+        if (notify) {
+            notificationService.sendSettingsNotifications(permissions.get(0).getGroupId());
+        }
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/member/invite", method = RequestMethod.POST)
-    public ResponseEntity addMember(@RequestParam(name = "login") String login, Authentication auth) {
+    public ResponseEntity addMember(@RequestParam(name = "login") String login, Authentication auth, @RequestParam(name = "notify", defaultValue = "true") boolean notify) {
         if (!(auth.getPrincipal() instanceof CustomUserDetails)) {
             throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
         }
@@ -104,16 +117,24 @@ public class GroupRestController {
         permission.setEventsEdit(false);
         permission.setLessonsEdit(false);
         permissionDAO.create(permission);
+        if(notify) {
+            notificationService.sendSettingsNotifications(group.getId());
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/member", method = RequestMethod.DELETE)
-    public ResponseEntity deleteMembers(@RequestBody List<Integer> memberIds) {
+    public ResponseEntity deleteMembers(@RequestBody List<Integer> memberIds, @RequestParam(name = "notify", defaultValue = "true") boolean notify) {
+        int groupId = 0;
         for (Integer memberId : memberIds) {
             Account account = accountDAO.read(memberId);
+            groupId = account.getGroup().getId();
             account.setGroup(null);
             accountDAO.update(account);
             permissionDAO.delete(permissionDAO.readByAccount(memberId));
+        }
+        if (notify) {
+            notificationService.sendSettingsNotifications(groupId);
         }
         return new ResponseEntity(HttpStatus.OK);
     }

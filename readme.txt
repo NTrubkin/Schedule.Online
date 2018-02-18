@@ -1,0 +1,1 @@
+Для работы приложения требуются переменные окружения: DATABASE_URL, EMAIL_LOGIN, EMAIL_PASSWORD
