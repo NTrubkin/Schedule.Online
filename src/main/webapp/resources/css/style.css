@@ -280,3 +280,105 @@ body {
     text-align: center;
     padding: 12px 4px;
 }
+
+
+.buttonOnWhite {
+    height: 32px;
+    background-color: #63b175;
+    border: none;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    border-radius: 2px;
+}
+
+#loginMain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 600px;
+    height: 700px;
+    margin: auto;
+}
+
+#authPanel {
+    display: flex;
+    justify-content: center;
+}
+
+.authBlock {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#loginBlock {}
+
+#regBlock {
+    display: none;
+}
+
+#socialBlock {}
+
+.loginTextbox {
+    width: 266px;
+    margin: 8px 0;
+}
+
+.socialButton {
+    width: 100%;
+    height: 40px;
+    margin: 4px 0;
+    text-align: left;
+    padding: 0 0 0 32px;
+}
+
+#fbButton {
+    background-color: #3a5998;
+}
+
+#googleButton {
+    background-color: #d34836;
+}
+
+#vkButton {
+    background-color: #4c75a3;
+}
+
+#loginHr {
+    margin: 32px;
+    background-color: #525e74;
+    border: 0;
+    border-radius: 4px;
+    width: 3px;
+}
+
+.authButton {
+    margin: 20px 0;
+}
+
+#loginRegButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.activeAuthButton {
+    text-decoration: none;
+}
+
+.nonActiveAuthButton {
+    color: lightgray;
+    font-weight: 300;
+    text-decoration: none;
+}
+
+.nonActiveAuthButton:hover {
+    text-decoration: underline;
+}
+
+#regBtn {
+    float: right;
+}
+

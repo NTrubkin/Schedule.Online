@@ -3,6 +3,7 @@ package com.company.controller.rest;
 import com.company.dao.api.AccountDAO;
 import com.company.dto.AccountDTO;
 import com.company.dto.PrivateAccountDTO;
+import com.company.dto.PrivateNewAccountDTO;
 import com.company.dto.converter.AccountConverter;
 import com.company.dto.converter.IEntityConverter;
 import com.company.dto.converter.PrivateAccountConverter;
@@ -21,11 +22,14 @@ public class AccountRestController {
 
     private final AccountDAO accountDAO;
     private final IEntityConverter<Account, PrivateAccountDTO> accConverter;
+    private final IEntityConverter<Account, PrivateNewAccountDTO> newAccConverter;
+
 
     @Autowired
-    public AccountRestController(AccountDAO accountDAO, IEntityConverter<Account, PrivateAccountDTO> accConverter) {
+    public AccountRestController(AccountDAO accountDAO, IEntityConverter<Account, PrivateAccountDTO> accConverter, IEntityConverter<Account, PrivateNewAccountDTO> newAccConverter) {
         this.accountDAO = accountDAO;
         this.accConverter = accConverter;
+        this.newAccConverter = newAccConverter;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -44,6 +48,13 @@ public class AccountRestController {
         Account account = accConverter.restore(accountDTO);
         account.setPasshash(accountDAO.read(account.getId()).getPasshash());     // passhash необходимо восстанавливать вручную
         accountDAO.update(account);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.POST)
+    public ResponseEntity createAccount(@RequestBody PrivateNewAccountDTO accountDTO) {
+        Account account = newAccConverter.restore(accountDTO);
+        accountDAO.create(account);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

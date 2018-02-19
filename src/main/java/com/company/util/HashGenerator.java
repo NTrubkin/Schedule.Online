@@ -11,8 +11,13 @@ public class HashGenerator {
     private HashGenerator() {
     }
 
-    public static String generateSHA1(String input) throws NoSuchAlgorithmException {
-        MessageDigest mDigest = MessageDigest.getInstance("SHA1");
+    public static String generateSHA1(String input){
+        MessageDigest mDigest = null;
+        try {
+            mDigest = MessageDigest.getInstance("SHA1");
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
         byte[] result = mDigest.digest(input.getBytes());
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < result.length; i++) {
