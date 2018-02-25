@@ -44,3 +44,17 @@ function createAccount() {
         }
     });
 }
+
+function authenticateViaVk() {
+    $.ajax({
+        type: 'GET',
+        contentType: 'application/json; charset=utf-8',
+        url: 'https://oauth.vk.com/authorize?client_id=6384407&display=page&redirect_uri=http://localhost:8080&response_type=code&v=5.73',
+        success: function (result) {
+            window.location.href = urlPrefix + "/";
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(jqXHR.status + ' ' + errorThrown);
+        }
+    });
+}

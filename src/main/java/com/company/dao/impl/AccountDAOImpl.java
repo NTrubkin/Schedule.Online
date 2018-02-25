@@ -2,7 +2,6 @@ package com.company.dao.impl;
 
 import com.company.dao.api.AccountDAO;
 import com.company.model.Account;
-import com.company.model.Permission;
 import com.company.util.GenericReflector;
 import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
@@ -31,6 +30,21 @@ public class AccountDAOImpl extends DAO<Account> implements AccountDAO {
     @Override
     public Account readByPhoneNumber(Long phoneNumber) {
         return readByField("phoneNumber", phoneNumber);
+    }
+
+    @Override
+    public Account readByFacebookId(Long id) {
+        return readByField("facebookId", id);
+    }
+
+    @Override
+    public Account readByGoogleId(Long id) {
+        return readByField("googleId", id);
+    }
+
+    @Override
+    public Account readByVkId(Long id) {
+        return readByField("vkId", id);
     }
 
     @Override

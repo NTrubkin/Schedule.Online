@@ -27,7 +27,10 @@ public class PrivateNewAccountConverter extends EntityConverter<Account, Private
                     HashGenerator.generateSHA1(dto.getPassword()),
                     null,
                     true,
-                    true
+                    true,
+                    null,
+                    null,
+                    null
             );
         }
     }

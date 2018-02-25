@@ -328,10 +328,10 @@ body {
 }
 
 .socialButton {
-    width: 100%;
     height: 40px;
     margin: 4px 0;
-    text-align: left;
+    text-decoration: none;
+    font-size: 13px;
     padding: 0 0 0 32px;
 }
 

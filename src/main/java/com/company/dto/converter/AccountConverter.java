@@ -29,6 +29,9 @@ public class AccountConverter extends EntityConverter<Account, AccountDTO> {
                 STRING_STUB,
                 GROUP_STUB,
                 null,
+                null,
+                null,
+                null,
                 null);
     }
 }

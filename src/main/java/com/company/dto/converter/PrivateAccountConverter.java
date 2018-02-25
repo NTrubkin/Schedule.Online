@@ -18,7 +18,10 @@ public class PrivateAccountConverter extends EntityConverter<Account, PrivateAcc
                 entity.getPhoneNumber(),
                 entity.getGroup() == null ? null : entity.getGroup().getId(),
                 entity.getSettingsNotification(),
-                entity.getScheduleNotidication());
+                entity.getScheduleNotidication(),
+                entity.getFacebookId(),
+                entity.getGoogleId(),
+                entity.getVkId());
     }
 
     @Override
@@ -38,7 +41,10 @@ public class PrivateAccountConverter extends EntityConverter<Account, PrivateAcc
                     STRING_STUB,
                     groupStub,
                     dto.getSettingsNotification(),
-                    dto.getScheduleNotification());
+                    dto.getScheduleNotification(),
+                    dto.getFacebookId(),
+                    dto.getGoogleId(),
+                    dto.getVkId());
         }
     }
 }

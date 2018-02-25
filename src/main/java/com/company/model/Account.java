@@ -37,10 +37,29 @@ public class Account {
     @Column(name = "schedule_notidication")
     private Boolean scheduleNotidication;
 
+    @Column(name = "facebook_id")
+    private Long facebookId;
+
+    @Column(name = "google_id")
+    private Long googleId;
+
+    @Column(name = "vk_id")
+    private Long vkId;
+
     public Account() {
     }
 
-    public Account(String firstName, String secondName, String email, Long phoneNumber, String passhash, Group group, Boolean settingsNotification, Boolean scheduleNotidication) {
+    public Account(String firstName,
+                   String secondName,
+                   String email,
+                   Long phoneNumber,
+                   String passhash,
+                   Group group,
+                   Boolean settingsNotification,
+                   Boolean scheduleNotidication,
+                   Long facebookId,
+                   Long googleId,
+                   Long vkId) {
         this.firstName = firstName;
         this.secondName = secondName;
         this.email = email;
@@ -49,10 +68,24 @@ public class Account {
         this.group = group;
         this.settingsNotification = settingsNotification;
         this.scheduleNotidication = scheduleNotidication;
+        this.facebookId = facebookId;
+        this.googleId = googleId;
+        this.vkId = vkId;
     }
 
-    public Account(Integer id, String firstName, String secondName, String email, Long phoneNumber, String passhash, Group group, Boolean settingsNotification, Boolean scheduleNotidication) {
-        this(firstName, secondName, email, phoneNumber, passhash, group, settingsNotification, scheduleNotidication);
+    public Account(Integer id,
+                   String firstName,
+                   String secondName,
+                   String email,
+                   Long phoneNumber,
+                   String passhash,
+                   Group group,
+                   Boolean settingsNotification,
+                   Boolean scheduleNotidication,
+                   Long facebookId,
+                   Long googleId,
+                   Long vkId) {
+        this(firstName, secondName, email, phoneNumber, passhash, group, settingsNotification, scheduleNotidication, facebookId, googleId, vkId);
         this.id = id;
     }
 
@@ -126,5 +159,29 @@ public class Account {
 
     public void setScheduleNotidication(Boolean scheduleNotidication) {
         this.scheduleNotidication = scheduleNotidication;
+    }
+
+    public Long getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(Long facebookId) {
+        this.facebookId = facebookId;
+    }
+
+    public Long getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(Long googleId) {
+        this.googleId = googleId;
+    }
+
+    public Long getVkId() {
+        return vkId;
+    }
+
+    public void setVkId(Long vkId) {
+        this.vkId = vkId;
     }
 }

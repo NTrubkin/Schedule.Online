@@ -64,7 +64,6 @@ public class PageController {
         if (loginError != 0) {
             model.addAttribute("message", "Login error");
         }
-        //return "debugLogin";
         return "login";
     }
 

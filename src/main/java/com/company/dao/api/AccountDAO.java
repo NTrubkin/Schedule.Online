@@ -15,5 +15,9 @@ public interface AccountDAO extends IDAO<Account> {
 
     Account readByPhoneNumber(Long phoneNumber);
 
+    Account readByFacebookId(Long id);
+    Account readByGoogleId(Long id);
+    Account readByVkId(Long id);
+
     List<Account> readByGroup(int groupId);
 }

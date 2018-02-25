@@ -34,6 +34,10 @@ public class EmailSender implements MessageSender {
 
     @Override
     public void send(String toEmail, String subject, String text) {
+        if(!new Boolean(properties.getProperty("mail.active"))) {
+            LOGGER.info("Property mail.active is false. Skip sending.");
+        }
+
         if(!isAddressValid(toEmail) || !isMessageValid(text)) {
             throw new IllegalArgumentException("Address or message is not valid. Abort sending.");
         }
