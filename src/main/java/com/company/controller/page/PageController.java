@@ -60,7 +60,7 @@ public class PageController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String getLoginPage(@RequestParam(name = "login_error", required = false, defaultValue = "0") int loginError, Model model) {
+    public String getLoginPage(@RequestParam(name = "login_error", required = false, defaultValue = "0") int loginError, Model model, Authentication auth) {
         if (loginError != 0) {
             model.addAttribute("message", "Login error");
         }

@@ -21,7 +21,7 @@
             <a href="${urlPrefix}" id="logo">Schedule<br><span id="logoDot">.</span>Online</a>
         </div>
         <div id="accountBlock" class="menuBlock">
-            <a id="accountLogout" href="${urlPrefix}/login?logout"><img src="${urlPrefix}/resources/icon/logout32-4.png"></a>
+            <a id="accountLogout" href="${urlPrefix}/logout"><img src="${urlPrefix}/resources/icon/logout32-4.png"></a>
             <a href="${urlPrefix}/account" id="accountName">FIRSTNAME<br>SECONDNAME</a>
         </div>
         <div id="groupBlock" class="menuBlock">
