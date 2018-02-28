@@ -14,7 +14,7 @@
     <script src="${urlPrefix}/resources/js/index.js"></script>
 </head>
 
-<body onload="initIndexPage()">
+<body onload="initIndexPage(${canEditLessons}, ${canEditEvents})">
 <%@include file="header.jsp" %>
 
 <div id="mainPanel">

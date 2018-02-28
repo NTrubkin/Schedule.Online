@@ -6,10 +6,7 @@ import com.company.dao.api.LessonDAO;
 import com.company.dao.api.PermissionDAO;
 import com.company.dto.*;
 import com.company.dto.converter.EntityConverter;
-import com.company.model.Account;
-import com.company.model.Event;
-import com.company.model.Group;
-import com.company.model.Lesson;
+import com.company.model.*;
 import com.company.service.auth.CustomUserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,7 +53,16 @@ public class PageController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String getIndexPage(Authentication auth, Model model) throws JsonProcessingException {
-        readAndInjectHeaderAttributes(auth, model);
+        Account account = readAndInjectHeaderAttributes(auth, model);
+        Permission permission = permissionDAO.readByAccount(account.getId());
+        if(permission != null) {
+            model.addAttribute("canEditLessons", permission.getLessonsEdit());
+            model.addAttribute("canEditEvents", permission.getEventsEdit());
+        }
+        else {
+            model.addAttribute("canEditLessons", false);
+            model.addAttribute("canEditEvents", false);
+        }
         return "index";
     }
 

@@ -54,6 +54,16 @@ function switchBlockDisplaying(blockId) {
     }
 }
 
+function setBlockDisplaying(blockId, isDisplay) {
+    var block = $('#' + blockId);
+    if(isDisplay) {
+        block.css("display", 'block');
+    }
+    else {
+        block.css("display", 'none');
+    }
+}
+
 function switchBlockVisibility(blockId) {
     var block = $('#' + blockId);
     if(block.css("visibility") === 'visible') {
@@ -61,6 +71,16 @@ function switchBlockVisibility(blockId) {
     }
     else {
         block.css("visibility", 'visible');
+    }
+}
+
+function setBlockVisibility(blockId, isVisible) {
+    var block = $('#' + blockId);
+    if(isVisible) {
+        block.css("visibility", 'visible');
+    }
+    else {
+        block.css("visibility", 'hidden');
     }
 }
 

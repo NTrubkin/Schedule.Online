@@ -5,16 +5,18 @@ const TODAY_BG_COLOR = '#EF5350';
 const DEL_LESSON_CONF = 'Удалить занятие?';
 const DEL_EVENT_CONF = 'Удалить событие?';
 
-function initIndexPage() {
+function initIndexPage(canEditLessons, canEditEvents) {
     if(group == null) {
-        $('#withoutGroupPanel').css('display', 'block');
+        setBlockDisplaying('withoutGroupPanel', true);
     }
     else {
-        $('#filterBlock').css('display', 'block');
-        $('#actionBlock').css('display', 'block');
+        setBlockDisplaying('filterBlock', true);
+        setBlockDisplaying('actionBlock', true);
+        setBlockDisplaying('addLessonBtn', canEditLessons);
+        setBlockDisplaying('addEventBtn', canEditEvents);
         loadData();
         loadFilter();
-        showData();
+        showData(canEditLessons, canEditEvents);
     }
 }
 
@@ -33,16 +35,16 @@ function loadData() {
     });
 }
 
-function showData() {
-    showRecords();
+function showData(canEditLessons, canEditEvents) {
+    showRecords(canEditLessons, canEditEvents);
 }
 
-function showRecordBlock(record) {
+function showRecordBlock(record, canEditLessons, canEditEvents) {
     if (isLesson(record)) {
-        showLessonBlock(record)
+        showLessonBlock(record, canEditLessons)
     }
     else if (isEvent(record)) {
-        showEventBlock(record);
+        showEventBlock(record, canEditEvents);
     }
 }
 
@@ -55,7 +57,7 @@ function isEvent(record) {
 }
 
 var firstDayBlock;
-function showRecords() {
+function showRecords(canEditLessons, canEditEvents) {
     $('#recordsWithDividers').empty();
     var records = data.lessons.concat(data.events);
     records = filterRecords(records);
@@ -71,7 +73,7 @@ function showRecords() {
             currentDay = date;
         }
 
-        showRecordBlock(records[i]);
+        showRecordBlock(records[i], canEditLessons, canEditEvents);
     }
 
     var todayBlock = $('#' + TODAY_DAY_BLOCK_ID);
@@ -116,7 +118,7 @@ const lessonBlock =
     '            <div class="recordSubblock">\n' +
     '                <a href="{0}/lesson?id={12}" id="{10}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
-    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{5}\'); switchBlockVisibility(\'{10}\'); switchBlockVisibility(\'{11}\');">\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{5}\'); if({13}) {switchBlockVisibility(\'{10}\'); switchBlockVisibility(\'{11}\'); }">\n' +
     '                <div class="recordHeader">\n' +
     '                    <p class="headerItem recordDetails">\n' +
     '                        {1}:{2}<br>{3}:{4}\n' +
@@ -139,7 +141,7 @@ const lessonBlock =
     '            </div>\n' +
     '        </div>';
 
-function showLessonBlock(lesson) {
+function showLessonBlock(lesson, canEdit) {
     var start = new Date(lesson.startDatetime);
     var end = new Date(lesson.endDatetime);
     $('#recordsWithDividers').append(lessonBlock.f(
@@ -155,7 +157,8 @@ function showLessonBlock(lesson) {
         showTags(lesson),
         generateCSSId(LESSON_PREFIX, lesson.id, EDIT_POSTFIX),
         generateCSSId(LESSON_PREFIX, lesson.id, DEL_POSTFIX),
-        lesson.id));
+        lesson.id,
+        canEdit.toString()));
 }
 
 const LESSON_PREFIX = 'lesson-';
@@ -169,7 +172,7 @@ const eventBlock =
     '            <div class="recordSubblock editLessonSubblock">\n' +
     '                <a href="{0}/event?id={10}" id="{8}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
-    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{3}\'); switchBlockVisibility(\'{8}\'); switchBlockVisibility(\'{9}\');" >\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{3}\'); if({11}) {switchBlockVisibility(\'{8}\'); switchBlockVisibility(\'{9}\'); }" >\n' +
     '                <div class="recordHeader">\n' +
     '                    <p class="headerItem recordDetails">{1}:{2}</p>\n' +
     '                    <div class="headerItem">\n' +
@@ -194,7 +197,7 @@ const eventBlock =
     '                <a id="{9}" class="deleteBtn" onclick="deleteEvent(\'{10}\')"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>';
 
-function showEventBlock(event) {
+function showEventBlock(event, canEdit) {
     var start = new Date(event.startDatetime);
     $('#recordsWithDividers').append(eventBlock.f(
         urlPrefix,
@@ -207,7 +210,8 @@ function showEventBlock(event) {
         showTags(event),
         generateCSSId(EVENT_PREFIX, event.id, EDIT_POSTFIX),
         generateCSSId(EVENT_PREFIX, event.id, DEL_POSTFIX),
-        event.id));
+        event.id,
+        canEdit.toString()));
 }
 
 function saveFilter() {
@@ -375,6 +379,7 @@ function createGroup() {
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(group),
         success: function () {
+            alert('Группа успешно создана.')
             window.location.href = urlPrefix + '/group';
         },
         error: function (jqXHR, textStatus, errorThrown) {

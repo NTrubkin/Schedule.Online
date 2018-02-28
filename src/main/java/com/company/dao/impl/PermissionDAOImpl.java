@@ -43,29 +43,6 @@ public class PermissionDAOImpl extends DAO<Permission> implements PermissionDAO 
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public List<Permission> readByAccountAndGroup(int accountId, int groupId) {
-        Session session = getSessionFactory().openSession();
-        Transaction transaction = null;
-        try {
-            transaction = session.beginTransaction();
-            List<Permission> permissions = session.createCriteria(GenericReflector.getClassParameterType(this.getClass()))
-                    .add(Restrictions.eq("groupId", groupId))
-                    .add(Restrictions.eq("accountId", accountId))
-                    .setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-                    .list();
-            transaction.commit();
-            return permissions;
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            LOGGER.error(HIBERNATE_EXC_MSG, e);
-            throw e;
-        } finally {
-            session.close();
-        }
-    }
-
-    @Override
     public void update(List<Permission> permissions) {
         Session session = getSessionFactory().openSession();
         Transaction transaction = null;
