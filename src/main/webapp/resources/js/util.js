@@ -7,7 +7,7 @@
 String.prototype.format = String.prototype.f = function(){
     var args = arguments;
     return this.replace(/\{(\d+)\}/g, function(m,n){
-        return args[n] ? args[n] : m;
+        return args[n] == null ? m : args[n].toString() ;
     });
 };
 
@@ -86,4 +86,31 @@ function setBlockVisibility(blockId, isVisible) {
 
 function generateCSSId(prefix, id ,postfix) {
     return prefix + id + postfix;
+}
+
+function isEven(number) {
+    return number & 1;
+}
+
+function calculateWeeksBetween(date1, date2) {
+    // The number of milliseconds in one week
+    const ONE_WEEK = 1000 * 60 * 60 * 24 * 7;
+    // Convert both dates to milliseconds
+    var date1_ms = date1.getTime();
+    var date2_ms = date2.getTime();
+    // Calculate the difference in milliseconds
+    var difference_ms = Math.abs(date1_ms - date2_ms);
+    // Convert back to weeks and return hole weeks
+    return Math.floor(difference_ms / ONE_WEEK);
+}
+
+function calculateWeekNumber(firstDate, requiredDay) {
+    var weekStart = new Date(firstDate).setHours(0, 0, 0, 0);
+    const ONE_DAY = 1000 * 60 * 60 * 24;
+    weekStart -= ONE_DAY * firstDate.getDayFromMonday();
+    return calculateWeeksBetween(new Date(weekStart), requiredDay);
+}
+
+Date.prototype.getDayFromMonday = function() {
+    return this.getDay() === 0 ? 6 : this.getDay() - 1;
 }

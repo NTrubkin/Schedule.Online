@@ -4,8 +4,13 @@ const TODAY_DAY_BLOCK_ID = "today-day-block";
 const TODAY_BG_COLOR = '#EF5350';
 const DEL_LESSON_CONF = 'Удалить занятие?';
 const DEL_EVENT_CONF = 'Удалить событие?';
+var canEditLessons = false;
+var canEditEvents = false;
+
 
 function initIndexPage(canEditLessons, canEditEvents) {
+    this.canEditLessons = canEditEvents;
+    this.canEditEvents = canEditEvents;
     if(group == null) {
         setBlockDisplaying('withoutGroupPanel', true);
     }
@@ -16,7 +21,7 @@ function initIndexPage(canEditLessons, canEditEvents) {
         setBlockDisplaying('addEventBtn', canEditEvents);
         loadData();
         loadFilter();
-        showData(canEditLessons, canEditEvents);
+        showData();
     }
 }
 
@@ -35,16 +40,16 @@ function loadData() {
     });
 }
 
-function showData(canEditLessons, canEditEvents) {
-    showRecords(canEditLessons, canEditEvents);
+function showData() {
+    showRecords();
 }
 
-function showRecordBlock(record, canEditLessons, canEditEvents) {
+function showRecordBlock(record) {
     if (isLesson(record)) {
-        showLessonBlock(record, canEditLessons)
+        showLessonBlock(record)
     }
     else if (isEvent(record)) {
-        showEventBlock(record, canEditEvents);
+        showEventBlock(record);
     }
 }
 
@@ -57,46 +62,51 @@ function isEvent(record) {
 }
 
 var firstDayBlock;
-function showRecords(canEditLessons, canEditEvents) {
+function showRecords() {
     $('#recordsWithDividers').empty();
     var records = data.lessons.concat(data.events);
     records = filterRecords(records);
     records.sort(function (a, b) {
         return a.startDatetime - b.startDatetime
     });
-    var currentDay = null;
-    firstDayBlock = true;
-    for (var i = 0; i < records.length; i++) {
-        var date = new Date(records[i].startDatetime);
-        if (!date.isSameDateAs(currentDay)) {
-            showDayBlock(date);
-            currentDay = date;
+
+    if(records.length > 0)
+    {
+        var currentDay = null;
+        var firstDay = new Date(records[0].startDatetime);
+        firstDayBlock = true;
+        for (var i = 0; i < records.length; i++) {
+            var date = new Date(records[i].startDatetime);
+            if (!date.isSameDateAs(currentDay)) {
+                currentDay = date;
+                showDayBlock(firstDay, currentDay);
+            }
+
+            showRecordBlock(records[i]);
         }
 
-        showRecordBlock(records[i], canEditLessons, canEditEvents);
-    }
-
-    var todayBlock = $('#' + TODAY_DAY_BLOCK_ID);
-    var todayBtn = $('#curDayBtn');
-    if(todayBlock != null && todayBlock.offset() != null) {
-        todayBtn.css('display', 'block');
-    }
-    else {
-        todayBtn.css('display', 'none');
+        var todayBlock = $('#' + TODAY_DAY_BLOCK_ID);
+        var todayBtn = $('#curDayBtn');
+        if(todayBlock != null && todayBlock.offset() != null) {
+            todayBtn.css('display', 'block');
+        }
+        else {
+            todayBtn.css('display', 'none');
+        }
     }
 }
 const emptyBlock = '<hr class="daysDivider">';
 const dayBlock =
     '        <div {3} class="contentBlock dayBlock">\n' +
     '            <div class="daySubblock">\n' +
-    '                <p>{0}</p>\n' +
+    '                <p>{0}<br>{1} {2}</p>\n' +
     '            </div>\n' +
-    '            <div class="daySubblock">\n' +
-    '                <p>{1} {2}</p>\n' +
+    '            <div class="daySubblock" style="text-align: right">\n' +
+    '                <p>Неделя {4}<br>{5}</p>\n' +
     '            </div>\n' +
     '        </div>';
 
-function showDayBlock(date) {
+function showDayBlock(firstDate, currentDate) {
     if (firstDayBlock) {
         firstDayBlock = false;
     }
@@ -105,11 +115,18 @@ function showDayBlock(date) {
     }
 
     var id = '';
-    if(date.isSameDateAs(new Date())) {
+    if(currentDate.isSameDateAs(new Date())) {
         id = 'id="{0}"'.f(TODAY_DAY_BLOCK_ID);
     }
 
-    $('#recordsWithDividers').append(dayBlock.f(days[date.getDay()], date.getDate(), monthArr[date.getMonth()], id));
+    var weekNumber = calculateWeekNumber(firstDate, currentDate) + 1;
+
+    $('#recordsWithDividers').append(dayBlock.f(days[currentDate.getDay()],
+        currentDate.getDate(),
+        monthArr[currentDate.getMonth()],
+        id,
+        weekNumber,
+        isEven(weekNumber) ? 'нч' : 'чет'));
     $('#' + TODAY_DAY_BLOCK_ID).css('background-color', TODAY_BG_COLOR);
 }
 
@@ -141,7 +158,7 @@ const lessonBlock =
     '            </div>\n' +
     '        </div>';
 
-function showLessonBlock(lesson, canEdit) {
+function showLessonBlock(lesson) {
     var start = new Date(lesson.startDatetime);
     var end = new Date(lesson.endDatetime);
     $('#recordsWithDividers').append(lessonBlock.f(
@@ -158,7 +175,7 @@ function showLessonBlock(lesson, canEdit) {
         generateCSSId(LESSON_PREFIX, lesson.id, EDIT_POSTFIX),
         generateCSSId(LESSON_PREFIX, lesson.id, DEL_POSTFIX),
         lesson.id,
-        canEdit.toString()));
+        canEditLessons.toString()));
 }
 
 const LESSON_PREFIX = 'lesson-';
@@ -197,7 +214,7 @@ const eventBlock =
     '                <a id="{9}" class="deleteBtn" onclick="deleteEvent(\'{10}\')"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
     '            </div>';
 
-function showEventBlock(event, canEdit) {
+function showEventBlock(event) {
     var start = new Date(event.startDatetime);
     $('#recordsWithDividers').append(eventBlock.f(
         urlPrefix,
@@ -211,7 +228,7 @@ function showEventBlock(event, canEdit) {
         generateCSSId(EVENT_PREFIX, event.id, EDIT_POSTFIX),
         generateCSSId(EVENT_PREFIX, event.id, DEL_POSTFIX),
         event.id,
-        canEdit.toString()));
+        canEditEvents.toString()));
 }
 
 function saveFilter() {
@@ -316,15 +333,10 @@ function scrollToToday() {
 }
 
 function showTags(record) {
-    if(record.tags.length === 0) {
-        return ' ';
-    }
-    else {
-        var tags = $.map(record.tags, function (tag) {
-            return tag.name;
-        });
-        return tags.join(", ");
-    }
+    var tags = $.map(record.tags, function (tag) {
+        return tag.name;
+    });
+    return tags.join(", ");
 }
 
 function fitByTagsFilter(record, filter) {
@@ -387,3 +399,4 @@ function createGroup() {
         }
     });
 }
+
