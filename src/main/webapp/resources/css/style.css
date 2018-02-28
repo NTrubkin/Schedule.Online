@@ -138,6 +138,14 @@ body {
     color: #525e74;
 }
 
+#filterBlock {
+    display: none;
+}
+
+#actionBlock {
+    display: none;
+}
+
 #recordsWithDividers {
     width: 600px;
     margin: 0 auto 0 auto;
@@ -224,10 +232,9 @@ body {
     visibility: hidden;
 }
 
-.emptyBlock {
+.daysDivider {
     height: 160px;
     visibility: hidden;
-    background-color: black;
 }
 
 .placeDetails {
@@ -382,3 +389,6 @@ body {
     float: right;
 }
 
+#withoutGroupPanel {
+    display: none;
+}

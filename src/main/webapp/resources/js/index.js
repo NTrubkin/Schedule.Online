@@ -6,23 +6,25 @@ const DEL_LESSON_CONF = 'Удалить занятие?';
 const DEL_EVENT_CONF = 'Удалить событие?';
 
 function initIndexPage() {
-    loadData();
-    loadFilter();
-    showData();
+    if(group == null) {
+        $('#withoutGroupPanel').css('display', 'block');
+    }
+    else {
+        $('#filterBlock').css('display', 'block');
+        $('#actionBlock').css('display', 'block');
+        loadData();
+        loadFilter();
+        showData();
+    }
 }
 
 function loadData() {
     $.ajax({
         type: 'GET',
-        url: urlPrefix + '/api/comb/mainpage',
+        url: urlPrefix + '/api/group/lessonsAndEvents',
         dataType: 'json',
         async: false,
         success: function (result) {
-            if (result.user === null) {
-                alert('unauthorized user');
-                return;
-            }
-
             data = result;
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -32,19 +34,7 @@ function loadData() {
 }
 
 function showData() {
-    showUser();
-    showGroup();
     showRecords();
-}
-
-function showUser() {
-    $('#accountName').html(data.user.firstName + '<br>' + data.user.secondName);
-    $('#accountBlock').css('visibility', 'visible');
-}
-
-function showGroup() {
-    $('#groupName').text(data.group.name);
-    $('#groupBlock').css('visibility', 'visible');
 }
 
 function showRecordBlock(record) {
@@ -93,10 +83,7 @@ function showRecords() {
         todayBtn.css('display', 'none');
     }
 }
-const emptyBlock =
-    '        <div class="contentBlock emptyBlock">\n' +
-    '            <p>STUB TEXT IN STUB BLOCK. SHOULD BE INVISIBLE</p>\n' +
-    '        </div>';
+const emptyBlock = '<hr class="daysDivider">';
 const dayBlock =
     '        <div {3} class="contentBlock dayBlock">\n' +
     '            <div class="daySubblock">\n' +
@@ -232,14 +219,13 @@ function saveFilter() {
         filters = JSON.parse(filters);
     }
 
-    var filter = {
-        lessons : $('#lessonFilter').prop('checked'),
-        events : $('#eventFilter').prop('checked'),
-        search : $('#searchFilter').val(),
-        tags : $('#tagsFilter').val(),
-        hideLast : $('#hideLastFilter').prop('checked')};
-
-    filters[data.user.id] = filter;
+    filters[account.id] = {
+        lessons: $('#lessonFilter').prop('checked'),
+        events: $('#eventFilter').prop('checked'),
+        search: $('#searchFilter').val(),
+        tags: $('#tagsFilter').val(),
+        hideLast: $('#hideLastFilter').prop('checked')
+    };
     Cookies.set(FILTERS_KEY, filters);
 }
 
@@ -253,7 +239,7 @@ function loadFilter() {
         return;
     }
 
-    var filter = JSON.parse(filters)[data.user.id];
+    var filter = JSON.parse(filters)[account.id];
     if(filter == null) {
         return;
     }
@@ -377,4 +363,22 @@ function deleteEvent(eventId) {
             }
         });
     }
+}
+
+const DEFAULT_GROUP_NAME = "Новая группа";
+
+function createGroup() {
+    var group = {name : DEFAULT_GROUP_NAME};
+    $.ajax({
+        type: 'POST',
+        url: urlPrefix + '/api/group',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(group),
+        success: function () {
+            window.location.href = urlPrefix + '/group';
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            alert(jqXHR.status + ' ' + errorThrown);
+        }
+    });
 }

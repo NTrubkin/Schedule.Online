@@ -3,7 +3,7 @@ package com.company.controller.rest;
 import com.company.dao.api.AccountDAO;
 import com.company.dao.api.GroupDAO;
 import com.company.dao.api.PermissionDAO;
-import com.company.dto.GroupDTO;
+import com.company.dto.*;
 import com.company.dto.converter.IEntityConverter;
 import com.company.model.Account;
 import com.company.model.Group;
@@ -28,14 +28,18 @@ public class GroupRestController {
     private final PermissionDAO permissionDAO;
     private final IEntityConverter<Group, GroupDTO> groupConverter;
     private final NotificationService notificationService;
+    private final LessonRestController lessonController;
+    private final EventRestController eventController;
 
     @Autowired
-    public GroupRestController(AccountDAO accountDAO, GroupDAO groupDAO, PermissionDAO permissionDAO, IEntityConverter<Group, GroupDTO> groupConverter, NotificationService notificationService) {
+    public GroupRestController(AccountDAO accountDAO, GroupDAO groupDAO, PermissionDAO permissionDAO, IEntityConverter<Group, GroupDTO> groupConverter, NotificationService notificationService, LessonRestController lessonController, EventRestController eventController) {
         this.accountDAO = accountDAO;
         this.groupDAO = groupDAO;
         this.permissionDAO = permissionDAO;
         this.groupConverter = groupConverter;
         this.notificationService = notificationService;
+        this.lessonController = lessonController;
+        this.eventController = eventController;
     }
 
     @RequestMapping(value = "/{groupId}", method = RequestMethod.GET)
@@ -53,7 +57,18 @@ public class GroupRestController {
 
         int accountId = ((CustomUserDetails)auth.getPrincipal()).getUserId();
         groupDTO.setLeaderId(accountId);
-        groupDAO.create(groupConverter.restore(groupDTO));
+        Group group = groupConverter.restore(groupDTO);
+        groupDAO.create(group);
+        Account account = accountDAO.read(accountId);
+        account.setGroup(group);
+        accountDAO.update(account);
+        Permission permission = new Permission();
+        permission.setAccountId(account.getId());
+        permission.setGroupId(group.getId());
+        permission.setAdmin(true);
+        permission.setEventsEdit(true);
+        permission.setLessonsEdit(true);
+        permissionDAO.create(permission);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -137,5 +152,20 @@ public class GroupRestController {
             notificationService.sendSettingsNotifications(groupId);
         }
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/lessonsAndEvents", method = RequestMethod.GET)
+    public ResponseEntity<LessonsAndEventsDTO> getLessonsAndEvents(Authentication auth) {
+        if (!(auth.getPrincipal() instanceof CustomUserDetails)) {
+            throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
+        }
+
+        int accountId = ((CustomUserDetails)auth.getPrincipal()).getUserId();
+        int groupId = accountDAO.read(accountId).getGroup().getId();
+
+        List<LessonDTO> lessons = lessonController.readLessonsByGroup(groupId).getBody();
+        List<EventDTO> events = eventController.readEventsByGroup(groupId).getBody();
+
+        return new ResponseEntity<>(new LessonsAndEventsDTO(lessons, events), HttpStatus.OK);
     }
 }

@@ -5,7 +5,7 @@
   Time: 19:17
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=utf-8" language="java" %>
 
 <html>
 <head>
@@ -15,59 +15,14 @@
 </head>
 
 <body onload="initIndexPage()">
-<div id="menuPanel">
-    <div id="menuContentPanel">
-        <div id="logoBlock" class="menuBlock">
-            <a href="${urlPrefix}" id="logo">Schedule<br><span id="logoDot">.</span>Online</a>
-        </div>
-        <div id="accountBlock" class="menuBlock">
-            <a id="accountLogout" href="${urlPrefix}/logout"><img src="${urlPrefix}/resources/icon/logout32-4.png"></a>
-            <a href="${urlPrefix}/account" id="accountName">FIRSTNAME<br>SECONDNAME</a>
-        </div>
-        <div id="groupBlock" class="menuBlock">
-            <a id="groupName" href="${urlPrefix}/group" id="groupName">GROUP</a>
-        </div>
-        <div class="menuBlock menuRegularBlock">
-            <form>
-                <p class="menuHeader">Фильтры</p>
-                <label for="lessonFilter">Занятия</label>
-                <input id="lessonFilter" type="checkbox" onchange="saveFilter(); loadData(); showRecords();" checked>
-                <br>
-                <label for="eventFilter">События</label>
-                <input id="eventFilter" type="checkbox" onchange="saveFilter(); loadData(); showRecords();" checked>
-                <br>
-                <label for="searchFilter">Поиск</label>
-                <input id="searchFilter" type="text" onchange="saveFilter(); loadData(); showRecords();">
-                <br>
-                <label for="tagsFilter">Теги</label>
-                <input id="tagsFilter" type="text" onchange="saveFilter(); loadData(); showRecords();">
-                <br>
-                <label for="hideLastFilter">Скрыть прошедшее</label>
-                <input id="hideLastFilter" type="checkbox" onchange="saveFilter(); loadData(); showRecords();">
-                <br>
-            </form>
-        </div>
-
-        <div class="menuBlock menuRegularBlock">
-            <p class="menuHeader">Действия</p>
-            <a href="${urlPrefix}/new-lesson" class="menuLink">Добавить занятие</a>
-            <br>
-            <a href="${urlPrefix}/new-event" class="menuLink">Добавить событие</a>
-            <br>
-            <div id="curDayBtn">
-                <a href="#" onclick="scrollToToday()" class="menuLink">Перейти к текущему дню</a>
-                <br>
-            </div>
-        </div>
-    </div>
-</div>
+<%@include file="header.jsp" %>
 
 <div id="mainPanel">
     <div id="recordsWithDividers">
-
+        <p id="withoutGroupPanel">
+            Вы не состоите в группе. Ожидайте приглашения либо <button class="buttonOnWhite" onclick="createGroup()">создайте</button> новую группу
+        </p>
     </div>
 </div>
-
 </body>
-
 </html>

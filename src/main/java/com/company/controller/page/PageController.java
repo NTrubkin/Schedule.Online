@@ -55,7 +55,8 @@ public class PageController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String getIndexPage(Authentication auth) {
+    public String getIndexPage(Authentication auth, Model model) throws JsonProcessingException {
+        readAndInjectHeaderAttributes(auth, model);
         return "index";
     }
 

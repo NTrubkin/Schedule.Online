@@ -26,7 +26,6 @@ public class MultiloginAccountService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String login) {
 
-        // todo разделить логин по email и по phoneNumber
         Account account = loadAccount(login);
 
         if (account == null) {

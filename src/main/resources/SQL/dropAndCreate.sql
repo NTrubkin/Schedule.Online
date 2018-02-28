@@ -32,20 +32,6 @@ CREATE TABLE accounts
   ON UPDATE CASCADE ON DELETE SET NULL
 );
 
-CREATE TABLE unverified_accounts
-(
-  id                SERIAL      NOT NULL
-    CONSTRAINT unverified_accounts_pkey
-    PRIMARY KEY,
-  first_name        VARCHAR(40) NOT NULL,
-  second_name       VARCHAR(40) NOT NULL,
-  email             VARCHAR(240),
-  phone_number      BIGINT,
-  name              VARCHAR(40) NOT NULL,
-  passhash          VARCHAR(40) NOT NULL,
-  verification_code INT         NOT NULL
-);
-
 ALTER TABLE public.groups
   ADD CONSTRAINT groups_accounts_id_fk
 FOREIGN KEY (leader_id) REFERENCES accounts (id) ON UPDATE CASCADE;
