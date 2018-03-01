@@ -12,8 +12,8 @@
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/account.js"></script>
     <script>
-        if(window.mobilecheck()) {
-            window.location.href = urlPrefix + '/account?m=true';
+        if(!window.mobilecheck()) {
+            window.location.href = urlPrefix + '/account';
         }
     </script>
 </head>
@@ -21,6 +21,7 @@
 <%@include file="header.jsp"%>
 
 <div id="mainPanel">
+    <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776;</span>
     <div id="recordsWithDividers">
         <p class="recordName">Настройки аккаунта</p>
         <table class="settingsTable recordDetails">
@@ -28,6 +29,8 @@
                 <td class="settingsCell">
                     <p>Имя</p>
                 </td>
+            </tr>
+            <tr class="settingsRow">
                 <td class="settingsCell">
                     <input id="firstNameFld" class="textbox textboxOnWhite settingsInput" type="text">
                 </td>
@@ -36,6 +39,8 @@
                 <td class="settingsCell">
                     <p>Фамилия</p>
                 </td>
+            </tr>
+            <tr class="settingsRow">
                 <td class="settingsCell">
                     <input id="secondNameFld" class="textbox textboxOnWhite" type="text">
                 </td>
@@ -44,6 +49,8 @@
                 <td class="settingsCell">
                     <p>Email</p>
                 </td>
+            </tr>
+            <tr class="settingsRow">
                 <td class="settingsCell">
                     <input id="emailFld" class="textbox textboxOnWhite" type="text">
                 </td>
@@ -52,6 +59,8 @@
                 <td class="settingsCell ">
                     <p>Телефон</p>
                 </td>
+            </tr>
+            <tr class="settingsRow">
                 <td class="settingsCell">
                     <input id="phoneNumberFld" class="textbox textboxOnWhite" type="text">
                 </td>

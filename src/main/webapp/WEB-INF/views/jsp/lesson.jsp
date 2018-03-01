@@ -11,6 +11,12 @@
     <title>Schedule.Online - Занятие</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/lesson.js"></script>
+    <script>
+        if(window.mobilecheck()) {
+            var lessonDTO = JSON.parse('${lessonDTO}');
+            window.location.href = urlPrefix + '/lesson?id=' + lessonDTO.id + '&m=true';
+        }
+    </script>
 </head>
 <body>
 <%@include file="header.jsp"%>

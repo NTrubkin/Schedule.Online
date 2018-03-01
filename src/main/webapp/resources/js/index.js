@@ -457,7 +457,7 @@ function createGroup() {
         data: JSON.stringify(group),
         success: function () {
             bootbox.alert('Группа успешно создана.', function () {
-                window.location.href = urlPrefix + '/group';
+                window.location.href = urlPrefix + (window.mobilecheck() ? '/group?m=true' : '/group');
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {

@@ -10,7 +10,7 @@ function readAccountFromFields() {
     currentAccount.secondName = $('#secondNameFld').val();
 
     var emailFld = $('#emailFld');
-    if(emailFld === '') {
+    if (emailFld === '') {
         currentAccount.email = null;
     }
     else {
@@ -18,7 +18,7 @@ function readAccountFromFields() {
     }
 
     var phoneNumberFld = $('#phoneNumberFld');
-    if(phoneNumberFld.val() === '') {
+    if (phoneNumberFld.val() === '') {
         currentAccount.phoneNumber = null;
     }
     else {
@@ -46,8 +46,9 @@ function saveAccount() {
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(currentAccount),
         success: function (result) {
-            bootbox.alert('Аккаунт успешно обновлен', function(){
-            window.location.href = urlPrefix + "/"; });
+            bootbox.alert('Аккаунт успешно обновлен', function () {
+                window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
             bootbox.alert(jqXHR.status + ' ' + errorThrown);

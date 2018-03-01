@@ -51,7 +51,7 @@ public class PageController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String getIndexPage(Authentication auth, Model model) throws JsonProcessingException {
+    public String getIndexPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model) throws JsonProcessingException {
         Account account = readAndInjectHeaderAttributes(auth, model);
         Permission permission = permissionDAO.readByAccount(account.getId());
         if(permission != null) {
@@ -62,56 +62,56 @@ public class PageController {
             model.addAttribute("canEditLessons", false);
             model.addAttribute("canEditEvents", false);
         }
-        return "index";
+        return mobile ? "mobile/index" : "index";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String getLoginPage(@RequestParam(name = "login_error", required = false, defaultValue = "0") int loginError, Model model, Authentication auth) {
+    public String getLoginPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, @RequestParam(name = "login_error", required = false, defaultValue = "0") int loginError, Model model, Authentication auth) {
         if (loginError != 0) {
             model.addAttribute("message", "Login error");
         }
-        return "login";
+        return mobile ? "mobile/login" : "login";
     }
 
     @RequestMapping(value = "/new-lesson")
-    public String getNewLessonPage(Authentication auth, Model model) throws JsonProcessingException {
+    public String getNewLessonPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        return "newLesson";
+        return mobile ? "mobile/newLesson" : "newLesson";
     }
 
     @RequestMapping(value = "/lesson")
-    public String getLessonPage(@RequestParam(name = "id", defaultValue = "0") int lessonId, Authentication auth, Model model) throws JsonProcessingException {
+    public String getLessonPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, @RequestParam(name = "id", defaultValue = "0") int lessonId, Authentication auth, Model model) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
         Lesson lesson = lessonDAO.read(lessonId);
         LessonDTO lessonDTO = lessonConverter.convert(lesson);
         model.addAttribute("lessonDTO", MAPPER.writeValueAsString(lessonDTO));
-        return "lesson";
+        return mobile ? "mobile/lesson" : "lesson";
     }
 
     @RequestMapping(value = "/event")
-    public String getEventPage(@RequestParam(name = "id", defaultValue = "0") int eventId, Authentication auth, Model model) throws JsonProcessingException {
+    public String getEventPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, @RequestParam(name = "id", defaultValue = "0") int eventId, Authentication auth, Model model) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
         Event event = eventDAO.read(eventId);
         EventDTO eventDTO = eventConverter.convert(event);
         model.addAttribute("eventDTO", MAPPER.writeValueAsString(eventDTO));
-        return "event";
+        return mobile ? "mobile/event" : "event";
     }
 
     @RequestMapping(value = "/new-event")
-    public String getNewEventPage(Authentication auth, Model model) throws JsonProcessingException {
+    public String getNewEventPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        return "newEvent";
+        return mobile ? "mobile/newEvent" : "newEvent";
     }
 
     @RequestMapping(value = "/account")
-    public String getAccountPage(Authentication auth, Model model) throws JsonProcessingException {
+    public String getAccountPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        return "account";
+        return mobile ? "mobile/account" : "account";
     }
 
 
     @RequestMapping(value = "/group")
-    public String getGroupPage(Authentication auth, Model model) throws JsonProcessingException {
+    public String getGroupPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model) throws JsonProcessingException {
         Account account = readAndInjectHeaderAttributes(auth, model);
         int groupId = account.getGroup().getId();
 
@@ -119,7 +119,7 @@ public class PageController {
 
         model.addAttribute("membersDTO", MAPPER.writeValueAsString(membersDTO));
         model.addAttribute("permissionsDTO", MAPPER.writeValueAsString(permissionDAO.readByGroup(groupId)));
-        return "group";
+        return mobile ? "mobile/group" : "group";
     }
 
     private Account readAndInjectHeaderAttributes(Authentication auth, Model model) throws JsonProcessingException {

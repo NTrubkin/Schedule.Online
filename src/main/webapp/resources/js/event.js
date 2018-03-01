@@ -43,7 +43,7 @@ function createNewEvent() {
         data: JSON.stringify(currentEvent),
         success: function (result) {
             bootbox.alert('Событие успешно создано', function () {
-                window.location.href = urlPrefix + "/";
+                window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -61,7 +61,7 @@ function updateEvent() {
         data: JSON.stringify(currentEvent),
         success: function (result) {
             bootbox.alert('Событие успешно обновлено', function () {
-                window.location.href = urlPrefix + "/";
+                window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -78,7 +78,7 @@ function deleteEvent() {
                 url: urlPrefix + '/api/event/' + currentEvent.id,
                 success: function () {
                     bootbox.alert('Событие успешно удалено', function () {
-                        window.location.href = urlPrefix + "/";
+                        window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
                     });
                 },
                 error: function (jqXHR, textStatus, errorThrown) {

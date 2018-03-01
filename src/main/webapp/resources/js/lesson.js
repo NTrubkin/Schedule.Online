@@ -46,7 +46,8 @@ function createLesson() {
         data: JSON.stringify(currentLesson),
         success: function (result) {
             bootbox.alert('Занятие успешно создано', function(){
-            window.location.href = urlPrefix + "/"; });
+                window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
             bootbox.alert(jqXHR.status + ' ' + errorThrown);
@@ -63,7 +64,8 @@ function updateLesson() {
         data: JSON.stringify(currentLesson),
         success: function (result) {
             bootbox.alert('Занятие успешно обновлено', function(){
-            window.location.href = urlPrefix + "/"; });
+                window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
             bootbox.alert(jqXHR.status + ' ' + errorThrown);
@@ -79,7 +81,8 @@ function deleteLesson() {
                 url: urlPrefix + '/api/lesson/' + currentLesson.id,
                 success: function () {
                     bootbox.alert('Занятие успешно удалено', function(){
-                        window.location.href = urlPrefix + "/"; });
+                        window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
+                    });
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     bootbox.alert(jqXHR.status + ' ' + errorThrown);

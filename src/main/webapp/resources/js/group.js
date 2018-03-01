@@ -148,7 +148,8 @@ function deleteMembers() {
             data: JSON.stringify(mapMembersToDeletedAccountIds(currentMembers_)),
             success: function (result) {
                 bootbox.alert('Группа успешно обновлена', function(){
-                window.location.href = urlPrefix + "/";});
+                    window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
+                });
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 bootbox.alert(jqXHR.status + ' ' + errorThrown);
@@ -157,7 +158,8 @@ function deleteMembers() {
     }
     else {
         bootbox.alert('Группа успешно обновлена', function(){
-        window.location.href = urlPrefix + "/"; });
+            window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
+        });
     }
 }
 
