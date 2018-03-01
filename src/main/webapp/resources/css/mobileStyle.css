@@ -1,0 +1,409 @@
+body {
+    font-family: 'Raleway', sans-serif;
+    margin: 0;
+    display: block;
+    background: /*#efefef*/
+            white;
+}
+
+#menuPanel {
+    background: #63b175;
+    color: white;
+    font-weight: 600;
+    font-size: 20px;
+    text-align: right;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: none;
+    height: 100%;
+    width: 300px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    padding-top: 60px;
+}
+
+#menuPanel a {
+    text-decoration: none;
+    color: white;
+}
+
+#menuPanel label {
+    font-size: 16;
+    font-weight: 400;
+}
+
+#menuPanel .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+    .sidenav a {
+        font-size: 18px;
+    }
+}
+
+
+
+#logoBlock {
+    padding: 24px 0;
+}
+
+#logo {
+    color: white;
+    text-decoration: none;
+}
+
+#logoDot {
+    color: rgb(82, 94, 116);
+    font-size: 64;
+    line-height: 0;
+}
+
+
+
+#menuContentPanel {
+    width: 280px;
+}
+
+::-webkit-scrollbar {
+    width: 14px;
+    height: 18px;
+}
+
+::-webkit-scrollbar-track {
+
+    height: 6px;
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    -webkit-border-radius: 7px;
+}
+
+#menuPanel::-webkit-scrollbar-track {
+    background-color: #A9D0B2;
+}
+
+::-webkit-scrollbar-thumb {
+
+    height: 6px;
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-clip: padding-box;
+    -webkit-border-radius: 7px;
+    background-color: #525e74;
+}
+
+.menuBlock {
+    margin: 10px;
+}
+
+#logoBlock {
+    font-weight: 700;
+    font-size: 34px;
+}
+
+#accountBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    visibility: hiden;
+}
+
+#accountLogout {
+    padding: 0 12px;
+}
+
+#accountName {
+    line-height: 1.5;
+    font-weight: 600;
+    font-size: 22px;
+    color: white;
+    text-decoration: none;
+}
+
+#accountName:hover {
+    text-decoration: underline;
+}
+
+#groupBlock {
+    visibility: hiddn;
+}
+
+#groupName {
+    font-weight: 400;
+    font-size: 22px;
+    color: white;
+    text-decoration: none;
+}
+
+#groupName:hover {
+    text-decoration: underline;
+}
+
+.menuRegularBlock {
+    line-height: 1.5;
+    font-weight: 400;
+    font-size: 16px;
+    margin: 50px 0 0 0;
+}
+
+.menuHeader {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.menuLink {
+    text-decoration: none;
+    color: white;
+}
+
+.menuLink :hover {
+    text-decoration: underline;
+}
+
+#mainPanel {
+    padding: 40px 12px;
+    /* костыль. при padding 0 появляется пустое пространство*/
+    color: #525e74;
+}
+
+#recordsWithDividers {
+    margin: 0 auto;
+}
+
+.contentBlock {
+    margin: 0 0 8px 0;
+}
+
+.dayBlock {
+    padding: 12 0;
+    background-color: #525e74;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+.daySubblock {
+    padding: 0 24px;
+    font-weight: 600;
+    font-size: 20px;
+
+}
+
+.recordBlock {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.recordSubblock {}
+
+.bodyRecordSubblock {
+    width: 500px;
+}
+
+.recordHr {
+    margin: 0;
+    background-color: #525e74;
+    height: 4px;
+    border: 0;
+    border-radius: 4px;
+
+}
+
+.recordName {
+    color: #63b175;
+    font-weight: 600;
+    font-size: 20px;
+    margin: 16px 0;
+}
+
+.recordDetails {
+    font-weight: 400;
+    font-size: 15px;
+    margin: 12px 0;
+}
+
+.lessonName {
+    text-align: center;
+}
+
+.recordHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerItem {
+    padding: 0 10px;
+}
+
+.eventName {
+    text-align: right;
+}
+
+.editBtn {
+    visibility: visible;
+}
+
+.deleteBtn {
+    visibility: visible;
+}
+
+.daysDivider {
+    height: 160px;
+    visibility: hidden;
+}
+
+.placeDetails {
+    text-align: right;
+}
+
+.detailsBlock {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.detailHeader {
+    color: #63b175;
+    font-weight: 600;
+}
+
+.settingsTable {
+    width: 100%;
+    color: #525e74;
+}
+
+.settingsCell {
+    text-align: left;
+    padding: 12px 4px;
+    width: 50%;
+}
+
+.settingsCell input[type=text] {
+    width: 100%;
+}
+
+.textbox {
+    font-family: 'Raleway', sans-serif;
+    border: none;
+    border-bottom: solid;
+    border-bottom-width: 2px;
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+.textboxOnWhite {
+    color: #525e74;
+    border-bottom-color: #63b175;
+}
+
+.textboxOnGreen {}
+
+.bigTableCell {
+    text-align: center;
+    padding: 12px 4px;
+}
+
+
+.buttonOnWhite {
+    height: 32px;
+    background-color: #63b175;
+    border: none;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    border-radius: 2px;
+}
+
+#loginMain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 600px;
+    height: 700px;
+    margin: auto;
+}
+
+#authPanel {
+    display: flex;
+    justify-content: center;
+}
+
+.authBlock {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#loginBlock {}
+
+#regBlock {
+    display: none;
+}
+
+#socialBlock {}
+
+.loginTextbox {
+    width: 266px;
+    margin: 8 0;
+}
+
+.socialButton {
+    height: 40;
+    margin: 4 0;
+    text-decoration: none;
+    font-size: 13;
+    padding: 0 0 0 32;
+}
+
+#fbButton {
+    background-color: #3a5998;
+}
+
+#googleButton {
+    background-color: #d34836;
+}
+
+#vkButton {
+    background-color: #4c75a3;
+}
+
+#loginHr {
+    margin: 32px;
+    background-color: #525e74;
+    border: 0;
+    border-radius: 4px;
+    width: 3px;
+}
+
+.authButton {
+    margin: 20 0;
+}
+
+#loginRegButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.activeAuthButton {}
+
+.nonActiveAuthButton {
+    color: lightgray;
+    font-weight: 300;
+}
+
+#withoutGroupPanel {
+    display: none;
+}

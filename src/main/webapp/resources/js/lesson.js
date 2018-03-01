@@ -45,11 +45,11 @@ function createLesson() {
         url: urlPrefix + '/api/lesson',
         data: JSON.stringify(currentLesson),
         success: function (result) {
-            alert('Занятие успешно создано');
-            window.location.href = urlPrefix + "/";
+            bootbox.alert('Занятие успешно создано', function(){
+            window.location.href = urlPrefix + "/"; });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }
@@ -62,29 +62,31 @@ function updateLesson() {
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(currentLesson),
         success: function (result) {
-            alert('Занятие успешно обновлено');
-            window.location.href = urlPrefix + "/";
+            bootbox.alert('Занятие успешно обновлено', function(){
+            window.location.href = urlPrefix + "/"; });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }
 
 function deleteLesson() {
-    if(confirm(DEL_LESSON_CONF)) {
-        $.ajax({
-            type: 'DELETE',
-            url: urlPrefix + '/api/lesson/' + currentLesson.id,
-            success: function (result) {
-                alert('Занятие успешно удалено');
-                window.location.href = urlPrefix + "/";
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.status + ' ' + errorThrown);
-            }
-        });
-    }
+    bootbox.confirm(DEL_LESSON_CONF, function (result) {
+        if (result) {
+            $.ajax({
+                type: 'DELETE',
+                url: urlPrefix + '/api/lesson/' + currentLesson.id,
+                success: function () {
+                    bootbox.alert('Занятие успешно удалено', function(){
+                        window.location.href = urlPrefix + "/"; });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(jqXHR.status + ' ' + errorThrown);
+                }
+            });
+        }
+    });
 }
 
 function showTags(tags) {

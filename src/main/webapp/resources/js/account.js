@@ -46,11 +46,11 @@ function saveAccount() {
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(currentAccount),
         success: function (result) {
-            alert('Аккаунт успешно обновлен');
-            window.location.href = urlPrefix + "/";
+            bootbox.alert('Аккаунт успешно обновлен', function(){
+            window.location.href = urlPrefix + "/"; });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }

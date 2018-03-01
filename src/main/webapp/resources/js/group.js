@@ -119,8 +119,7 @@ function saveGroup() {
             savePermisstions();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
-            return;
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }
@@ -135,7 +134,7 @@ function savePermisstions() {
             deleteMembers();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }
@@ -148,18 +147,17 @@ function deleteMembers() {
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify(mapMembersToDeletedAccountIds(currentMembers_)),
             success: function (result) {
-                alert('Группа успешно обновлена');
-                window.location.href = urlPrefix + "/";
+                bootbox.alert('Группа успешно обновлена', function(){
+                window.location.href = urlPrefix + "/";});
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.status + ' ' + errorThrown);
-                return;
+                bootbox.alert(jqXHR.status + ' ' + errorThrown);
             }
         });
     }
     else {
-        alert('Группа успешно обновлена');
-        window.location.href = urlPrefix + "/";
+        bootbox.alert('Группа успешно обновлена', function(){
+        window.location.href = urlPrefix + "/"; });
     }
 }
 
@@ -170,11 +168,11 @@ function invite() {
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(currentGroup),
         success: function (result) {
-            alert('Приглашение отправлено');
-            window.location.reload();
+            bootbox.alert('Приглашение отправлено', function(){
+            window.location.reload(); });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }
