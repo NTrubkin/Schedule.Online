@@ -12,8 +12,8 @@
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/group.js"></script>
     <script>
-        if(window.mobilecheck()) {
-            window.location.href = urlPrefix + '/group?m=true';
+        if(!window.mobilecheck()) {
+            window.location.href = urlPrefix + '/group';
         }
     </script>
 </head>
@@ -21,6 +21,7 @@
 <%@include file="header.jsp" %>
 
 <div id="mainPanel">
+    <span style="font-size:30px;cursor:pointer;" onclick="openNav()">&#9776;</span>
     <div id="recordsWithDividers">
         <p class="recordName">Настройки группы</p>
         <table class="settingsTable recordDetails">
@@ -28,6 +29,8 @@
                 <td class="settingsCell">
                     <p>Название</p>
                 </td>
+            </tr>
+            <tr class="settingsRow">
                 <td class="settingsCell">
                     <input id="nameFld" class="textbox textboxOnWhite settingsInput" type="text">
                 </td>
@@ -36,6 +39,8 @@
                 <td class="settingsCell">
                     <p>Лидер</p>
                 </td>
+            </tr>
+            <tr class="settingsRow">
                 <td class="settingsCell">
                     <p id="leaderFld"></p>
                 </td>
@@ -43,9 +48,11 @@
         </table>
         <br>
         <p class="recordName">Участники</p>
-        <table id="membersTable" class="settingsTable recordDetails ">
+        <div id="membersTableHolder">
+            <table id="membersTable" class="settingsTable recordDetails ">
 
-        </table>
+            </table>
+        </div>
 
         <div id="controlBlock">
             <button onclick="saveGroup()">Сохранить</button>

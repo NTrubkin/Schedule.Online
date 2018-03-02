@@ -426,3 +426,8 @@ body {
     margin-top: 20px;
     margin-bottom: 0;
 }
+
+#membersTableHolder {
+    width: 100%;
+    overflow-x: auto;
+}

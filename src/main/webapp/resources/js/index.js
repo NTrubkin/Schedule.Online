@@ -9,7 +9,7 @@ var canEditEvents = false;
 
 
 function initIndexPage(canEditLessons, canEditEvents) {
-    this.canEditLessons = canEditEvents;
+    this.canEditLessons = canEditLessons;
     this.canEditEvents = canEditEvents;
     if (group == null) {
         setBlockDisplaying('withoutGroupPanel', true);
