@@ -14,8 +14,8 @@
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/login.js"></script>
     <script>
-        if(window.mobilecheck()) {
-            window.location.href = urlPrefix + '/login?m=true';
+        if(!window.mobilecheck()) {
+            window.location.href = urlPrefix + '/login';
         }
     </script>
 </head>
