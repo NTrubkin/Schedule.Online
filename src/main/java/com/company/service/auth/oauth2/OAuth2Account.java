@@ -6,6 +6,7 @@ public class OAuth2Account {
     private String secondName;
 
     public OAuth2Account() {
+        //
     }
 
     public Long getId() {

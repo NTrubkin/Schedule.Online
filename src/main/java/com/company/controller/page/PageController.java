@@ -147,7 +147,7 @@ public class PageController {
             return mobileController ? mobilePage : normalPage;
         }
         else {
-            return "redirect:" + (device.isMobile() ? mobileRedirect : normalRedirect);
+            return "forward:" + (device.isMobile() ? mobileRedirect : normalRedirect);
         }
     }
 }

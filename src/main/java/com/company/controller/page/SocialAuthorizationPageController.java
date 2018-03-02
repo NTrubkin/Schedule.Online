@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @Controller
 @RequestMapping(value = "/oauth2")
@@ -40,7 +39,7 @@ public class SocialAuthorizationPageController {
     }
 
     @RequestMapping(value = "/vk", method = RequestMethod.GET)
-    public String authenticateUsingVK(@RequestParam(name = "code") String code, HttpServletRequest request) throws IOException {
+    public String authenticateUsingVK(@RequestParam(name = "code") String code, HttpServletRequest request) {
         OAuth2Account data = vkAuthenticator.readAccountData(code);
         Account account = accountDAO.readByVkId(data.getId());
 
@@ -61,7 +60,7 @@ public class SocialAuthorizationPageController {
     }
 
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
-    public String authenticateUsingFacebook(@RequestParam(name = "code") String code, HttpServletRequest request) throws IOException {
+    public String authenticateUsingFacebook(@RequestParam(name = "code") String code, HttpServletRequest request) {
         OAuth2Account data = fbAuthenticator.readAccountData(code);
         Account account = accountDAO.readByFacebookId(data.getId());
 

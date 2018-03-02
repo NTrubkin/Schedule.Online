@@ -52,16 +52,12 @@ public class IdentifierAccountServiceImpl implements UserDetailsService, Identif
                     throw new UsernameNotFoundException("Login " + id + " does not match any of the patterns");
                 }
                 break;
-            /*
             case FACEBOOK_ID:
-                break;
-            case GOOGLE_ID:
+                account = accountDAO.readByFacebookId(new Long(id));
                 break;
             case VK_ID:
+                account = accountDAO.readByVkId(new Long(id));
                 break;
-            case TWITTER_ID:
-                break;
-                */
             default:
                 throw new UnsupportedOperationException("not implemented yet");
         }

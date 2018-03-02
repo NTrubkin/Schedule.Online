@@ -26,6 +26,7 @@ public class Permission {
     private Boolean eventsEdit;
 
     public Permission() {
+        // pojo
     }
 
     public Integer getId() {

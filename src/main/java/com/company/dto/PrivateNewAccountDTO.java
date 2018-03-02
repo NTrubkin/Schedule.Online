@@ -7,6 +7,7 @@ public class PrivateNewAccountDTO {
     private String password;
 
     public PrivateNewAccountDTO() {
+        // pojo
     }
 
     public String getLogin() {
