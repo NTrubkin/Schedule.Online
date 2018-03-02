@@ -42,7 +42,7 @@
         </div>
         <hr id="loginHr">
         <div id="socialBlock" class="authBlock">
-            <a href="https://www.facebook.com/v2.12/dialog/oauth?client_id=2081283898770087&redirect_uri=${urlPrefix}/oauth2/facebook" id="fbButton" class="buttonOnWhite socialButton" style="display: block">
+            <a href="https://www.facebook.com/v2.12/dialog/oauth?client_id=${fbAppId}&redirect_uri=${urlPrefix}/oauth2/facebook" id="fbButton" class="buttonOnWhite socialButton" style="display: block">
                 <p>Войти, используя Facebook</p>
             </a>
             <!--
@@ -50,7 +50,7 @@
                 <p>Войти, используя Google</p>
             </a>
             -->
-            <a href="https://oauth.vk.com/authorize?client_id=6384407&display=page&redirect_uri=${urlPrefix}/oauth2/vk&response_type=code&v=5.73" id="vkButton" class="buttonOnWhite socialButton" style="display: block">
+            <a href="https://oauth.vk.com/authorize?client_id=${vkAppId}&display=page&redirect_uri=${urlPrefix}/oauth2/vk&response_type=code&v=5.73" id="vkButton" class="buttonOnWhite socialButton" style="display: block">
                 <p>Войти, используя VK</p>
             </a>
         </div>

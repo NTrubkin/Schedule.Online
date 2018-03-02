@@ -11,6 +11,7 @@ import com.company.service.auth.CustomUserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,12 @@ public class PageController {
     private final EntityConverter<Group, GroupDTO> groupConverter;
     private final EntityConverter<Lesson, LessonDTO> lessonConverter;
     private final EntityConverter<Event, EventDTO> eventConverter;
+
+    @Value("#{systemEnvironment['FACEBOOK_APP_ID']}")
+    private String fbAppId;
+
+    @Value("#{systemEnvironment['VK_APP_ID']}")
+    private String vkAppId;
 
     @Autowired
     public PageController(AccountDAO accountDAO, LessonDAO lessonDAO, EventDAO eventDAO, PermissionDAO permissionDAO, EntityConverter<Account, PrivateAccountDTO> privateAccConverter, EntityConverter<Account, AccountDTO> accConverter, EntityConverter<Group, GroupDTO> groupConverter, EntityConverter<Lesson, LessonDTO> lessonConverter, EntityConverter<Event, EventDTO> eventConverter) {
@@ -71,6 +78,9 @@ public class PageController {
         if (loginError != 0) {
             model.addAttribute("message", "Login error");
         }
+
+        model.addAttribute("fbAppId", fbAppId);
+        model.addAttribute("vkAppId", vkAppId);
         return redirectByDevice(mobile, device, "login", "mobile/login", "/login", "/login?m=true");
     }
 
