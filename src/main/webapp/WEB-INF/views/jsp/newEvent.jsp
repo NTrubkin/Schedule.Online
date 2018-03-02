@@ -11,11 +11,6 @@
     <title>Schedule.Online - Новое событие</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/event.js"></script>
-    <script>
-        if(window.mobilecheck()) {
-            window.location.href = urlPrefix + '/event?m=true';
-        }
-    </script>
 </head>
 <body>
 <%@include file="header.jsp"%>

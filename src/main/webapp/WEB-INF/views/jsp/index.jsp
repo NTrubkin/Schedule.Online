@@ -12,11 +12,6 @@
     <title>Schedule.Online</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/index.js"></script>
-    <script>
-        if(window.mobilecheck()) {
-            window.location.href = urlPrefix + '/?m=true';
-        }
-    </script>
 </head>
 
 <body>

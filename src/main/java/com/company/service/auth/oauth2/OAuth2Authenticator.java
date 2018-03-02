@@ -53,7 +53,7 @@ public class OAuth2Authenticator {
     }
 
     private String sendRequest(String urlPattern, String... args) {
-        String url = String.format(urlPattern, args);
+        String url = String.format(urlPattern, (Object[]) args);
 
         try {
             URL obj = new URL(url);

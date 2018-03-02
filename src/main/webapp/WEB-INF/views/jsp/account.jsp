@@ -11,11 +11,6 @@
     <title>Schedule.Online - Аккаунт</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/account.js"></script>
-    <script>
-        if(window.mobilecheck()) {
-            window.location.href = urlPrefix + '/account?m=true';
-        }
-    </script>
 </head>
 <body>
 <%@include file="header.jsp"%>

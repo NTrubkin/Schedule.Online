@@ -11,11 +11,6 @@
     <title>Schedule.Online - Группа</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/group.js"></script>
-    <script>
-        if(window.mobilecheck()) {
-            window.location.href = urlPrefix + '/group?m=true';
-        }
-    </script>
 </head>
 <body>
 <%@include file="header.jsp" %>

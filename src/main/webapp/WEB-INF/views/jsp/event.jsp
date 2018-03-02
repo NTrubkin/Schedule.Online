@@ -11,12 +11,6 @@
     <title>Schedule.Online - Событие</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/event.js"></script>
-    <script>
-        if(window.mobilecheck()) {
-            var eventDTO = JSON.parse('${eventDTO}');
-            window.location.href = urlPrefix + '/event?id=' + eventDTO.id + '&m=true';
-        }
-    </script>
 </head>
 <body>
 <%@include file="header.jsp"%>

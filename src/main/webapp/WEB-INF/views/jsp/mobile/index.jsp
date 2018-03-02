@@ -12,11 +12,6 @@
 
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/index.js"></script>
-    <script>
-        if(!window.mobilecheck()){
-            window.location.href = urlPrefix + '/';
-        }
-    </script>
 </head>
 <body>
 

@@ -11,11 +11,6 @@
     <title>Schedule.Online - Новое занятие</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/lesson.js"></script>
-    <script>
-        if(window.mobilecheck()) {
-            window.location.href = urlPrefix + '/lesson?m=true';
-        }
-    </script>
 </head>
 <body>
 <%@include file="header.jsp"%>

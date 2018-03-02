@@ -13,11 +13,6 @@
     <title>Sign In</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/login.js"></script>
-    <script>
-        if(window.mobilecheck()) {
-            window.location.href = urlPrefix + '/login?m=true';
-        }
-    </script>
 </head>
 <body>
 <div id="loginMain">
