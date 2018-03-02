@@ -8,12 +8,15 @@ import com.company.model.Account;
 import com.company.service.auth.CustomUserDetails;
 import com.company.service.auth.oauth2.OAuth2Account;
 import com.company.service.auth.oauth2.OAuth2Authenticator;
+import com.company.util.UrlUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/api/account")
@@ -66,28 +69,28 @@ public class AccountRestController {
     }
 
     @RequestMapping(value = "/oauth/facebook", method = RequestMethod.POST)
-    public ResponseEntity addFacebookAccount(@RequestParam(name = "code") String code, Authentication auth) {
+    public ResponseEntity addFacebookAccount(@RequestParam(name = "code") String code, Authentication auth, HttpServletRequest request) {
         if (!(auth.getPrincipal() instanceof CustomUserDetails)) {
             throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
         }
 
         int id = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Account account = accountDAO.read(id);
-        OAuth2Account data = fbAuthenticator.readAccountData(code);
+        OAuth2Account data = fbAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
         account.setFacebookId(data.getId());
         accountDAO.update(account);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/oauth/vk", method = RequestMethod.POST)
-    public ResponseEntity addVkAccount(@RequestParam(name = "code") String code, Authentication auth) {
+    public ResponseEntity addVkAccount(@RequestParam(name = "code") String code, Authentication auth, HttpServletRequest request) {
         if (!(auth.getPrincipal() instanceof CustomUserDetails)) {
             throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
         }
 
         int id = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Account account = accountDAO.read(id);
-        OAuth2Account data = vkAuthenticator.readAccountData(code);
+        OAuth2Account data = vkAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
         account.setVkId(data.getId());
         accountDAO.update(account);
         return new ResponseEntity(HttpStatus.OK);
