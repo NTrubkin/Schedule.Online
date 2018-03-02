@@ -33,6 +33,11 @@ body {
     overflow-y: auto;
 }
 
+#menuPanel label {
+    font-size: 16px;
+    font-weight: 400;
+}
+
 #menuContentPanel {
     width: 280px;
 }
@@ -173,6 +178,11 @@ body {
     font-weight: 600;
     font-size: 20px;
 
+}
+
+.daySubblock p {
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .recordBlock {
@@ -344,7 +354,7 @@ body {
     margin: 4px 0;
     text-decoration: none;
     font-size: 13px;
-    padding: 0 0 0 32px;
+    padding: 11px 0 0 32px;
 }
 
 #fbButton {
@@ -388,6 +398,10 @@ body {
 
 .nonActiveAuthButton:hover {
     text-decoration: underline;
+}
+
+#withoutGroupPanel {
+    display: none;
 }
 
 #regBtn {
