@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Permission {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "account_id")
@@ -26,6 +26,7 @@ public class Permission {
     private Boolean eventsEdit;
 
     public Permission() {
+        // pojo
     }
 
     public Integer getId() {

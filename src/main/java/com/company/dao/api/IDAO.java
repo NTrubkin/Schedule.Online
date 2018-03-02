@@ -1,7 +1,5 @@
 package com.company.dao.api;
 
-import org.hibernate.SessionFactory;
-
 import java.io.Serializable;
 import java.util.List;
 

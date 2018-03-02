@@ -3,10 +3,7 @@ package com.company.dto.converter;
 import com.company.dto.EventDTO;
 import com.company.model.Event;
 import com.company.model.Group;
-import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class EventConverter extends EntityConverter<Event, EventDTO> {

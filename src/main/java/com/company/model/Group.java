@@ -25,6 +25,11 @@ public class Group {
         this.leader = leader;
     }
 
+    public Group(Integer id, String name, Account leader) {
+        this(name, leader);
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

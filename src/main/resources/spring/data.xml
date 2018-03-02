@@ -61,4 +61,14 @@
     <bean id="eventDAO" class="com.company.dao.impl.EventDAOImpl">
         <constructor-arg name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
     </bean>
+
+    <bean id="permissionDAO" class="com.company.dao.impl.PermissionDAOImpl">
+        <constructor-arg name="sessionFactory" ref="hibernate4AnnotatedSessionFactory"/>
+    </bean>
+
+    <bean id="emailSender" class="com.company.service.sender.EmailSender">
+        <constructor-arg name="username" value="#{systemEnvironment['EMAIL_LOGIN']}"/>
+        <constructor-arg name="password" value="#{systemEnvironment['EMAIL_PASSWORD']}"/>
+        <constructor-arg name="propFile" value="/application.properties"/>
+    </bean>
 </beans>

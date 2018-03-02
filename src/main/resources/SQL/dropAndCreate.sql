@@ -1,3 +1,6 @@
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+
 CREATE TABLE groups
 (
   id        SERIAL      NOT NULL
@@ -21,23 +24,12 @@ CREATE TABLE accounts
   group_id              INTEGER,
   settings_notification BOOLEAN     NOT NULL,
   schedule_notidication BOOLEAN     NOT NULL,
+  facebook_id           BIGINT,
+  google_id             BIGINT,
+  vk_id                 BIGINT,
   CONSTRAINT accounts_groups_id_fk FOREIGN KEY (group_id)
   REFERENCES groups (id)
   ON UPDATE CASCADE ON DELETE SET NULL
-);
-
-CREATE TABLE unverified_accounts
-(
-  id                SERIAL      NOT NULL
-    CONSTRAINT unverified_accounts_pkey
-    PRIMARY KEY,
-  first_name        VARCHAR(40) NOT NULL,
-  second_name       VARCHAR(40) NOT NULL,
-  email             VARCHAR(240),
-  phone_number      BIGINT,
-  name              VARCHAR(40) NOT NULL,
-  passhash          VARCHAR(40) NOT NULL,
-  verification_code INT         NOT NULL
 );
 
 ALTER TABLE public.groups
@@ -92,11 +84,12 @@ CREATE TABLE public.event_tags
 
 CREATE TABLE public.permissions
 (
-  account_id   INT     NOT NULL,
-  group_id     INT     NOT NULL,
-  admin        BOOLEAN NOT NULL,
-  lessons_edit BOOLEAN NOT NULL,
-  events_edit  BOOLEAN NOT NULL,
+  id           SERIAL PRIMARY KEY NOT NULL,
+  account_id   INT                NOT NULL,
+  group_id     INT                NOT NULL,
+  admin        BOOLEAN            NOT NULL,
+  lessons_edit BOOLEAN            NOT NULL,
+  events_edit  BOOLEAN            NOT NULL,
   CONSTRAINT permissions_account_id_fk FOREIGN KEY (account_id) REFERENCES accounts (id) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT permissions_group_id_fk FOREIGN KEY (group_id) REFERENCES groups (id) ON DELETE CASCADE ON UPDATE CASCADE
 );

@@ -4,47 +4,44 @@ const TODAY_DAY_BLOCK_ID = "today-day-block";
 const TODAY_BG_COLOR = '#EF5350';
 const DEL_LESSON_CONF = 'Удалить занятие?';
 const DEL_EVENT_CONF = 'Удалить событие?';
+var canEditLessons = false;
+var canEditEvents = false;
 
-function initIndexPage() {
-    loadData();
-    loadFilter();
-    showData();
+
+function initIndexPage(canEditLessons, canEditEvents) {
+    this.canEditLessons = canEditLessons;
+    this.canEditEvents = canEditEvents;
+    if (group == null) {
+        setBlockDisplaying('withoutGroupPanel', true);
+    }
+    else {
+        setBlockDisplaying('filterBlock', true);
+        setBlockDisplaying('actionBlock', true);
+        setBlockDisplaying('addLessonBtn', canEditLessons);
+        setBlockDisplaying('addEventBtn', canEditEvents);
+        loadData();
+        loadFilter();
+        showData();
+    }
 }
 
 function loadData() {
     $.ajax({
         type: 'GET',
-        url: urlPrefix + '/api/comb/mainpage',
+        url: urlPrefix + '/api/group/lessonsAndEvents',
         dataType: 'json',
         async: false,
         success: function (result) {
-            if (result.user === null) {
-                alert('unauthorized user');
-                return;
-            }
-
             data = result;
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }
 
 function showData() {
-    showUser();
-    showGroup();
     showRecords();
-}
-
-function showUser() {
-    $('#accountName').html(data.user.firstName + '<br>' + data.user.secondName);
-    $('#accountBlock').css('visibility', 'visible');
-}
-
-function showGroup() {
-    $('#groupName').text(data.group.name);
-    $('#groupBlock').css('visibility', 'visible');
 }
 
 function showRecordBlock(record) {
@@ -65,6 +62,7 @@ function isEvent(record) {
 }
 
 var firstDayBlock;
+
 function showRecords() {
     $('#recordsWithDividers').empty();
     var records = data.lessons.concat(data.events);
@@ -72,42 +70,44 @@ function showRecords() {
     records.sort(function (a, b) {
         return a.startDatetime - b.startDatetime
     });
-    var currentDay = null;
-    firstDayBlock = true;
-    for (var i = 0; i < records.length; i++) {
-        var date = new Date(records[i].startDatetime);
-        if (!date.isSameDateAs(currentDay)) {
-            showDayBlock(date);
-            currentDay = date;
+
+    if (records.length > 0) {
+        var currentDay = null;
+        var firstDay = new Date(records[0].startDatetime);
+        firstDayBlock = true;
+        for (var i = 0; i < records.length; i++) {
+            var date = new Date(records[i].startDatetime);
+            if (!date.isSameDateAs(currentDay)) {
+                currentDay = date;
+                showDayBlock(firstDay, currentDay);
+            }
+
+            showRecordBlock(records[i]);
         }
 
-        showRecordBlock(records[i]);
-    }
-
-    var todayBlock = $('#' + TODAY_DAY_BLOCK_ID);
-    var todayBtn = $('#curDayBtn');
-    if(todayBlock != null && todayBlock.offset() != null) {
-        todayBtn.css('display', 'block');
-    }
-    else {
-        todayBtn.css('display', 'none');
+        var todayBlock = $('#' + TODAY_DAY_BLOCK_ID);
+        var todayBtn = $('#curDayBtn');
+        if (todayBlock != null && todayBlock.offset() != null) {
+            todayBtn.css('display', 'block');
+        }
+        else {
+            todayBtn.css('display', 'none');
+        }
     }
 }
-const emptyBlock =
-    '        <div class="contentBlock emptyBlock">\n' +
-    '            <p>STUB TEXT IN STUB BLOCK. SHOULD BE INVISIBLE</p>\n' +
-    '        </div>';
+
+const emptyBlock = '<hr class="daysDivider">';
 const dayBlock =
     '        <div {3} class="contentBlock dayBlock">\n' +
     '            <div class="daySubblock">\n' +
-    '                <p>{0}</p>\n' +
+    '                <p>{0}<br>{1} {2}</p>\n' +
     '            </div>\n' +
-    '            <div class="daySubblock">\n' +
-    '                <p>{1} {2}</p>\n' +
+    '            <div class="daySubblock" style="text-align: right">\n' +
+    '                <p>Неделя {4}<br>{5}</p>\n' +
     '            </div>\n' +
     '        </div>';
 
-function showDayBlock(date) {
+function showDayBlock(firstDate, currentDate) {
     if (firstDayBlock) {
         firstDayBlock = false;
     }
@@ -116,20 +116,27 @@ function showDayBlock(date) {
     }
 
     var id = '';
-    if(date.isSameDateAs(new Date())) {
+    if (currentDate.isSameDateAs(new Date())) {
         id = 'id="{0}"'.f(TODAY_DAY_BLOCK_ID);
     }
 
-    $('#recordsWithDividers').append(dayBlock.f(days[date.getDay()], date.getDate(), monthArr[date.getMonth()], id));
+    var weekNumber = calculateWeekNumber(firstDate, currentDate) + 1;
+
+    $('#recordsWithDividers').append(dayBlock.f(days[currentDate.getDay()],
+        currentDate.getDate(),
+        monthArr[currentDate.getMonth()],
+        id,
+        weekNumber,
+        isEven(weekNumber) ? 'нч' : 'чет'));
     $('#' + TODAY_DAY_BLOCK_ID).css('background-color', TODAY_BG_COLOR);
 }
 
-const lessonBlock =
+const LESSON_BLOCK =
     '        <div class="contentBlock recordBlock">\n' +
     '            <div class="recordSubblock">\n' +
     '                <a href="{0}/lesson?id={12}" id="{10}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
-    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{5}\'); switchBlockVisibility(\'{10}\'); switchBlockVisibility(\'{11}\');">\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{5}\'); if({13}) {switchBlockVisibility(\'{10}\'); switchBlockVisibility(\'{11}\'); }">\n' +
     '                <div class="recordHeader">\n' +
     '                    <p class="headerItem recordDetails">\n' +
     '                        {1}:{2}<br>{3}:{4}\n' +
@@ -152,9 +159,32 @@ const lessonBlock =
     '            </div>\n' +
     '        </div>';
 
+const MOBILE_LESSON_BLOCK =
+    '        <div class="contentBlock recordBlock">\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{5}\');">\n' +
+    '                <div class="recordHeader">\n' +
+    '                    <p class="headerItem recordDetails">\n' +
+    '                        {1}:{2}<br>{3}:{4}\n' +
+    '                    </p>\n' +
+    '                    <p class="headerItem recordName lessonName">{6}</p>\n' +
+    '                    <p class="headerItem recordDetails">{7}</p>\n' +
+    '                </div>\n' +
+
+    '                    <div id="{5}" class="detailsBlock" style="display: none">\n' +
+    '                        <p class="detailText"><span class="detailHeader">Преподаватель: </span>{8}</p>\n' +
+    '                        <p class="detailText"><span class="detailHeader">Теги: </span>{9}</p>\n' +
+    '                        <a href="{0}/lesson?id={12}" id="{10}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png">Редактировать</a>\n' +
+    '                        <a id="{11}" class="deleteBtn" onclick="deleteLesson(\'{12}\')"><img src="{0}/resources/icon/deleteBtn24.png"/>Удалить</a>\n' +
+    '                    </div>' +
+
+    '                <hr class="recordHr">\n' +
+    '            </div>\n' +
+    '        </div>';
+
 function showLessonBlock(lesson) {
     var start = new Date(lesson.startDatetime);
     var end = new Date(lesson.endDatetime);
+    var lessonBlock = IS_MOBILE ? MOBILE_LESSON_BLOCK : LESSON_BLOCK;
     $('#recordsWithDividers').append(lessonBlock.f(
         urlPrefix,
         formatTime(start.getHours()),
@@ -168,7 +198,12 @@ function showLessonBlock(lesson) {
         showTags(lesson),
         generateCSSId(LESSON_PREFIX, lesson.id, EDIT_POSTFIX),
         generateCSSId(LESSON_PREFIX, lesson.id, DEL_POSTFIX),
-        lesson.id));
+        lesson.id,
+        canEditLessons.toString()));
+    if (IS_MOBILE) {
+        setBlockDisplaying(generateCSSId(LESSON_PREFIX, lesson.id, EDIT_POSTFIX), canEditLessons);
+        setBlockDisplaying(generateCSSId(LESSON_PREFIX, lesson.id, DEL_POSTFIX), canEditLessons);
+    }
 }
 
 const LESSON_PREFIX = 'lesson-';
@@ -177,12 +212,12 @@ const DET_BLOCK_POSTFIX = '-detailsBlock';
 const EDIT_POSTFIX = '-edit';
 const DEL_POSTFIX = '-delete';
 
-const eventBlock =
+const EVENT_BLOCK =
     '       <div class="contentBlock recordBlock">\n' +
     '            <div class="recordSubblock editLessonSubblock">\n' +
     '                <a href="{0}/event?id={10}" id="{8}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png"></a>\n' +
     '            </div>\n' +
-    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{3}\'); switchBlockVisibility(\'{8}\'); switchBlockVisibility(\'{9}\');" >\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{3}\'); if({11}) {switchBlockVisibility(\'{8}\'); switchBlockVisibility(\'{9}\'); }" >\n' +
     '                <div class="recordHeader">\n' +
     '                    <p class="headerItem recordDetails">{1}:{2}</p>\n' +
     '                    <div class="headerItem">\n' +
@@ -205,10 +240,38 @@ const eventBlock =
     '            </div>\n' +
     '            <div class="recordSubblock deleteLessonSubblock">\n' +
     '                <a id="{9}" class="deleteBtn" onclick="deleteEvent(\'{10}\')"><img src="{0}/resources/icon/deleteBtn24.png"/></a>\n' +
-    '            </div>';
+    '            </div>\n' +
+    '       </div>';
+
+const MOBILE_EVENT_BLOCK =
+    '       <div class="contentBlock recordBlock">\n' +
+    '            <div class="recordSubblock bodyRecordSubblock" onclick="switchBlockDisplaying(\'{3}\');" >\n' +
+    '                <div class="recordHeader">\n' +
+    '                    <p class="headerItem recordDetails">{1}:{2}</p>\n' +
+    '                    <div class="headerItem">\n' +
+    '                        <p class="recordName eventName">\n' +
+    '                            {4}\n' +
+    '                        </p>\n' +
+    '                        <p class="recordDetails placeDetails">\n' +
+    '                            {5}\n' +
+    '                        </p>\n' +
+    '                    </div>\n' +
+    '                </div>\n' +
+
+    '                    <div id="{3}" class="detailsBlock" style="display: none">\n' +
+    '                        <p class="detailText"><span class="detailHeader">Описание: </span>{6}</p>\n' +
+    '                        <p class="detailText"><span class="detailHeader">Теги: </span>{7}</p>\n' +
+    '                        <a href="{0}/event?id={10}" id="{8}" class="editBtn"><img src="{0}/resources/icon/editBtn24.png">Редактировать</a>\n' +
+    '                        <a id="{9}" class="deleteBtn" onclick="deleteEvent(\'{10}\')"><img src="{0}/resources/icon/deleteBtn24.png"/>Удалить</a>\n' +
+    '                    </div>' +
+
+    '                <hr class="recordHr">\n' +
+    '            </div>\n' +
+    '       </div>';
 
 function showEventBlock(event) {
     var start = new Date(event.startDatetime);
+    var eventBlock = IS_MOBILE ? MOBILE_EVENT_BLOCK : EVENT_BLOCK
     $('#recordsWithDividers').append(eventBlock.f(
         urlPrefix,
         formatTime(start.getHours()),
@@ -220,26 +283,30 @@ function showEventBlock(event) {
         showTags(event),
         generateCSSId(EVENT_PREFIX, event.id, EDIT_POSTFIX),
         generateCSSId(EVENT_PREFIX, event.id, DEL_POSTFIX),
-        event.id));
+        event.id,
+        canEditEvents.toString()));
+    if (IS_MOBILE) {
+        setBlockDisplaying(generateCSSId(EVENT_PREFIX, event.id, EDIT_POSTFIX), canEditEvents);
+        setBlockDisplaying(generateCSSId(EVENT_PREFIX, event.id, DEL_POSTFIX), canEditEvents);
+    }
 }
 
 function saveFilter() {
     var filters = Cookies.get(FILTERS_KEY);
-    if(filters == null) {
+    if (filters == null) {
         filters = {};
     }
     else {
         filters = JSON.parse(filters);
     }
 
-    var filter = {
-        lessons : $('#lessonFilter').prop('checked'),
-        events : $('#eventFilter').prop('checked'),
-        search : $('#searchFilter').val(),
-        tags : $('#tagsFilter').val(),
-        hideLast : $('#hideLastFilter').prop('checked')};
-
-    filters[data.user.id] = filter;
+    filters[account.id] = {
+        lessons: $('#lessonFilter').prop('checked'),
+        events: $('#eventFilter').prop('checked'),
+        search: $('#searchFilter').val(),
+        tags: $('#tagsFilter').val(),
+        hideLast: $('#hideLastFilter').prop('checked')
+    };
     Cookies.set(FILTERS_KEY, filters);
 }
 
@@ -249,16 +316,16 @@ function saveFilter() {
 // Варианты: шифровать, хранить в бд, отказаться от этих полей
 function loadFilter() {
     var filters = Cookies.get(FILTERS_KEY);
-    if(filters == null) {
+    if (filters == null) {
         return;
     }
 
-    var filter = JSON.parse(filters)[data.user.id];
-    if(filter == null) {
+    var filter = JSON.parse(filters)[account.id];
+    if (filter == null) {
         return;
     }
 
-    if(filter.lessons == null || filter.events == null || filter.search == null ||filter.tags == null ||filter.hideLast == null) {
+    if (filter.lessons == null || filter.events == null || filter.search == null || filter.tags == null || filter.hideLast == null) {
         return;
     }
 
@@ -272,7 +339,7 @@ function loadFilter() {
 function filterRecords(records) {
     var currentDatetime = new Date().getTime();
     var filtered = [];
-    for(var i = 0; i < records.length; i++) {
+    for (var i = 0; i < records.length; i++) {
         console.log();
         if (isLesson(records[i]) && !$('#lessonFilter').prop('checked')) {
             continue;
@@ -282,18 +349,18 @@ function filterRecords(records) {
             continue;
         }
 
-        if($('#hideLastFilter').prop('checked') && records[i].startDatetime < currentDatetime) {
+        if ($('#hideLastFilter').prop('checked') && records[i].startDatetime < currentDatetime) {
             continue;
         }
 
-        if($('#searchFilter').val() != '' && !fitBySearchFilter(records[i], $('#searchFilter').val())) {
+        if ($('#searchFilter').val() != '' && !fitBySearchFilter(records[i], $('#searchFilter').val())) {
             continue;
         }
 
-        if($('#tagsFilter').val() != '' && !fitByTagsFilter(records[i], $('#tagsFilter').val())) {
+        if ($('#tagsFilter').val() != '' && !fitByTagsFilter(records[i], $('#tagsFilter').val())) {
             continue;
         }
-        
+
         filtered.push(records[i]);
     }
     return filtered;
@@ -307,7 +374,7 @@ function fitBySearchFilter(record, filter) {
             record.teacher.toString().search(regex) !== -1;
     }
 
-    if(isEvent(record)) {
+    if (isEvent(record)) {
         return record.name.toString().search(regex) !== -1 ||
             record.place.toString().search(regex) !== -1 ||
             record.description.toString().search(regex) !== -1;
@@ -318,7 +385,7 @@ function fitBySearchFilter(record, filter) {
 
 function scrollToToday() {
     var elem = $('#' + TODAY_DAY_BLOCK_ID);
-    if(elem != null && elem.offset() != null) {
+    if (elem != null && elem.offset() != null) {
         $('html, body').animate({
             scrollTop: elem.offset().top
         }, 1000);
@@ -326,15 +393,10 @@ function scrollToToday() {
 }
 
 function showTags(record) {
-    if(record.tags.length === 0) {
-        return ' ';
-    }
-    else {
-        var tags = $.map(record.tags, function (tag) {
-            return tag.name;
-        });
-        return tags.join(", ");
-    }
+    var tags = $.map(record.tags, function (tag) {
+        return tag.name;
+    });
+    return tags.join(", ");
 }
 
 function fitByTagsFilter(record, filter) {
@@ -348,33 +410,59 @@ function fitByTagsFilter(record, filter) {
 }
 
 function deleteLesson(lessonId) {
-    if(confirm(DEL_LESSON_CONF)) {
-        $.ajax({
-            type: 'DELETE',
-            url: urlPrefix + '/api/lesson/' + lessonId,
-            success: function () {
-                loadData();
-                showData();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.status + ' ' + errorThrown);
+    bootbox.confirm(DEL_LESSON_CONF,
+        function (result) {
+            if (result) {
+                $.ajax({
+                    type: 'DELETE',
+                    url: urlPrefix + '/api/lesson/' + lessonId,
+                    success: function () {
+                        loadData();
+                        showData();
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        bootbox.alert(jqXHR.status + ' ' + errorThrown);
+                    }
+                });
             }
         });
-    }
 }
 
 function deleteEvent(eventId) {
-    if(confirm(DEL_EVENT_CONF)) {
-        $.ajax({
-            type: 'DELETE',
-            url: urlPrefix + '/api/event/' + eventId,
-            success: function () {
-                loadData();
-                showData();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.status + ' ' + errorThrown);
-            }
-        });
-    }
+    bootbox.confirm(DEL_EVENT_CONF, function (result) {
+        if (result) {
+            $.ajax({
+                type: 'DELETE',
+                url: urlPrefix + '/api/event/' + eventId,
+                success: function () {
+                    loadData();
+                    showData();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(jqXHR.status + ' ' + errorThrown);
+                }
+            });
+        }
+    });
 }
+
+const DEFAULT_GROUP_NAME = "Новая группа";
+
+function createGroup() {
+    var group = {name: DEFAULT_GROUP_NAME};
+    $.ajax({
+        type: 'POST',
+        url: urlPrefix + '/api/group',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(group),
+        success: function () {
+            bootbox.alert('Группа успешно создана.', function () {
+                window.location.href = urlPrefix + (window.mobilecheck() ? '/group?m=true' : '/group');
+            });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+        }
+    });
+}
+

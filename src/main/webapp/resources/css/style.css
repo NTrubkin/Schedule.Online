@@ -33,6 +33,11 @@ body {
     overflow-y: auto;
 }
 
+#menuPanel label {
+    font-size: 16px;
+    font-weight: 400;
+}
+
 #menuContentPanel {
     width: 280px;
 }
@@ -61,6 +66,11 @@ body {
     background-clip: padding-box;
     -webkit-border-radius: 7px;
     background-color: #525e74;
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    border: 6px solid rgba(0, 0, 0, 0);
+    -webkit-border-radius: 10px;
 }
 
 .menuBlock {
@@ -138,6 +148,14 @@ body {
     color: #525e74;
 }
 
+#filterBlock {
+    display: none;
+}
+
+#actionBlock {
+    display: none;
+}
+
 #recordsWithDividers {
     width: 600px;
     margin: 0 auto 0 auto;
@@ -160,6 +178,11 @@ body {
     font-weight: 600;
     font-size: 20px;
 
+}
+
+.daySubblock p {
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .recordBlock {
@@ -224,10 +247,9 @@ body {
     visibility: hidden;
 }
 
-.emptyBlock {
+.daysDivider {
     height: 160px;
     visibility: hidden;
-    background-color: black;
 }
 
 .placeDetails {
@@ -279,4 +301,113 @@ body {
 .bigTableCell {
     text-align: center;
     padding: 12px 4px;
+}
+
+
+.buttonOnWhite {
+    height: 32px;
+    background-color: #63b175;
+    border: none;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 600;
+    border-radius: 2px;
+}
+
+#loginMain {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 600px;
+    height: 700px;
+    margin: auto;
+}
+
+#authPanel {
+    display: flex;
+    justify-content: center;
+}
+
+.authBlock {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#loginBlock {}
+
+#regBlock {
+    display: none;
+}
+
+#socialBlock {}
+
+.loginTextbox {
+    width: 266px;
+    margin: 8px 0;
+}
+
+.socialButton {
+    height: 40px;
+    margin: 4px 0;
+    text-decoration: none;
+    font-size: 13px;
+    padding: 11px 0 0 32px;
+}
+
+#fbButton {
+    background-color: #3a5998;
+}
+
+#googleButton {
+    background-color: #d34836;
+}
+
+#vkButton {
+    background-color: #4c75a3;
+}
+
+#loginHr {
+    margin: 32px;
+    background-color: #525e74;
+    border: 0;
+    border-radius: 4px;
+    width: 3px;
+}
+
+.authButton {
+    margin: 20px 0;
+}
+
+#loginRegButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.activeAuthButton {
+    text-decoration: none;
+}
+
+.nonActiveAuthButton {
+    color: lightgray;
+    font-weight: 300;
+    text-decoration: none;
+}
+
+.nonActiveAuthButton:hover {
+    text-decoration: underline;
+}
+
+#withoutGroupPanel {
+    display: none;
+}
+
+#regBtn {
+    float: right;
+}
+
+#withoutGroupPanel {
+    display: none;
 }

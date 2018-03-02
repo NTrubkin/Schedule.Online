@@ -1,10 +1,10 @@
 var currentEvent = {
-    name : 'Новое событие',
-    place : 'Место',
-    description : 'Описание события',
-    tags : [],
+    name: 'Новое событие',
+    place: 'Место',
+    description: 'Описание события',
+    tags: [],
     startDatetime: Date.now(),
-    groupId : 0
+    groupId: 0
 };
 const DEL_EVENT_CONF = 'Удалить событие?';
 
@@ -42,11 +42,12 @@ function createNewEvent() {
         url: urlPrefix + '/api/event',
         data: JSON.stringify(currentEvent),
         success: function (result) {
-            alert('Событие успешно создано');
-            window.location.href = urlPrefix + "/";
+            bootbox.alert('Событие успешно создано', function () {
+                window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }
@@ -59,33 +60,37 @@ function updateEvent() {
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(currentEvent),
         success: function (result) {
-            alert('Событие успешно обновлено');
-            window.location.href = urlPrefix + "/";
+            bootbox.alert('Событие успешно обновлено', function () {
+                window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            alert(jqXHR.status + ' ' + errorThrown);
+            bootbox.alert(jqXHR.status + ' ' + errorThrown);
         }
     });
 }
 
 function deleteEvent() {
-    if(confirm(DEL_EVENT_CONF)) {
-        $.ajax({
-            type: 'DELETE',
-            url: urlPrefix + '/api/event/' + currentEvent.id,
-            success: function (result) {
-                alert('Событие успешно удалено');
-                window.location.href = urlPrefix + "/";
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.status + ' ' + errorThrown);
-            }
-        });
-    }
+    bootbox.confirm(DEL_EVENT_CONF, function (result) {
+        if (result) {
+            $.ajax({
+                type: 'DELETE',
+                url: urlPrefix + '/api/event/' + currentEvent.id,
+                success: function () {
+                    bootbox.alert('Событие успешно удалено', function () {
+                        window.location.href = urlPrefix + (window.mobilecheck() ? '/?m=true' : '/');
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    bootbox.alert(jqXHR.status + ' ' + errorThrown);
+                }
+            });
+        }
+    });
 }
 
 function showTags(tags) {
-    if(tags.length === 0) {
+    if (tags.length === 0) {
         return '';
     }
     else {

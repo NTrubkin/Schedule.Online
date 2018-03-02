@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
+import java.util.Objects;
 
 /**
  * Важно помнить, что в приложении нет понятия username
@@ -11,7 +12,6 @@ import java.util.Collection;
  * Поэтому username генерируется на основе id методом generateUsername()
  */
 public class CustomUser extends User implements CustomUserDetails {
-
     private final int id;
 
     public CustomUser(int id, String password, boolean enabled, boolean accountNonExpired,
@@ -29,5 +29,20 @@ public class CustomUser extends User implements CustomUserDetails {
     @Override
     public int getUserId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        CustomUser that = (CustomUser) o;
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), id);
     }
 }
