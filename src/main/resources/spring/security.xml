@@ -50,7 +50,7 @@
 
     <beans:bean id="facebookOAuth2Authenticator" class="com.company.service.auth.oauth2.OAuth2Authenticator">
         <beans:constructor-arg name="userAgent" value="${security.oauth2.userAgent}"/>
-        <beans:constructor-arg name="appId" value="${security.oauth2.facebook.appId}"/>
+        <beans:constructor-arg name="appId" value="#{systemEnvironment['FACEBOOK_APP_ID']}"/>
         <beans:constructor-arg name="appSecret" value="#{systemEnvironment['FACEBOOK_SECRET']}"/>
         <beans:constructor-arg name="redirectUrl" value="${security.oauth2.facebook.redirectUrl}"/>
         <beans:constructor-arg name="getTokenUrl" value="${security.oauth2.facebook.getTokenUrl}"/>
@@ -60,7 +60,7 @@
 
     <beans:bean id="vkOAuth2Authenticator" class="com.company.service.auth.oauth2.OAuth2Authenticator">
         <beans:constructor-arg name="userAgent" value="${security.oauth2.userAgent}"/>
-        <beans:constructor-arg name="appId" value="${security.oauth2.vk.appId}"/>
+        <beans:constructor-arg name="appId" value="#{systemEnvironment['VK_APP_ID']}"/>
         <beans:constructor-arg name="appSecret" value="#{systemEnvironment['VK_SECRET']}"/>
         <beans:constructor-arg name="redirectUrl" value="${security.oauth2.vk.redirectUrl}"/>
         <beans:constructor-arg name="getTokenUrl" value="${security.oauth2.vk.getTokenUrl}"/>
