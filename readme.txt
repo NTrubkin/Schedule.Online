@@ -1,1 +1,1 @@
-Для работы приложения требуются переменные окружения: DATABASE_URL, EMAIL_LOGIN, EMAIL_PASSWORD, FACEBOOK_SECRET, VK_SECRET
+Для работы приложения требуются переменные окружения: DATABASE_URL, EMAIL_LOGIN, EMAIL_PASSWORD, FACEBOOK_SECRET, VK_SECRET, FACEBOOK_APP_ID, VK_APP_ID
