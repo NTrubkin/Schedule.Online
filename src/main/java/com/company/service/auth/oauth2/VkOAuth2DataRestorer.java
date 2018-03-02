@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class VkOAuth2DataRestorer implements OAuth2DataRestorer {
@@ -22,7 +20,7 @@ public class VkOAuth2DataRestorer implements OAuth2DataRestorer {
         OAuth2Account account = new OAuth2Account();
         JsonNode root = new ObjectMapper().readTree(json);
         JsonNode data = root.get("response").get(0);
-        account.setId(data.get("uid").asLong());
+        account.setId(data.get("id").asLong());
         account.setFirstName(data.get("first_name").asText());
         account.setSecondName(data.get("last_name").asText());
         return account;

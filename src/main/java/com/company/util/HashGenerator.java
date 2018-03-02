@@ -11,7 +11,7 @@ public class HashGenerator {
     private HashGenerator() {
     }
 
-    public static String generateSHA1(String input){
+    public static String generateSHA1(String input) {
         MessageDigest mDigest = null;
         try {
             mDigest = MessageDigest.getInstance("SHA1");

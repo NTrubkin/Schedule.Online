@@ -2,16 +2,12 @@ package com.company.service.sender;
 
 import com.company.util.LoginValidator;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ResourceUtils;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.ResourceBundle;
 
 public class EmailSender implements MessageSender {
     private static final Logger LOGGER = Logger.getLogger(EmailSender.class);
@@ -34,11 +30,11 @@ public class EmailSender implements MessageSender {
 
     @Override
     public void send(String toEmail, String subject, String text) {
-        if(!new Boolean(properties.getProperty("mail.active"))) {
+        if (!new Boolean(properties.getProperty("mail.active"))) {
             LOGGER.info("Property mail.active is false. Skip sending.");
         }
 
-        if(!isAddressValid(toEmail) || !isMessageValid(text)) {
+        if (!isAddressValid(toEmail) || !isMessageValid(text)) {
             throw new IllegalArgumentException("Address or message is not valid. Abort sending.");
         }
 

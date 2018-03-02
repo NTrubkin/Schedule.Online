@@ -1,11 +1,8 @@
 package com.company.controller.rest;
 
 import com.company.dao.api.LessonDAO;
-import com.company.dao.impl.DAO;
 import com.company.dto.LessonDTO;
 import com.company.dto.converter.IEntityConverter;
-import com.company.dto.converter.LessonConverter;
-import com.company.model.Account;
 import com.company.model.Lesson;
 import com.company.service.sender.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;

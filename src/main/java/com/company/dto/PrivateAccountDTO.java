@@ -18,7 +18,6 @@ public class PrivateAccountDTO {
     private Long vkId;
 
 
-
     public PrivateAccountDTO() {
     }
 

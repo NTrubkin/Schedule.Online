@@ -1,7 +1,6 @@
 package com.company.dao.impl;
 
 import com.company.dao.api.PermissionDAO;
-import com.company.model.Event;
 import com.company.model.Permission;
 import com.company.util.GenericReflector;
 import org.apache.log4j.Logger;
@@ -48,7 +47,7 @@ public class PermissionDAOImpl extends DAO<Permission> implements PermissionDAO 
         Transaction transaction = null;
         try {
             transaction = session.beginTransaction();
-            for(Permission permission : permissions) {
+            for (Permission permission : permissions) {
                 session.update(permission);
             }
             transaction.commit();

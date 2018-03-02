@@ -3,10 +3,7 @@ package com.company.dto.converter;
 import com.company.dto.LessonDTO;
 import com.company.model.Group;
 import com.company.model.Lesson;
-import org.hibernate.collection.internal.PersistentBag;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 
 @Service
 public class LessonConverter extends EntityConverter<Lesson, LessonDTO> {

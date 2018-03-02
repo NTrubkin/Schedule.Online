@@ -5,9 +5,6 @@ import com.company.util.GenericReflector;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.lang.InstantiationException;
@@ -153,6 +150,7 @@ public abstract class DAO<T> implements IDAO<T> {
 
     /**
      * Важно, чтобы поле было уникальным
+     *
      * @param field
      * @param value
      * @return

@@ -1,9 +1,5 @@
 package com.company.dto;
 
-import com.company.model.Permission;
-
-import java.util.List;
-
 public class GroupDTO {
     private Integer id;
     private String name;

@@ -1,9 +1,6 @@
 package com.company.model;
 
-import org.springframework.security.access.method.P;
-
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "groups", schema = "public")

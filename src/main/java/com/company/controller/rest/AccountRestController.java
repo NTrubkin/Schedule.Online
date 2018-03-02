@@ -1,24 +1,18 @@
 package com.company.controller.rest;
 
 import com.company.dao.api.AccountDAO;
-import com.company.dto.AccountDTO;
 import com.company.dto.PrivateAccountDTO;
 import com.company.dto.PrivateNewAccountDTO;
-import com.company.dto.converter.AccountConverter;
 import com.company.dto.converter.IEntityConverter;
-import com.company.dto.converter.PrivateAccountConverter;
 import com.company.model.Account;
 import com.company.service.auth.CustomUserDetails;
 import com.company.service.auth.oauth2.OAuth2Account;
 import com.company.service.auth.oauth2.OAuth2Authenticator;
-import com.company.util.HashGenerator;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

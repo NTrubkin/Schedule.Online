@@ -12,4 +12,5 @@ public enum IdType {
     FACEBOOK_ID,
     GOOGLE_ID,
     VK_ID,
-    TWITTER_ID}
+    TWITTER_ID
+}

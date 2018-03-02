@@ -12,8 +12,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mobile.device.Device;
-import org.springframework.mobile.device.DevicePlatform;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +25,7 @@ import java.util.List;
 @RequestMapping(value = "/")
 public class PageController {
 
+    private static final ObjectMapper MAPPER = new ObjectMapper();
     private final AccountDAO accountDAO;
     private final LessonDAO lessonDAO;
     private final EventDAO eventDAO;
@@ -36,8 +35,6 @@ public class PageController {
     private final EntityConverter<Group, GroupDTO> groupConverter;
     private final EntityConverter<Lesson, LessonDTO> lessonConverter;
     private final EntityConverter<Event, EventDTO> eventConverter;
-
-    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     @Autowired
     public PageController(AccountDAO accountDAO, LessonDAO lessonDAO, EventDAO eventDAO, PermissionDAO permissionDAO, EntityConverter<Account, PrivateAccountDTO> privateAccConverter, EntityConverter<Account, AccountDTO> accConverter, EntityConverter<Group, GroupDTO> groupConverter, EntityConverter<Lesson, LessonDTO> lessonConverter, EntityConverter<Event, EventDTO> eventConverter) {
@@ -56,7 +53,7 @@ public class PageController {
     public String getIndexPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
         Account account = readAndInjectHeaderAttributes(auth, model);
         Permission permission = permissionDAO.readByAccount(account.getId());
-        if(permission != null) {
+        if (permission != null) {
             model.addAttribute("canEditLessons", permission.getLessonsEdit());
             model.addAttribute("canEditEvents", permission.getEventsEdit());
         }
@@ -64,7 +61,7 @@ public class PageController {
             model.addAttribute("canEditLessons", false);
             model.addAttribute("canEditEvents", false);
         }
-        return redirectByDevice(mobile, device, "index", "mobile/index" ,"/", "/?m=true");
+        return redirectByDevice(mobile, device, "index", "mobile/index", "/", "/?m=true");
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -74,47 +71,47 @@ public class PageController {
         if (loginError != 0) {
             model.addAttribute("message", "Login error");
         }
-        return redirectByDevice(mobile, device, "login", "mobile/login" ,"/login", "/login?m=true");
+        return redirectByDevice(mobile, device, "login", "mobile/login", "/login", "/login?m=true");
     }
 
     @RequestMapping(value = "/new-lesson")
     public String getNewLessonPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        return redirectByDevice(mobile, device, "newLesson", "mobile/newLesson" ,"/new-lesson", "/new-lesson?m=true");
+        return redirectByDevice(mobile, device, "newLesson", "mobile/newLesson", "/new-lesson", "/new-lesson?m=true");
     }
 
     @RequestMapping(value = "/lesson")
     public String getLessonPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile,
-                                @RequestParam(name = "id", defaultValue = "0") int lessonId,
+                                @RequestParam(name = "id") int lessonId,
                                 Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
         Lesson lesson = lessonDAO.read(lessonId);
         LessonDTO lessonDTO = lessonConverter.convert(lesson);
         model.addAttribute("lessonDTO", MAPPER.writeValueAsString(lessonDTO));
-        return redirectByDevice(mobile, device, "lesson", "mobile/lesson" ,"/lesson", "/lesson?m=true");
+        return redirectByDevice(mobile, device, "lesson", "mobile/lesson", "/lesson?id=" + lessonId, "/lesson?m=true&id=" + lessonId);
     }
 
     @RequestMapping(value = "/event")
     public String getEventPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile,
-                               @RequestParam(name = "id", defaultValue = "0") int eventId,
+                               @RequestParam(name = "id") int eventId,
                                Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
         Event event = eventDAO.read(eventId);
         EventDTO eventDTO = eventConverter.convert(event);
         model.addAttribute("eventDTO", MAPPER.writeValueAsString(eventDTO));
-        return redirectByDevice(mobile, device, "event", "mobile/event" ,"/event", "/event?m=true");
+        return redirectByDevice(mobile, device, "event", "mobile/event", "/event?id=" + eventId, "/event?m=true&id=" + eventId);
     }
 
     @RequestMapping(value = "/new-event")
     public String getNewEventPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        return redirectByDevice(mobile, device, "newEvent", "mobile/newEvent" ,"/new-event", "/new-event?m=true");
+        return redirectByDevice(mobile, device, "newEvent", "mobile/newEvent", "/new-event", "/new-event?m=true");
     }
 
     @RequestMapping(value = "/account")
     public String getAccountPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        return redirectByDevice(mobile, device, "account", "mobile/account" ,"/account", "/account?m=true");
+        return redirectByDevice(mobile, device, "account", "mobile/account", "/account", "/account?m=true");
     }
 
 
@@ -127,7 +124,7 @@ public class PageController {
 
         model.addAttribute("membersDTO", MAPPER.writeValueAsString(membersDTO));
         model.addAttribute("permissionsDTO", MAPPER.writeValueAsString(permissionDAO.readByGroup(groupId)));
-        return redirectByDevice(mobile, device, "group", "mobile/group" ,"/group", "/group?m=true");
+        return redirectByDevice(mobile, device, "group", "mobile/group", "/group", "/group?m=true");
     }
 
     private Account readAndInjectHeaderAttributes(Authentication auth, Model model) throws JsonProcessingException {
@@ -146,7 +143,7 @@ public class PageController {
     }
 
     private String redirectByDevice(boolean mobileController, Device device, String normalPage, String mobilePage, String normalRedirect, String mobileRedirect) {
-        if(mobileController == device.isMobile()) {
+        if (mobileController == device.isMobile()) {
             return mobileController ? mobilePage : normalPage;
         }
         else {

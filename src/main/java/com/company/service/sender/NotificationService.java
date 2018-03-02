@@ -11,7 +11,8 @@ import java.util.List;
 
 
 @Service
-@PropertySource(value = "classpath:application.properties", encoding="windows-1251")    // кодировка windows-1251 для считывания русского текста
+@PropertySource(value = "classpath:application.properties", encoding = "windows-1251")
+// кодировка windows-1251 для считывания русского текста
 public class NotificationService {
     private static final Logger LOGGER = Logger.getLogger(NotificationService.class);
 
@@ -42,11 +43,10 @@ public class NotificationService {
     public void sendScheduleNotifications(int groupId) {
         List<Account> accounts = accountDAO.readByGroup(groupId);
         accounts.forEach(s -> {
-            if(s.getScheduleNotidication() || s.getEmail() != null || "".equals(s.getEmail())) {
+            if (s.getScheduleNotidication() || s.getEmail() != null || "".equals(s.getEmail())) {
                 try {
                     emailSender.send(s.getEmail(), scheduleSubject, scheduleText);
-                }
-                catch(Exception e) {
+                } catch (Exception e) {
                     LOGGER.warn("Sending message to " + s.getEmail() + " failed.", e);
                 }
             }
@@ -56,11 +56,10 @@ public class NotificationService {
     public void sendSettingsNotifications(int groupId) {
         List<Account> accounts = accountDAO.readByGroup(groupId);
         accounts.forEach(s -> {
-            if(s.getSettingsNotification() || s.getEmail() != null || "".equals(s.getEmail())) {
+            if (s.getSettingsNotification() || s.getEmail() != null || "".equals(s.getEmail())) {
                 try {
                     emailSender.send(s.getEmail(), settingsSubject, settingsText);
-                }
-                catch(Exception e) {
+                } catch (Exception e) {
                     LOGGER.warn("Sending message to " + s.getEmail() + " failed.", e);
                 }
             }

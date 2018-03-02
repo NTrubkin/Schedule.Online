@@ -1,7 +1,6 @@
 package com.company.dao.impl;
 
 import com.company.dao.api.LessonDAO;
-import com.company.model.Group;
 import com.company.model.Lesson;
 import com.company.util.GenericReflector;
 import org.apache.log4j.Logger;
@@ -9,9 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.sql.JoinType;
 
 import java.util.List;
 

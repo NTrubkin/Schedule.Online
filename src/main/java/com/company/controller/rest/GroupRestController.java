@@ -3,7 +3,10 @@ package com.company.controller.rest;
 import com.company.dao.api.AccountDAO;
 import com.company.dao.api.GroupDAO;
 import com.company.dao.api.PermissionDAO;
-import com.company.dto.*;
+import com.company.dto.EventDTO;
+import com.company.dto.GroupDTO;
+import com.company.dto.LessonDTO;
+import com.company.dto.LessonsAndEventsDTO;
 import com.company.dto.converter.IEntityConverter;
 import com.company.model.Account;
 import com.company.model.Group;
@@ -55,7 +58,7 @@ public class GroupRestController {
             throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
         }
 
-        int accountId = ((CustomUserDetails)auth.getPrincipal()).getUserId();
+        int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         groupDTO.setLeaderId(accountId);
         Group group = groupConverter.restore(groupDTO);
         groupDAO.create(group);
@@ -107,15 +110,15 @@ public class GroupRestController {
             throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
         }
 
-        int accountId = ((CustomUserDetails)auth.getPrincipal()).getUserId();
+        int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Group group = accountDAO.read(accountId).getGroup();
         Account newMember;
-        if(LoginValidator.isEmailValid(login)) {
+        if (LoginValidator.isEmailValid(login)) {
             newMember = accountDAO.readByEmail(login);
             newMember.setGroup(group);
             accountDAO.update(newMember);
         }
-        else if(LoginValidator.isPhoneNumberValid(login)) {
+        else if (LoginValidator.isPhoneNumberValid(login)) {
             newMember = accountDAO.readByPhoneNumber(new Long(login));
             newMember.setGroup(group);
             accountDAO.update(newMember);
@@ -132,7 +135,7 @@ public class GroupRestController {
         permission.setEventsEdit(false);
         permission.setLessonsEdit(false);
         permissionDAO.create(permission);
-        if(notify) {
+        if (notify) {
             notificationService.sendSettingsNotifications(group.getId());
         }
         return new ResponseEntity<>(HttpStatus.OK);
@@ -160,7 +163,7 @@ public class GroupRestController {
             throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
         }
 
-        int accountId = ((CustomUserDetails)auth.getPrincipal()).getUserId();
+        int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         int groupId = accountDAO.read(accountId).getGroup().getId();
 
         List<LessonDTO> lessons = lessonController.readLessonsByGroup(groupId).getBody();

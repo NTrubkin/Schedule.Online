@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Map;
 
 @Service
 public class FacebookOAuth2DataRestorer implements OAuth2DataRestorer {

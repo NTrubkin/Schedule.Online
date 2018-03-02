@@ -4,15 +4,12 @@ import com.company.dao.api.AccountDAO;
 import com.company.model.Account;
 import com.company.util.LoginValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 
-@Service
 public class IdentifierAccountServiceImpl implements UserDetailsService, IdentifierAccountService {
 
     private final IdType usernameType;
@@ -20,7 +17,7 @@ public class IdentifierAccountServiceImpl implements UserDetailsService, Identif
 
 
     @Autowired
-    public IdentifierAccountServiceImpl(@Value("LOGIN") IdType usernameType, AccountDAO accountDAO) {
+    public IdentifierAccountServiceImpl(IdType usernameType, AccountDAO accountDAO) {
         this.usernameType = usernameType;
         this.accountDAO = accountDAO;
     }
@@ -49,7 +46,7 @@ public class IdentifierAccountServiceImpl implements UserDetailsService, Identif
                     account = accountDAO.readByPhoneNumber(new Long(id));
                 }
                 else if (LoginValidator.isEmailValid(id)) {
-                    account =  accountDAO.readByEmail(id);
+                    account = accountDAO.readByEmail(id);
                 }
                 else {
                     throw new UsernameNotFoundException("Login " + id + " does not match any of the patterns");
@@ -65,7 +62,8 @@ public class IdentifierAccountServiceImpl implements UserDetailsService, Identif
             case TWITTER_ID:
                 break;
                 */
-            default: throw new UnsupportedOperationException("not implemented yet");
+            default:
+                throw new UnsupportedOperationException("not implemented yet");
         }
 
         if (account == null) {
