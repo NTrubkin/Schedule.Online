@@ -36,10 +36,10 @@ public class OAuth2Authenticator {
         this.restorer = restorer;
     }
 
-    public OAuth2Account readAccountData(String code) {
+    public OAuth2Account readAccountData(String code, String urlPrefix) {
         try {
             //get token
-            String accessTokenData = sendRequest(getTokenUrl, appId, appSecret, redirectUrl, code);
+            String accessTokenData = sendRequest(getTokenUrl, appId, appSecret, urlPrefix + redirectUrl, code);
             String accessToken = restorer.restoreAccessToken(accessTokenData);
 
             // read data, check verification

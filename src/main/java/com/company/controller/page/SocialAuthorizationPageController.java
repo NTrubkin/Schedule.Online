@@ -7,6 +7,7 @@ import com.company.service.auth.IdentifierAccountService;
 import com.company.service.auth.oauth2.OAuth2Account;
 import com.company.service.auth.oauth2.OAuth2Authenticator;
 import com.company.util.HashGenerator;
+import com.company.util.UrlUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -40,7 +41,7 @@ public class SocialAuthorizationPageController {
 
     @RequestMapping(value = "/vk", method = RequestMethod.GET)
     public String authenticateUsingVK(@RequestParam(name = "code") String code, HttpServletRequest request) {
-        OAuth2Account data = vkAuthenticator.readAccountData(code);
+        OAuth2Account data = vkAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
         Account account = accountDAO.readByVkId(data.getId());
 
         if (account == null) {
@@ -61,7 +62,7 @@ public class SocialAuthorizationPageController {
 
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
     public String authenticateUsingFacebook(@RequestParam(name = "code") String code, HttpServletRequest request) {
-        OAuth2Account data = fbAuthenticator.readAccountData(code);
+        OAuth2Account data = fbAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
         Account account = accountDAO.readByFacebookId(data.getId());
 
         if (account == null) {
