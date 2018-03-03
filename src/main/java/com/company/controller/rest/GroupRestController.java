@@ -303,9 +303,11 @@ public class GroupRestController {
             errorDTO.addMessage(INVALID_GROUP_NAME_MSG);
         }
 
-        Account leader = accountDAO.read(groupDTO.getLeaderId());
-        if(!leader.getGroup().getId().equals(groupDTO.getId())) {
-            errorDTO.addMessage(LEADER_NOT_IN_GROUP_MSG);
+        if(groupDTO.getId() != null) {
+            Account leader = accountDAO.read(groupDTO.getLeaderId());
+            if(!leader.getGroup().getId().equals(groupDTO.getId())) {
+                errorDTO.addMessage(LEADER_NOT_IN_GROUP_MSG);
+            }
         }
 
         return errorDTO.getMessages().isEmpty();
