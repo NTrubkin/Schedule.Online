@@ -3,11 +3,16 @@ package com.company.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ErrorMessageDTO {
+public class ErrorDTO {
     private List<String> messages;
 
-    public ErrorMessageDTO() {
+    public ErrorDTO() {
         messages = new ArrayList<>();
+    }
+
+    public ErrorDTO(String errorMessage) {
+        this();
+        messages.add(errorMessage);
     }
 
     public List<String> getMessages() {

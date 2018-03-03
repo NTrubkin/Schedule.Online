@@ -124,7 +124,9 @@ window.mobilecheck = function() {
 
 function showAjaxError(jqXHR, errorThrown) {
     if(jqXHR.responseJSON != null && jqXHR.responseJSON.messages != null && jqXHR.responseJSON.messages.length > 0) {
-        bootbox.alert('Ошибка: ' + jqXHR.responseJSON.messages.join(', '));
+        var errorText = 'Ошибка: ' + jqXHR.responseJSON.messages.join(', ');
+        bootbox.alert(errorText);
+        console.log(errorText)
     }
     else {
         bootbox.alert(jqXHR.status + ' ' + errorThrown);

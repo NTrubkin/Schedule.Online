@@ -1,7 +1,7 @@
 package com.company.controller.rest;
 
 import com.company.dao.api.AccountDAO;
-import com.company.dto.ErrorMessageDTO;
+import com.company.dto.ErrorDTO;
 import com.company.dto.PrivateAccountDTO;
 import com.company.dto.PrivateNewAccountDTO;
 import com.company.dto.converter.IEntityConverter;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/account")
 public class AccountRestController {
 
-    private static final String NOT_FOUND_MSG = "занятие не найдено";
+    private static final String NOT_FOUND_MSG = "аккаунт не найден";
     private static final String PHONE_ALREADY_EXISTS_MSG = "есть другой аккаунт с таким номером телефона";
     private static final String EMAIL_ALREADY_EXISTS_MSG = "есть другой аккаунт с таким email";
     private static final String FACEBOOK_ALREADY_EXISTS_MSG = "есть другой аккаунт с привязкой к этому Facebook аккаунту";
@@ -49,9 +49,10 @@ public class AccountRestController {
         this.newAccConverter = newAccConverter;
     }
 
+    @SuppressWarnings("unchecked")
     @RequestMapping(value = "", method = RequestMethod.PUT)
     public ResponseEntity updateAccount(@RequestBody PrivateAccountDTO accountDTO) {
-        ErrorMessageDTO errorDTO = new ErrorMessageDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
 
         if (accountDAO.read(accountDTO.getId()) == null) {
             errorDTO.addMessage(NOT_FOUND_MSG);
@@ -69,9 +70,10 @@ public class AccountRestController {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
     public ResponseEntity createAccount(@RequestBody PrivateNewAccountDTO accountDTO) {
-        ErrorMessageDTO errorDTO = new ErrorMessageDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
         if(checkNewAccountFields(accountDTO, errorDTO)) {
             Account account = newAccConverter.restore(accountDTO);
             accountDAO.create(account);
@@ -82,7 +84,7 @@ public class AccountRestController {
         }
     }
 
-    private boolean checkAccountFields(PrivateAccountDTO accountDTO, ErrorMessageDTO errorDTO) {
+    private boolean checkAccountFields(PrivateAccountDTO accountDTO, ErrorDTO errorDTO) {
         if(accountDTO.getEmail() != null) {
             if (LoginValidator.isEmailValid(accountDTO.getEmail())) {
                 Account byEmail = accountDAO.readByEmail(accountDTO.getEmail());
@@ -142,7 +144,7 @@ public class AccountRestController {
         return errorDTO.getMessages().isEmpty();
     }
 
-    private boolean checkNewAccountFields(PrivateNewAccountDTO accountDTO, ErrorMessageDTO errorDTO) {
+    private boolean checkNewAccountFields(PrivateNewAccountDTO accountDTO, ErrorDTO errorDTO) {
         if (LoginValidator.isEmailValid(accountDTO.getLogin())) {
             if (accountDAO.readByEmail(accountDTO.getLogin()) != null) {
                 errorDTO.addMessage(EMAIL_ALREADY_EXISTS_MSG);

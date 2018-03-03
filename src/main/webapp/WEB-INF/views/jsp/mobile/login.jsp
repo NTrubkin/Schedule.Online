@@ -32,13 +32,13 @@
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <button class="buttonOnWhite authButton">Войти</button>
             </form>
-            <form id="regBlock">
+            <div id="regBlock">
                 <input id="loginFld" class="textbox textboxOnWhite loginTextbox" type="text" placeholder="Email или телефон">
                 <input id="firstNameFld" class="textbox textboxOnWhite loginTextbox" type="text" placeholder="Имя">
                 <input id="secondNameFld" class="textbox textboxOnWhite loginTextbox" type="text" placeholder="Фамилия">
                 <input id="passwordFld" class="textbox textboxOnWhite loginTextbox" type="password" placeholder="Пароль">
                 <button id="regBtn" class="buttonOnWhite authButton" onclick="createAccount()">Зарегистрироваться</button>
-            </form>
+            </div>
         </div>
         <hr id="loginHr">
         <div id="socialBlock" class="authBlock">

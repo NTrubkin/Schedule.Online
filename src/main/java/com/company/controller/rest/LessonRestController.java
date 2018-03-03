@@ -3,7 +3,7 @@ package com.company.controller.rest;
 import com.company.dao.api.AccountDAO;
 import com.company.dao.api.LessonDAO;
 import com.company.dao.api.PermissionDAO;
-import com.company.dto.ErrorMessageDTO;
+import com.company.dto.ErrorDTO;
 import com.company.dto.LessonDTO;
 import com.company.dto.converter.IEntityConverter;
 import com.company.model.Group;
@@ -61,7 +61,7 @@ public class LessonRestController {
         int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Group group = accountDAO.read(accountId).getGroup();
 
-        ErrorMessageDTO errorDTO = new ErrorMessageDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
 
         if (!checkLessonGroupAndPerms(group, lessonDTO, accountId, errorDTO)) {
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
@@ -88,7 +88,7 @@ public class LessonRestController {
         }
         int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Group group = accountDAO.read(accountId).getGroup();
-        ErrorMessageDTO errorDTO = new ErrorMessageDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
         if (group == null) {
             errorDTO.addMessage(NOT_IN_GROUP_MSG);
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
@@ -132,7 +132,7 @@ public class LessonRestController {
         int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Group group = accountDAO.read(accountId).getGroup();
 
-        ErrorMessageDTO errorDTO = new ErrorMessageDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
 
         if (!checkLessonGroupAndPerms(group, lessonDTO, accountId, errorDTO)) {
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
@@ -156,7 +156,7 @@ public class LessonRestController {
         }
     }
 
-    private boolean checkLessonFields(LessonDTO lessonDTO, ErrorMessageDTO errorDTO) {
+    private boolean checkLessonFields(LessonDTO lessonDTO, ErrorDTO errorDTO) {
         if (!CommonValidator.isNameValid(lessonDTO.getName())) {
             errorDTO.addMessage(INVALID_NAME_MSG);
         }
@@ -179,7 +179,7 @@ public class LessonRestController {
         return errorDTO.getMessages().isEmpty();
     }
 
-    private boolean checkLessonGroupAndPerms(Group group, LessonDTO lessonDTO, int accountId, ErrorMessageDTO errorDTO) {
+    private boolean checkLessonGroupAndPerms(Group group, LessonDTO lessonDTO, int accountId, ErrorDTO errorDTO) {
         if (group == null || group.getId().intValue() != lessonDTO.getGroupId()) {
             errorDTO.addMessage(NOT_IN_GROUP_MSG);
             return false;

@@ -3,7 +3,7 @@ package com.company.controller.rest;
 import com.company.dao.api.AccountDAO;
 import com.company.dao.api.EventDAO;
 import com.company.dao.api.PermissionDAO;
-import com.company.dto.ErrorMessageDTO;
+import com.company.dto.ErrorDTO;
 import com.company.dto.EventDTO;
 import com.company.dto.converter.IEntityConverter;
 import com.company.model.Event;
@@ -57,7 +57,7 @@ public class EventRestController {
         int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Group group = accountDAO.read(accountId).getGroup();
 
-        ErrorMessageDTO errorDTO = new ErrorMessageDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
 
         if (!checkEventGroupAndPerms(group, eventDTO, accountId, errorDTO)) {
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
@@ -83,7 +83,7 @@ public class EventRestController {
         }
         int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Group group = accountDAO.read(accountId).getGroup();
-        ErrorMessageDTO errorDTO = new ErrorMessageDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
         if (group == null) {
             errorDTO.addMessage(NOT_IN_GROUP_MSG);
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
@@ -127,7 +127,7 @@ public class EventRestController {
         int accountId = ((CustomUserDetails) auth.getPrincipal()).getUserId();
         Group group = accountDAO.read(accountId).getGroup();
 
-        ErrorMessageDTO errorDTO = new ErrorMessageDTO();
+        ErrorDTO errorDTO = new ErrorDTO();
 
         if (!checkEventGroupAndPerms(group, eventDTO, accountId, errorDTO)) {
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
@@ -152,7 +152,7 @@ public class EventRestController {
         }
     }
 
-    private boolean checkEventFields(EventDTO eventDTO, ErrorMessageDTO errorDTO) {
+    private boolean checkEventFields(EventDTO eventDTO, ErrorDTO errorDTO) {
         if (!CommonValidator.isNameValid(eventDTO.getName())) {
             errorDTO.addMessage(INVALID_NAME_MSG);
         }
@@ -171,7 +171,7 @@ public class EventRestController {
         return errorDTO.getMessages().isEmpty();
     }
 
-    private boolean checkEventGroupAndPerms(Group group, EventDTO eventDTO, int accountId, ErrorMessageDTO errorDTO) {
+    private boolean checkEventGroupAndPerms(Group group, EventDTO eventDTO, int accountId, ErrorDTO errorDTO) {
         if (group == null || group.getId().intValue() != eventDTO.getGroupId()) {
             errorDTO.addMessage(NOT_IN_GROUP_MSG);
             return false;
