@@ -10,7 +10,7 @@ function readAccountFromFields() {
     currentAccount.secondName = $('#secondNameFld').val();
 
     var emailFld = $('#emailFld');
-    if (emailFld === '') {
+    if (emailFld.val() === '') {
         currentAccount.email = null;
     }
     else {
