@@ -10,7 +10,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
-    <title>Sign In</title>
+    <title>Schedule.Online - Вход</title>
     <%@include file="meta.jsp" %>
     <script src="${urlPrefix}/resources/js/login.js"></script>
 </head>
@@ -33,7 +33,7 @@
                 <button class="buttonOnWhite authButton">Войти</button>
             </form>
             <div id="regBlock">
-                <input id="loginFld" class="textbox textboxOnWhite loginTextbox" type="text" placeholder="Email или телефон">
+                <input id="loginFld" class="textbox textboxOnWhite loginTextbox" type="text" placeholder="Email или телефон(10 цифр)">
                 <input id="firstNameFld" class="textbox textboxOnWhite loginTextbox" type="text" placeholder="Имя">
                 <input id="secondNameFld" class="textbox textboxOnWhite loginTextbox" type="text" placeholder="Фамилия">
                 <input id="passwordFld" class="textbox textboxOnWhite loginTextbox" type="password" placeholder="Пароль">

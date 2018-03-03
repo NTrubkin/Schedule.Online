@@ -27,12 +27,15 @@
         <!-- Rest-сервис -->
 
         <form-login
+                authentication-success-handler-ref="authSuccessHandler"
                 login-page="/login"
                 authentication-failure-url="/login?login_error=1"
                 username-parameter="login" password-parameter="password"/>
         <logout/>
         <csrf disabled="true"/>
     </http>
+
+    <beans:bean id="authSuccessHandler" class="com.company.service.AuthSuccessHandler"/>
 
     <beans:bean id="accountService" class="com.company.service.auth.IdentifierAccountServiceImpl">
         <beans:constructor-arg name="usernameType" value="LOGIN"/>
