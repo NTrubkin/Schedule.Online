@@ -25,32 +25,15 @@ public class AccountRestController {
     private final AccountDAO accountDAO;
     private final IEntityConverter<Account, PrivateAccountDTO> accConverter;
     private final IEntityConverter<Account, PrivateNewAccountDTO> newAccConverter;
-    private final OAuth2Authenticator fbAuthenticator;
-    private final OAuth2Authenticator vkAuthenticator;
 
 
     @Autowired
     public AccountRestController(AccountDAO accountDAO,
                                  IEntityConverter<Account, PrivateAccountDTO> accConverter,
-                                 IEntityConverter<Account, PrivateNewAccountDTO> newAccConverter,
-                                 @Qualifier("facebookOAuth2Authenticator") OAuth2Authenticator fbAuthenticator,
-                                 @Qualifier("vkOAuth2Authenticator") OAuth2Authenticator vkAuthenticator) {
+                                 IEntityConverter<Account, PrivateNewAccountDTO> newAccConverter) {
         this.accountDAO = accountDAO;
         this.accConverter = accConverter;
         this.newAccConverter = newAccConverter;
-        this.fbAuthenticator = fbAuthenticator;
-        this.vkAuthenticator = vkAuthenticator;
-    }
-
-    @RequestMapping(value = "", method = RequestMethod.GET)
-    public ResponseEntity<PrivateAccountDTO> readAccount(Authentication auth) {
-        if (!(auth.getPrincipal() instanceof CustomUserDetails)) {
-            throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
-        }
-
-        int id = ((CustomUserDetails) auth.getPrincipal()).getUserId();
-        Account account = accountDAO.read(id);
-        return new ResponseEntity<>(accConverter.convert(account), HttpStatus.OK);
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT)
@@ -65,34 +48,6 @@ public class AccountRestController {
     public ResponseEntity createAccount(@RequestBody PrivateNewAccountDTO accountDTO) {
         Account account = newAccConverter.restore(accountDTO);
         accountDAO.create(account);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/oauth/facebook", method = RequestMethod.POST)
-    public ResponseEntity addFacebookAccount(@RequestParam(name = "code") String code, Authentication auth, HttpServletRequest request) {
-        if (!(auth.getPrincipal() instanceof CustomUserDetails)) {
-            throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
-        }
-
-        int id = ((CustomUserDetails) auth.getPrincipal()).getUserId();
-        Account account = accountDAO.read(id);
-        OAuth2Account data = fbAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
-        account.setFacebookId(data.getId());
-        accountDAO.update(account);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/oauth/vk", method = RequestMethod.POST)
-    public ResponseEntity addVkAccount(@RequestParam(name = "code") String code, Authentication auth, HttpServletRequest request) {
-        if (!(auth.getPrincipal() instanceof CustomUserDetails)) {
-            throw new IllegalArgumentException("Authentication principal should implement " + CustomUserDetails.class);
-        }
-
-        int id = ((CustomUserDetails) auth.getPrincipal()).getUserId();
-        Account account = accountDAO.read(id);
-        OAuth2Account data = vkAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
-        account.setVkId(data.getId());
-        accountDAO.update(account);
         return new ResponseEntity(HttpStatus.OK);
     }
 }

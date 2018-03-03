@@ -45,13 +45,6 @@ public class GroupRestController {
         this.eventController = eventController;
     }
 
-    @RequestMapping(value = "/{groupId}", method = RequestMethod.GET)
-    public ResponseEntity<GroupDTO> readGroup(Authentication auth, @PathVariable int groupId) {
-        Group group = groupDAO.read(groupId);
-        GroupDTO groupDTO = groupConverter.convert(group);
-        return new ResponseEntity<>(groupDTO, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity createGroup(@RequestBody GroupDTO groupDTO, Authentication auth) {
         if (!(auth.getPrincipal() instanceof CustomUserDetails)) {

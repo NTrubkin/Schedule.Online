@@ -12,6 +12,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,44 +41,56 @@ public class SocialAuthorizationPageController {
     }
 
     @RequestMapping(value = "/vk", method = RequestMethod.GET)
-    public String authenticateUsingVK(@RequestParam(name = "code") String code, HttpServletRequest request) {
-        OAuth2Account data = vkAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
-        Account account = accountDAO.readByVkId(data.getId());
+    public String authenticateUsingVK(@RequestParam(name = "code") String code, HttpServletRequest request, Model model) {
+        try {
+            OAuth2Account data = vkAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
+            Account account = accountDAO.readByVkId(data.getId());
 
-        if (account == null) {
-            account = new Account();
-            account.setFirstName(data.getFirstName());
-            account.setSecondName(data.getSecondName());
-            String password = RandomStringUtils.random(20, true, true);
-            account.setPasshash(HashGenerator.generateSHA1(password));
-            account.setScheduleNotidication(true);
-            account.setSettingsNotification(true);
-            account.setVkId(data.getId());
-            accountDAO.create(account);
+            if (account == null) {
+                account = new Account();
+                account.setFirstName(data.getFirstName());
+                account.setSecondName(data.getSecondName());
+                String password = RandomStringUtils.random(20, true, true);
+                account.setPasshash(HashGenerator.generateSHA1(password));
+                account.setScheduleNotidication(true);
+                account.setSettingsNotification(true);
+                account.setVkId(data.getId());
+                accountDAO.create(account);
+            }
+
+            vkAuthenticator.authenticate(accountService.loadUser(IdType.APP_ID, Integer.toString(account.getId())));
+            return "redirect:/";
         }
-
-        vkAuthenticator.authenticate(accountService.loadUser(IdType.APP_ID, Integer.toString(account.getId())));
-        return "redirect:/";
+        catch (Exception e) {
+            model.addAttribute("errorMessage", "Не удалось подключиться к аккаунту Facebook");
+            return "error";
+        }
     }
 
     @RequestMapping(value = "/facebook", method = RequestMethod.GET)
-    public String authenticateUsingFacebook(@RequestParam(name = "code") String code, HttpServletRequest request) {
-        OAuth2Account data = fbAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
-        Account account = accountDAO.readByFacebookId(data.getId());
+    public String authenticateUsingFacebook(@RequestParam(name = "code") String code, HttpServletRequest request, Model model) {
+        try {
+            OAuth2Account data = fbAuthenticator.readAccountData(code, UrlUtil.extractUrlPrefix(request));
+            Account account = accountDAO.readByFacebookId(data.getId());
 
-        if (account == null) {
-            account = new Account();
-            account.setFirstName(data.getFirstName());
-            account.setSecondName(data.getSecondName());
-            String password = RandomStringUtils.random(20, true, true);
-            account.setPasshash(HashGenerator.generateSHA1(password));
-            account.setScheduleNotidication(true);
-            account.setSettingsNotification(true);
-            account.setFacebookId(data.getId());
-            accountDAO.create(account);
+            if (account == null) {
+                account = new Account();
+                account.setFirstName(data.getFirstName());
+                account.setSecondName(data.getSecondName());
+                String password = RandomStringUtils.random(20, true, true);
+                account.setPasshash(HashGenerator.generateSHA1(password));
+                account.setScheduleNotidication(true);
+                account.setSettingsNotification(true);
+                account.setFacebookId(data.getId());
+                accountDAO.create(account);
+            }
+
+            fbAuthenticator.authenticate(accountService.loadUser(IdType.APP_ID, Integer.toString(account.getId())));
+            return "redirect:/";
         }
-
-        fbAuthenticator.authenticate(accountService.loadUser(IdType.APP_ID, Integer.toString(account.getId())));
-        return "redirect:/";
+        catch (Exception e) {
+            model.addAttribute("errorMessage", "Не удалось подключиться к аккаунту VK");
+            return "error";
+        }
     }
 }

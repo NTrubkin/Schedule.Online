@@ -47,7 +47,7 @@ function createNewEvent() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }
@@ -65,7 +65,7 @@ function updateEvent() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }
@@ -82,7 +82,7 @@ function deleteEvent() {
                     });
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(jqXHR.status + ' ' + errorThrown);
+                    showAjaxError(jqXHR, errorThrown);
                 }
             });
         }

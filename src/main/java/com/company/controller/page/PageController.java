@@ -96,6 +96,10 @@ public class PageController {
                                 Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
         Lesson lesson = lessonDAO.read(lessonId);
+        if (lesson == null) {
+            model.addAttribute("errorMessage", "Занятие не найдено");
+            return "error";
+        }
         LessonDTO lessonDTO = lessonConverter.convert(lesson);
         model.addAttribute("lessonDTO", MAPPER.writeValueAsString(lessonDTO));
         return redirectByDevice(mobile, device, "lesson", "mobile/lesson", "/lesson?id=" + lessonId, "/lesson?m=true&id=" + lessonId);
@@ -107,6 +111,10 @@ public class PageController {
                                Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
         Event event = eventDAO.read(eventId);
+        if (event == null) {
+            model.addAttribute("errorMessage", "Событие не найдено");
+            return "error";
+        }
         EventDTO eventDTO = eventConverter.convert(event);
         model.addAttribute("eventDTO", MAPPER.writeValueAsString(eventDTO));
         return redirectByDevice(mobile, device, "event", "mobile/event", "/event?id=" + eventId, "/event?m=true&id=" + eventId);
@@ -128,7 +136,12 @@ public class PageController {
     @RequestMapping(value = "/group")
     public String getGroupPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
         Account account = readAndInjectHeaderAttributes(auth, model);
-        int groupId = account.getGroup().getId();
+        Group group = account.getGroup();
+        if (group == null) {
+            model.addAttribute("errorMessage", "Вы не состоите в группе");
+            return "error";
+        }
+        int groupId = group.getId();
 
         List<AccountDTO> membersDTO = accConverter.convert(accountDAO.readByGroup(groupId));
 

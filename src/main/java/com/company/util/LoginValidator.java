@@ -15,7 +15,7 @@ public class LoginValidator {
     private static Pattern emailPattern = Pattern.compile(EMAIL_REGEX);
     private static Pattern phonePattern = Pattern.compile(PHONE_REGEX);
 
-    public LoginValidator() {
+    private LoginValidator() {
     }
 
     public static boolean isEmailValid(String email) {
