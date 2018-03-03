@@ -67,8 +67,8 @@ public class LessonRestController {
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
         }
 
-        checkLessonFields(lessonDTO, errorDTO);
-        if (errorDTO.getMessages() == null) {
+
+        if (checkLessonFields(lessonDTO, errorDTO)) {
             lessonDAO.create(converter.restore(lessonDTO));
             if (notify) {
                 notificationService.sendScheduleNotifications(lessonDTO.getGroupId());
@@ -143,8 +143,7 @@ public class LessonRestController {
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
         }
 
-        checkLessonFields(lessonDTO, errorDTO);
-        if (errorDTO.getMessages() == null) {
+        if(checkLessonFields(lessonDTO, errorDTO)) {
             Lesson lesson = converter.restore(lessonDTO);
             lessonDAO.update(lesson);
             if (notify) {
@@ -157,7 +156,7 @@ public class LessonRestController {
         }
     }
 
-    private void checkLessonFields(LessonDTO lessonDTO, ErrorMessageDTO errorDTO) {
+    private boolean checkLessonFields(LessonDTO lessonDTO, ErrorMessageDTO errorDTO) {
         if (!CommonValidator.isNameValid(lessonDTO.getName())) {
             errorDTO.addMessage(INVALID_NAME_MSG);
         }
@@ -177,6 +176,7 @@ public class LessonRestController {
         if (lessonDTO.getEndDatetime() == null) {
             errorDTO.addMessage(INVALID_END_MSG);
         }
+        return errorDTO.getMessages().isEmpty();
     }
 
     private boolean checkLessonGroupAndPerms(Group group, LessonDTO lessonDTO, int accountId, ErrorMessageDTO errorDTO) {

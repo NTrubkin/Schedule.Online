@@ -27,7 +27,7 @@ public class Account {
     @Column(name = "passhash")
     private String passhash;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "group_id")
     private Group group;
 

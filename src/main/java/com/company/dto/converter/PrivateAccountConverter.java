@@ -39,7 +39,7 @@ public class PrivateAccountConverter extends EntityConverter<Account, PrivateAcc
                     dto.getEmail(),
                     dto.getPhoneNumber(),
                     STRING_STUB,
-                    groupStub,
+                    groupStub.getId() == null ? null : groupStub,
                     dto.getSettingsNotification(),
                     dto.getScheduleNotification(),
                     dto.getFacebookId(),

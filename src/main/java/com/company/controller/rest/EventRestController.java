@@ -63,8 +63,7 @@ public class EventRestController {
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
         }
 
-        checkEventFields(eventDTO, errorDTO);
-        if (errorDTO.getMessages() == null) {
+        if (checkEventFields(eventDTO, errorDTO)) {
             eventDAO.create(converter.restore(eventDTO));
             if (notify) {
                 notificationService.sendScheduleNotifications(eventDTO.getGroupId());
@@ -139,8 +138,8 @@ public class EventRestController {
             return new ResponseEntity(errorDTO, HttpStatus.BAD_REQUEST);
         }
 
-        checkEventFields(eventDTO, errorDTO);
-        if (errorDTO.getMessages() == null) {
+
+        if (checkEventFields(eventDTO, errorDTO)) {
             Event event = converter.restore(eventDTO);
             eventDAO.update(event);
             if (notify) {
@@ -153,7 +152,7 @@ public class EventRestController {
         }
     }
 
-    private void checkEventFields(EventDTO eventDTO, ErrorMessageDTO errorDTO) {
+    private boolean checkEventFields(EventDTO eventDTO, ErrorMessageDTO errorDTO) {
         if (!CommonValidator.isNameValid(eventDTO.getName())) {
             errorDTO.addMessage(INVALID_NAME_MSG);
         }
@@ -169,6 +168,7 @@ public class EventRestController {
         if (eventDTO.getStartDatetime() == null) {
             errorDTO.addMessage(INVALID_START_MSG);
         }
+        return errorDTO.getMessages().isEmpty();
     }
 
     private boolean checkEventGroupAndPerms(Group group, EventDTO eventDTO, int accountId, ErrorMessageDTO errorDTO) {

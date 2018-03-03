@@ -7,7 +7,7 @@ public class ErrorMessageDTO {
     private List<String> messages;
 
     public ErrorMessageDTO() {
-        // pojo
+        messages = new ArrayList<>();
     }
 
     public List<String> getMessages() {
@@ -19,9 +19,6 @@ public class ErrorMessageDTO {
     }
 
     public void addMessage(String message) {
-        if( messages == null) {
-            messages = new ArrayList<>();
-        }
         messages.add(message);
     }
 }

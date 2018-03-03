@@ -36,11 +36,12 @@ function createAccount() {
         contentType: 'application/json; charset=utf-8',
         data: JSON.stringify(currentAccount),
         success: function (result) {
-            bootbox.alert('Аккаунт успешно создан', function(){
-            window.location.reload();});
+            bootbox.alert('Аккаунт успешно создан', function () {
+                window.location.reload();
+            });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }
