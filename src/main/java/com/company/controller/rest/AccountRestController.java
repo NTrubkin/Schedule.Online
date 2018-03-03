@@ -88,7 +88,7 @@ public class AccountRestController {
         if(accountDTO.getEmail() != null) {
             if (LoginValidator.isEmailValid(accountDTO.getEmail())) {
                 Account byEmail = accountDAO.readByEmail(accountDTO.getEmail());
-                if (!byEmail.getId().equals(accountDTO.getId())) {
+                if (byEmail != null && !byEmail.getId().equals(accountDTO.getId())) {
                     errorDTO.addMessage(EMAIL_ALREADY_EXISTS_MSG);
                 }
             }
@@ -98,9 +98,9 @@ public class AccountRestController {
         }
 
         if(accountDTO.getPhoneNumber() != null) {
-            if (LoginValidator.isPhoneNumberValid(accountDTO.getEmail())) {
+            if (LoginValidator.isPhoneNumberValid(accountDTO.getPhoneNumber().toString())) {
                 Account byPhone = accountDAO.readByPhoneNumber(accountDTO.getPhoneNumber());
-                if (!byPhone.getId().equals(accountDTO.getId())) {
+                if (byPhone != null && !byPhone.getId().equals(accountDTO.getId())) {
                     errorDTO.addMessage(PHONE_ALREADY_EXISTS_MSG);
                 }
             }
