@@ -11,6 +11,7 @@ import com.company.service.auth.CustomUserDetails;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -36,6 +37,12 @@ public class PageController {
     private final EntityConverter<Lesson, LessonDTO> lessonConverter;
     private final EntityConverter<Event, EventDTO> eventConverter;
 
+    @Value("#{systemEnvironment['FACEBOOK_APP_ID']}")
+    private String fbAppId;
+
+    @Value("#{systemEnvironment['VK_APP_ID']}")
+    private String vkAppId;
+
     @Autowired
     public PageController(AccountDAO accountDAO, LessonDAO lessonDAO, EventDAO eventDAO, PermissionDAO permissionDAO, EntityConverter<Account, PrivateAccountDTO> privateAccConverter, EntityConverter<Account, AccountDTO> accConverter, EntityConverter<Group, GroupDTO> groupConverter, EntityConverter<Lesson, LessonDTO> lessonConverter, EntityConverter<Event, EventDTO> eventConverter) {
         this.accountDAO = accountDAO;
@@ -50,7 +57,7 @@ public class PageController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String getIndexPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
+    public String getIndexPage(Authentication auth, Model model, Device device) throws JsonProcessingException {
         Account account = readAndInjectHeaderAttributes(auth, model);
         Permission permission = permissionDAO.readByAccount(account.getId());
         if (permission != null) {
@@ -61,70 +68,85 @@ public class PageController {
             model.addAttribute("canEditLessons", false);
             model.addAttribute("canEditEvents", false);
         }
-        return redirectByDevice(mobile, device, "index", "mobile/index", "/", "/?m=true");
+        return device.isMobile() ? "mobile/index" : "index";
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String getLoginPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile,
-                               @RequestParam(name = "login_error", required = false, defaultValue = "0") int loginError,
+    public String getLoginPage(@RequestParam(name = "login_error", required = false, defaultValue = "0") int loginError,
                                Model model, Authentication auth, Device device) {
         if (loginError != 0) {
             model.addAttribute("message", "Login error");
         }
-        return redirectByDevice(mobile, device, "login", "mobile/login", "/login", "/login?m=true");
+
+        model.addAttribute("fbAppId", fbAppId);
+        model.addAttribute("vkAppId", vkAppId);
+        return device.isMobile() ? "mobile/login" : "login";
     }
 
     @RequestMapping(value = "/new-lesson")
-    public String getNewLessonPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
+    public String getNewLessonPage(Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        return redirectByDevice(mobile, device, "newLesson", "mobile/newLesson", "/new-lesson", "/new-lesson?m=true");
+        return device.isMobile() ? "mobile/newLesson" : "newLesson";
     }
 
     @RequestMapping(value = "/lesson")
-    public String getLessonPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile,
+    public String getLessonPage(
                                 @RequestParam(name = "id") int lessonId,
                                 Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
         Lesson lesson = lessonDAO.read(lessonId);
+        if (lesson == null) {
+            model.addAttribute("errorMessage", "Занятие не найдено");
+            return "error";
+        }
         LessonDTO lessonDTO = lessonConverter.convert(lesson);
         model.addAttribute("lessonDTO", MAPPER.writeValueAsString(lessonDTO));
-        return redirectByDevice(mobile, device, "lesson", "mobile/lesson", "/lesson?id=" + lessonId, "/lesson?m=true&id=" + lessonId);
+        return device.isMobile() ? "mobile/lesson" : "lesson";
     }
 
     @RequestMapping(value = "/event")
-    public String getEventPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile,
+    public String getEventPage(
                                @RequestParam(name = "id") int eventId,
                                Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
         Event event = eventDAO.read(eventId);
+        if (event == null) {
+            model.addAttribute("errorMessage", "Событие не найдено");
+            return "error";
+        }
         EventDTO eventDTO = eventConverter.convert(event);
         model.addAttribute("eventDTO", MAPPER.writeValueAsString(eventDTO));
-        return redirectByDevice(mobile, device, "event", "mobile/event", "/event?id=" + eventId, "/event?m=true&id=" + eventId);
+        return device.isMobile() ? "mobile/event" : "event";
     }
 
     @RequestMapping(value = "/new-event")
-    public String getNewEventPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
+    public String getNewEventPage(Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        return redirectByDevice(mobile, device, "newEvent", "mobile/newEvent", "/new-event", "/new-event?m=true");
+        return device.isMobile() ? "mobile/newEvent" : "newEvent";
     }
 
     @RequestMapping(value = "/account")
-    public String getAccountPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
+    public String getAccountPage(Authentication auth, Model model, Device device) throws JsonProcessingException {
         readAndInjectHeaderAttributes(auth, model);
-        return redirectByDevice(mobile, device, "account", "mobile/account", "/account", "/account?m=true");
+        return device.isMobile() ? "mobile/account" : "account";
     }
 
 
     @RequestMapping(value = "/group")
-    public String getGroupPage(@RequestParam(name = "m", defaultValue = "false") boolean mobile, Authentication auth, Model model, Device device) throws JsonProcessingException {
+    public String getGroupPage(Authentication auth, Model model, Device device) throws JsonProcessingException {
         Account account = readAndInjectHeaderAttributes(auth, model);
-        int groupId = account.getGroup().getId();
+        Group group = account.getGroup();
+        if (group == null) {
+            model.addAttribute("errorMessage", "Вы не состоите в группе");
+            return "error";
+        }
+        int groupId = group.getId();
 
         List<AccountDTO> membersDTO = accConverter.convert(accountDAO.readByGroup(groupId));
 
         model.addAttribute("membersDTO", MAPPER.writeValueAsString(membersDTO));
         model.addAttribute("permissionsDTO", MAPPER.writeValueAsString(permissionDAO.readByGroup(groupId)));
-        return redirectByDevice(mobile, device, "group", "mobile/group", "/group", "/group?m=true");
+        return device.isMobile() ? "mobile/group" : "group";
     }
 
     private Account readAndInjectHeaderAttributes(Authentication auth, Model model) throws JsonProcessingException {
@@ -140,14 +162,5 @@ public class PageController {
         model.addAttribute("groupDTO", MAPPER.writeValueAsString(groupDTO));
 
         return account;
-    }
-
-    private String redirectByDevice(boolean mobileController, Device device, String normalPage, String mobilePage, String normalRedirect, String mobileRedirect) {
-        if (mobileController == device.isMobile()) {
-            return mobileController ? mobilePage : normalPage;
-        }
-        else {
-            return "forward:" + (device.isMobile() ? mobileRedirect : normalRedirect);
-        }
     }
 }

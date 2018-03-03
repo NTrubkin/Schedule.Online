@@ -50,7 +50,7 @@ function createLesson() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }
@@ -68,7 +68,7 @@ function updateLesson() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }
@@ -85,7 +85,7 @@ function deleteLesson() {
                     });
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(jqXHR.status + ' ' + errorThrown);
+                    showAjaxError(jqXHR, errorThrown);
                 }
             });
         }

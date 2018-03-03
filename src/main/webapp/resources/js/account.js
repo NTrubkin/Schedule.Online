@@ -51,7 +51,7 @@ function saveAccount() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }

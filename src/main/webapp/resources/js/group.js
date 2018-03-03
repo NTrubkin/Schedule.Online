@@ -146,7 +146,7 @@ function saveGroup() {
             savePermisstions();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }
@@ -161,7 +161,7 @@ function savePermisstions() {
             deleteMembers();
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }
@@ -179,7 +179,7 @@ function deleteMembers() {
                 });
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                bootbox.alert(jqXHR.status + ' ' + errorThrown);
+                showAjaxError(jqXHR, errorThrown);
             }
         });
     }
@@ -202,7 +202,7 @@ function invite() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }

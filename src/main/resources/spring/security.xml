@@ -19,6 +19,7 @@
         <!-- web-страницы -->
         <intercept-url pattern="\/login.*" access="isAnonymous()"/>
         <intercept-url pattern="\/oauth2.*" access="permitAll()"/>
+        <intercept-url pattern="\/api\/account\/registration.*" access="isAnonymous()" method="POST"/>
         <intercept-url pattern="\/resources\/.*" access="permitAll()"/>
         <intercept-url pattern=".*" access="isAuthenticated()"/>
 

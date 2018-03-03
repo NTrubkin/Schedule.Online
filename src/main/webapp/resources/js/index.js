@@ -35,7 +35,7 @@ function loadData() {
             data = result;
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }
@@ -421,7 +421,7 @@ function deleteLesson(lessonId) {
                         showData();
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
-                        bootbox.alert(jqXHR.status + ' ' + errorThrown);
+                        showAjaxError(jqXHR, errorThrown);
                     }
                 });
             }
@@ -439,7 +439,7 @@ function deleteEvent(eventId) {
                     showData();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    bootbox.alert(jqXHR.status + ' ' + errorThrown);
+                    showAjaxError(jqXHR, errorThrown);
                 }
             });
         }
@@ -461,7 +461,7 @@ function createGroup() {
             });
         },
         error: function (jqXHR, textStatus, errorThrown) {
-            bootbox.alert(jqXHR.status + ' ' + errorThrown);
+            showAjaxError(jqXHR, errorThrown);
         }
     });
 }
